@@ -5,15 +5,20 @@ using UnityEngine;
 
 public class BankControl : MonoBehaviour
 {
+    public bool isFaced = false;
     public bool isBroken = false;
     public bool isBeingVisited = false;
     public bool isBeingDamaged = false;
+    public bool isLocked = false;
+    static public float maxLockedTime = 3f;
+    private float _leftLockedTime;
     public short totalCoins = 3;
     private short currentCoins;
     private Rigidbody2D _rigidbody2D;
     private Animator _animator;
     void Start()
     {
+        _leftLockedTime = maxLockedTime;
         currentCoins = totalCoins;
         _rigidbody2D = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
@@ -21,11 +26,18 @@ public class BankControl : MonoBehaviour
 
     void Update()
     {
-        
+        if (isLocked)
+        {
+            _leftLockedTime -= Time.deltaTime;
+            if(_leftLockedTime <= 0)
+            {
+                Unlock();
+            }
+        }
     }
     public void OnTriggerStay2D(Collider2D other)
     {
-        if (isBroken)
+        if (isBroken || isLocked)
         {
             return;
         }
@@ -38,17 +50,22 @@ public class BankControl : MonoBehaviour
             {
                 if (playerControl._lookDirection == delta.normalized)
                 {
+                    isFaced = true;
+                    playerControl.FaceBank(this);
+                    /*
                     isBeingVisited = true;
                     playerControl.GetIntoBank(this);
-                    //Damage();
                     Debug.Log("Thief visit bank!");
+                    //*/
                 }
             }
             else
             {
                 if (playerControl._lookDirection != delta.normalized)
                 {
+                    isFaced = false;
                     isBeingVisited = false;
+                    playerControl.UnfaceBank();
                     playerControl.GetOutofBank();
                 }
             }
@@ -59,9 +76,27 @@ public class BankControl : MonoBehaviour
         PlayerControl playerControl = other.GetComponent<PlayerControl>();
         if (playerControl != null)
         {
+            isFaced = false;
             isBeingVisited = false;
+            playerControl.UnfaceBank();
             playerControl.GetOutofBank();
         }
+    }
+    public void Lock()
+    {
+        isLocked = true;
+        _leftLockedTime = maxLockedTime;
+        _animator.SetBool("isLocked", true);
+    }
+    public void Unlock()
+    {
+        isLocked = false;
+        _animator.SetBool("isLocked", false);
+    }
+    public void Visited()
+    {
+        isBeingVisited = true;
+        Debug.Log("Thief visit bank!");
     }
     public void Damage()
     {
@@ -80,6 +115,10 @@ public class BankControl : MonoBehaviour
         if (currentCoins == 0)
         {
             Break();
+        }
+        else
+        {
+            Lock();
         }
     }
     public void Break()

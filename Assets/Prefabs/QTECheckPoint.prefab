@@ -89,6 +89,7 @@ GameObject:
   - component: {fileID: 4486647057122490711}
   - component: {fileID: 4486647057122490710}
   - component: {fileID: 4125952218413650184}
+  - component: {fileID: 7160958653205548629}
   m_Layer: 5
   m_Name: QTECheckPoint
   m_TagString: Untagged
@@ -168,6 +169,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   key: {fileID: 1537774920225340537}
+--- !u!95 &7160958653205548629
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4486647057122490696}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 892b450a564e55547a447f1ff98ea56e, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &8653671644363728434
 GameObject:
   m_ObjectHideFlags: 0

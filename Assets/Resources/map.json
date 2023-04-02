@@ -173,7 +173,7 @@
             "arrayY": 16
         },
         {
-            "variety": -1,
+            "variety": 3,
             "arrayX": 9,
             "arrayY": 19
         },
@@ -201,6 +201,11 @@
             "variety": 2,
             "arrayX": 10,
             "arrayY": 16
+        },
+        {
+            "variety": 1,
+            "arrayX": 10,
+            "arrayY": 19
         },
         {
             "variety": 9,
@@ -348,6 +353,11 @@
             "arrayY": 16
         },
         {
+            "variety": -1,
+            "arrayX": 14,
+            "arrayY": 17
+        },
+        {
             "variety": 9,
             "arrayX": 14,
             "arrayY": 21
@@ -373,6 +383,16 @@
             "arrayY": 14
         },
         {
+            "variety": 2,
+            "arrayX": 15,
+            "arrayY": 16
+        },
+        {
+            "variety": 1,
+            "arrayX": 15,
+            "arrayY": 17
+        },
+        {
             "variety": 9,
             "arrayX": 15,
             "arrayY": 21
@@ -393,6 +413,11 @@
             "arrayY": 14
         },
         {
+            "variety": 2,
+            "arrayX": 16,
+            "arrayY": 17
+        },
+        {
             "variety": 9,
             "arrayX": 16,
             "arrayY": 21
@@ -411,6 +436,11 @@
             "variety": 3,
             "arrayX": 17,
             "arrayY": 14
+        },
+        {
+            "variety": 3,
+            "arrayX": 17,
+            "arrayY": 17
         },
         {
             "variety": 9,
@@ -438,6 +468,11 @@
             "arrayY": 11
         },
         {
+            "variety": 1,
+            "arrayX": 18,
+            "arrayY": 17
+        },
+        {
             "variety": 9,
             "arrayX": 18,
             "arrayY": 21
@@ -451,6 +486,11 @@
             "variety": 1,
             "arrayX": 19,
             "arrayY": 9
+        },
+        {
+            "variety": 2,
+            "arrayX": 19,
+            "arrayY": 17
         },
         {
             "variety": 9,

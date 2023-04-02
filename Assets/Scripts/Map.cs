@@ -1,4 +1,4 @@
-using System;
+锘縰sing System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -25,10 +25,10 @@ public class Map : ISerializationCallbackReceiver
     public int mapWidth = 25;
     public int mapHeight = 25;
     public short[,] mapArray;
-    [SerializeField] public List<MapObjData> mapList; // 为了序列化map使用的临时数组
+    [SerializeField] public List<MapObjData> mapList; // 为锟斤拷锟斤拷锟叫伙拷map使锟矫碉拷锟斤拷时锟斤拷锟斤拷
     private string mapJson;
     public string MapJson { get { return mapJson; } set { mapJson = value; } }
-    private Vector2Int mapCenter; // 表示世界坐标(0,0)在map中的下标位置
+    private Vector2Int mapCenter; // 锟斤拷示锟斤拷锟斤拷锟斤拷锟斤拷(0,0)锟斤拷map锟叫碉拷锟铰憋拷位锟斤拷
     public Vector2Int MapCenter { get { return mapCenter; } }
     public Map()
     {

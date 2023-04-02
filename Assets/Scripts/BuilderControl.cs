@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -100,7 +100,7 @@ public class BuilderControl : MonoBehaviour
         map.Build(pos.x, pos.y, variety);
         switch (variety)
         {
-            case 0: // ²ð³ý
+            case 0: // ï¿½ï¿½ï¿½
                 Destroy(buildingDictionary[pos].gameObject);
                 buildingDictionary.Remove(pos);
                 break;

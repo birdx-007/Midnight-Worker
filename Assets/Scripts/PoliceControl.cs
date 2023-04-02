@@ -14,7 +14,7 @@ public class PoliceControl : MonoBehaviour
     public Vector2Int nextIntPoint;
     public Moveable2D moveable;
     public EnemyState state;
-    void Awake()
+    void Start()
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
@@ -61,6 +61,7 @@ public class PoliceControl : MonoBehaviour
         if (playerControl != null)
         {
             Debug.Log("Policeman catchs thief: " + collider);
+            playerControl.GetCaught();
         }
     }
 }

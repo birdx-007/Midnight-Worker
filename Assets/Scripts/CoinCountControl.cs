@@ -10,13 +10,17 @@ public class CoinCountControl : MonoBehaviour
     private int _count;
     void Start()
     {
-        _text = GetComponent<Text>();
-        _count = 0;
+        Initiate();
     }
 
     void Update()
     {
         _text.text = (_count / 10).ToString() + (_count % 10).ToString();
+    }
+    public void Initiate()
+    {
+        _text = GetComponent<Text>();
+        _count = 0;
     }
     public void AddOne()
     {

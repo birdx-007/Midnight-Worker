@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,8 +7,9 @@ using UnityEngine.UIElements;
 public class PlayerControl : MonoBehaviour
 {
     public bool noStopMode = false;
+    public bool isCaught = false;
     public float speed = 4;
-    private bool _isInputingMotion;
+    public bool isInputingMotion;
     private Rigidbody2D _rigidbody2D;
     private Animator _animator;
     public Vector2 _lookDirection;
@@ -20,39 +21,45 @@ public class PlayerControl : MonoBehaviour
     private float _roundIntY;
     private float _nextIntX;
     private float _nextIntY;
+    public BankControl bankFacing = null;
     public BankControl bankVisiting = null;
-    // Start is called before the first frame update
     void Start()
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
-        _isInputingMotion = false;
+        isInputingMotion = false;
         _lookDirection = Vector2.zero;
     }
-
-    // Update is called once per frame
     void Update()
     {
         // input
-        _inputX = Input.GetAxisRaw("Horizontal");
-        _inputY = Input.GetAxisRaw("Vertical");
+        if (!isCaught)
+        {
+            _inputX = Input.GetAxisRaw("Horizontal");
+            _inputY = Input.GetAxisRaw("Vertical");
+        }
+        else
+        {
+            _inputX = 0f;
+            _inputY = 0f;
+        }
         Vector2 inputVector = new Vector2(_inputX, _inputY);
         inputVector.Normalize();
         _currentInput = inputVector;
         if (Mathf.Approximately(_inputX, 0.0f) && Mathf.Approximately(_inputY, 0.0f))
         {
-            _isInputingMotion = false;
+            isInputingMotion = false;
         }
         else
         {
-            _isInputingMotion = true;
+            isInputingMotion = true;
         }
     }
 
     private void FixedUpdate()
     {
         Vector2 position = _rigidbody2D.position;
-        // Ê¹ÓÃApproximatelyÅÐ¶ÏµÄ»°x=0ºÍy=0Á½ÌõÏßµÄÅÐ¶¨²»ÖªÎªºÎ»áÓÐÎÊÌâ
+        // Ê¹ï¿½ï¿½Approximatelyï¿½Ð¶ÏµÄ»ï¿½x=0ï¿½ï¿½y=0ï¿½ï¿½ï¿½ï¿½ï¿½ßµï¿½ï¿½Ð¶ï¿½ï¿½ï¿½ÖªÎªï¿½Î»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         if (Mathf.Abs(position.x - Mathf.Round(position.x)) <= 0.05 && Mathf.Abs(position.y - Mathf.Round(position.y)) <= 0.05)
         {
             // mark int point
@@ -60,7 +67,7 @@ public class PlayerControl : MonoBehaviour
             isOnIntPoint = true;
             _roundIntX = Mathf.Round(position.x);
             _roundIntY = Mathf.Round(position.y);
-            if (_isInputingMotion)
+            if (isInputingMotion)
             {
                 // lookDirection
                 if(_currentInput.y>0.0f)
@@ -87,7 +94,7 @@ public class PlayerControl : MonoBehaviour
             {
                 position.x = _roundIntX;
                 position.y = _roundIntY;
-                _rigidbody2D.MovePosition(position);// ¾ÀÕýÎ»ÖÃ
+                _rigidbody2D.MovePosition(position);// ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½
                 return;
             }
         }
@@ -96,7 +103,7 @@ public class PlayerControl : MonoBehaviour
             isOnIntPoint = false;
         }
         // move
-        if (_isInputingMotion || noStopMode)
+        if (isInputingMotion || noStopMode)
         {
             position += _lookDirection * speed * Time.deltaTime;
             if(Mathf.Approximately(_lookDirection.x, 0.0f))
@@ -129,6 +136,14 @@ public class PlayerControl : MonoBehaviour
         _animator.SetFloat("lookY", _lookDirection.y);
         _animator.SetFloat("speed", _currentInput.magnitude);
     }
+    public void FaceBank(BankControl bank)
+    {
+        bankFacing = bank;
+    }
+    public void UnfaceBank()
+    {
+        bankFacing = null;
+    }
     public void GetIntoBank(BankControl bank)
     {
         bankVisiting = bank;
@@ -136,5 +151,14 @@ public class PlayerControl : MonoBehaviour
     public void GetOutofBank()
     {
         bankVisiting = null;
+    }
+    public void GetCaught()
+    {
+        if (!isCaught)
+        {
+            isCaught = true;
+            _animator.SetTrigger("caught");
+            GetOutofBank();
+        }
     }
 }

@@ -2,13 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Blackbroad : MonoBehaviour
+public class Blackbroad
 {
     public Map map;
     private PathSearcher pathSearcher;
     public Vector2Int playerIntPosition;
     public Vector2Int policeIntPosition;
-    void Awake()
+    public Blackbroad()
+    {
+        Initiate();
+    }
+    public void Initiate()
     {
         map = new Map(); // Now mapArray loaded
         pathSearcher = new PathSearcher(map.mapArray, map.mapWidth, map.mapWidth);
