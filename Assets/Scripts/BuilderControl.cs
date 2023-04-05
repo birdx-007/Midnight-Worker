@@ -8,8 +8,6 @@ public class BuilderControl : MonoBehaviour
 {
     public bool isEditing = false;
     public Map map;
-    private int mapWidth;
-    private int mapHeight;
     private Vector2Int mapCenter;
     private int mouseX;
     private int mouseY;
@@ -23,9 +21,6 @@ public class BuilderControl : MonoBehaviour
     {
         buildingDictionary = new Dictionary<Vector2Int, Transform>();
         this.map = map;
-        mapWidth = map.mapWidth;
-        mapHeight = map.mapHeight;
-        mapCenter = new Vector2Int(mapWidth / 2 + 1, mapHeight / 2 + 1);
         BuildAllfromArray();
     }
     void Start()
@@ -81,26 +76,26 @@ public class BuilderControl : MonoBehaviour
     }
     void BuildAllfromArray()
     {
-        foreach(MapObjData data in map.mapList)
+        foreach(MapBuildingData data in map.mapBuildingList)
         {
-            Vector2Int pos = new Vector2Int(data.arrayX-mapCenter.x, data.arrayY - mapCenter.y);
+            Vector2Int pos = new Vector2Int(data.posX, data.posY);
             Build(pos, data.variety);
         }
     }
     bool IsMouseOutOfMap()
     {
-        return map.IsOutOfMap(mouseX, mouseY);
+        return Map.IsOutOfMap(mouseX, mouseY);
     }
     bool IsOccupied()
     {
-        return map.IsOccupied(mouseX, mouseY);
+        return Map.IsOccupied(mouseX, mouseY);
     }
     void Build(Vector2Int pos, short variety)
     {
         map.Build(pos.x, pos.y, variety);
         switch (variety)
         {
-            case 0: // ���
+            case 0: // delete
                 Destroy(buildingDictionary[pos].gameObject);
                 buildingDictionary.Remove(pos);
                 break;

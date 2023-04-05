@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class ManagerControl : MonoBehaviour
 {
+    public int levelIndex;
     public SceneLoaderControl sceneLoader;
     public bool isFailed = false;
     public bool isPausing = false;
@@ -22,7 +23,7 @@ public class ManagerControl : MonoBehaviour
     public FailedMenuControl failedMenu;
     void Start()
     {
-        InitiateGame();
+        InitiateGame(levelIndex);
     }
 
     void Update()
@@ -39,21 +40,18 @@ public class ManagerControl : MonoBehaviour
         {
             RestartGame();
         }
-        if (!isPausing)
+        if (!isPausing && !builder.isEditing)
         {
-            // manage movement
+            // manage player movement
             if (player.isOnIntPoint)
             {
-                _blackbroad.playerIntPosition.Set(Mathf.RoundToInt(player.transform.position.x), Mathf.RoundToInt(player.transform.position.y));
+                Blackbroad.playerIntPosition.Set(Mathf.RoundToInt(player.transform.position.x), Mathf.RoundToInt(player.transform.position.y));
             }
+            // manage enemies
             if (police.isOnIntPoint)
             {
-                _blackbroad.policeIntPosition = police.curIntPoint;
-                var path = _blackbroad.FindWayTo(_blackbroad.policeIntPosition, _blackbroad.playerIntPosition);
-                if (path != null && path.Count > 1)
-                {
-                    police.nextIntPoint.Set(path[1].x, path[1].y);
-                }
+                _blackbroad.policeIntPositions[0] = police.curIntPoint;
+                police.behaviorControl.UpdateBehavior(ref police.nextIntPoint, police.curIntPoint);
             }
             // manage catch
             if(player.isCaught)
@@ -172,14 +170,14 @@ public class ManagerControl : MonoBehaviour
             }//*/
         }
     }
-    public void InitiateGame()
+    public void InitiateGame(int levelIndex)
     {
         isPausing = false;
         Time.timeScale = 1f;
-        _blackbroad = new Blackbroad();
-        builder.Initiate(_blackbroad.map);
-        _blackbroad.playerIntPosition.Set(Mathf.RoundToInt(player.transform.position.x), Mathf.RoundToInt(player.transform.position.y));
-        _blackbroad.policeIntPosition.Set(Mathf.RoundToInt(police.transform.position.x), Mathf.RoundToInt(police.transform.position.y));
+        _blackbroad = new Blackbroad(levelIndex);
+        builder.Initiate(Blackbroad.map);
+        Blackbroad.playerIntPosition.Set(Mathf.RoundToInt(player.transform.position.x), Mathf.RoundToInt(player.transform.position.y));
+        _blackbroad.policeIntPositions.Add(police.curIntPoint);
     }
     public void PauseGame()
     {

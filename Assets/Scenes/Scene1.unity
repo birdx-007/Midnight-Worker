@@ -520,6 +520,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 545c2434562a112489a7172a8cd929fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  levelIndex: 1
   sceneLoader: {fileID: 456023868}
   isFailed: 0
   isPausing: 0
@@ -5283,7 +5284,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7413ea58b9898c441b84ce2c5c723483, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isEditing: 0
+  isEditing: 1
   building1Prefab: {fileID: 3277401925823133321, guid: cd4dcfd7e46c5c34385df315418d6f4e, type: 3}
   building2Prefab: {fileID: 7319712417909326550, guid: ec9577ad8fcb23d488dab6512b534d75, type: 3}
   building3Prefab: {fileID: 1552845033246339875, guid: 27307694c24b8f24a99327ffb3b6ea21, type: 3}

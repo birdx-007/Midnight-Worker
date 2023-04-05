@@ -1,11 +1,11 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PathNode
 {
     public int X,Y;
-    public int F,G,H;//F(Â·¾¶³¤¶È)=G(¾àÆðµã³¤¶È)+H(¾àÖÕµã³¤¶È)
+    public int F,G,H;//F(Â·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)=G(ï¿½ï¿½ï¿½ï¿½ã³¤ï¿½ï¿½)+H(ï¿½ï¿½ï¿½Õµã³¤ï¿½ï¿½)
     public PathNode parent;
     public bool isStop;
     public PathNode(int x, int y, bool isStop)
@@ -15,37 +15,48 @@ public class PathNode
         this.isStop = isStop;
     }
 }
-public class PathSearcher
+static public class PathSearcher
 {
-    private int mapWidth;
-    private int mapHeight;
-    public PathNode[,] nodesMap;
-    public List<PathNode> openList = new List<PathNode>();
-    public List<PathNode> closeList = new List<PathNode>();
-    public PathSearcher(short[,] mapArray, int mapWidth, int mapHeight)
+    static public PathNode[,] nodesMap;
+    static public List<PathNode> openList = new List<PathNode>();
+    static public List<PathNode> closeList = new List<PathNode>();
+    static public void Initiate()
     {
-        this.mapWidth = mapWidth;
-        this.mapHeight = mapHeight;
-        nodesMap = new PathNode[mapWidth, mapHeight];
-        for (int i = 0; i < mapWidth; i++)
+        nodesMap = new PathNode[Map.mapWidth, Map.mapHeight];
+        for (int i = 0; i < Map.mapWidth; i++)
         {
-            for (int j = 0; j < mapHeight; j++)
+            for (int j = 0; j < Map.mapHeight; j++)
             {
-                nodesMap[i, j] = new PathNode(i, j, mapArray[i, j] != 0);
+                nodesMap[i, j] = new PathNode(i, j, Map.mapArray[i, j] != 0);
             }
         }
     }
-    public List<PathNode> FindWay(Vector2Int start, Vector2Int end)
+    static public List<Vector2Int> FindWayTo(Vector2Int start, Vector2Int end)
     {
-        if (start.x < 0 | start.x >= mapWidth |
-            start.y < 0 | start.y >= mapHeight |
-            end.x < 0 | end.x >= mapWidth |
-            end.y < 0 | end.y >= mapHeight) //ÅÐ¶ÏÆðµã£¬ÖÕµãÊÇ·ñºÏ·¨
+        var path = PathSearcher.FindWay(start + Map.MapCenter, end + Map.MapCenter);
+        if (path == null || path.Count == 0)
+        {
+            return null;
+        }
+        List<Vector2Int> result = new List<Vector2Int>();
+        foreach (var node in path)
+        {
+            Vector2Int nodePosition = new Vector2Int(node.X, node.Y) - Map.MapCenter;
+            result.Add(nodePosition);
+        }
+        return result;
+    }
+    static private List<PathNode> FindWay(Vector2Int start, Vector2Int end)
+    {
+        if (start.x < 0 | start.x >= Map.mapWidth |
+            start.y < 0 | start.y >= Map.mapHeight |
+            end.x < 0 | end.x >= Map.mapWidth |
+            end.y < 0 | end.y >= Map.mapHeight) //ï¿½Ð¶ï¿½ï¿½ï¿½ã£¬ï¿½Õµï¿½ï¿½Ç·ï¿½Ï·ï¿½
         {
             return null;
         }
         if (nodesMap[start.x, start.y].isStop |
-            nodesMap[end.x, end.y].isStop)//ÅÐ¶ÏÆðµã»òÖÕµãÊÇ·ñ¿Éµ½´ï
+            nodesMap[end.x, end.y].isStop)//ï¿½Ð¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õµï¿½ï¿½Ç·ï¿½Éµï¿½ï¿½ï¿½
         {
             return null;
         }
@@ -56,7 +67,7 @@ public class PathSearcher
         nodesMap[start.x, start.y].G = 0;
         nodesMap[start.x, start.y].H = 0;
         closeList.Add(nodesMap[start.x, start.y]);
-        while (true)//±éÀúËÄÖÜ·½¸ñ
+        while (true)//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü·ï¿½ï¿½ï¿½
         {
             FindOpenlist(start.x, start.y + 1, 1, nodesMap[start.x, start.y], nodesMap[end.x, end.y]);
             FindOpenlist(start.x, start.y - 1, 1, nodesMap[start.x, start.y], nodesMap[end.x, end.y]);
@@ -66,7 +77,7 @@ public class PathSearcher
             {
                 return null;
             }
-            openList.Sort((PathNode a, PathNode b) => { if (a.F >= b.F) return 1; else return -1; });//ÅÅÐòÑ¡³öµ±Ç°×î¶Ì¾àÖÕµãµÄµã
+            openList.Sort((PathNode a, PathNode b) => { if (a.F >= b.F) return 1; else return -1; });//ï¿½ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½Ì¾ï¿½ï¿½Õµï¿½Äµï¿½
             closeList.Add(openList[0]);
             start.Set(openList[0].X, openList[0].Y);
             openList.RemoveAt(0);
@@ -80,16 +91,16 @@ public class PathSearcher
                     way.Add(nodesMap[end.x, end.y].parent);
                     end.Set(nodesMap[end.x, end.y].parent.X, nodesMap[end.x, end.y].parent.Y);
                 }
-                way.Reverse();//·´×ªÁÐ±íÊ¹Â·¾¶´Ó¿ªÊ¼µ½ÖÕµã
+                way.Reverse();//ï¿½ï¿½×ªï¿½Ð±ï¿½Ê¹Â·ï¿½ï¿½ï¿½Ó¿ï¿½Ê¼ï¿½ï¿½ï¿½Õµï¿½
                 return way;
             }
 
         }
     }
-    private void FindOpenlist(int x, int y, int g, PathNode parent, PathNode end)
+    static private void FindOpenlist(int x, int y, int g, PathNode parent, PathNode end)
     {
-        if (x < 0 | x >= mapWidth |
-            y < 0 | y >= mapHeight)
+        if (x < 0 | x >= Map.mapWidth |
+            y < 0 | y >= Map.mapHeight)
         {
             return;
         }

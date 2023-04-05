@@ -7,61 +7,76 @@ using UnityEditor;
 using UnityEngine;
 
 [Serializable]
-public class MapObjData
+public class MapBuildingData
 {
-    public MapObjData(short variety,int arrayX,int arrayY)
+    public MapBuildingData(short variety,int X,int Y)
     {
         this.variety = variety;
-        this.arrayX = arrayX;
-        this.arrayY = arrayY;
+        this.posX = X;
+        this.posY = Y;
     }
     public short variety;
-    public int arrayX;
-    public int arrayY;
+    public int posX;
+    public int posY;
+}
+
+[Serializable]
+public class MapEnemyData
+{
+    public MapEnemyData(int X,int Y)
+    {
+        this.posX = X;
+        this.posY = Y;
+    }
+    public int posX;
+    public int posY;
 }
 
 public class Map : ISerializationCallbackReceiver
 {
-    public int mapWidth = 25;
-    public int mapHeight = 25;
-    public short[,] mapArray;
-    [SerializeField] public List<MapObjData> mapList; // Ϊ�����л�mapʹ�õ���ʱ����
+    [SerializeField] static public int mapWidth = 25;
+    [SerializeField] static public int mapHeight = 25;
+    static public short[,] mapArray;
+    [SerializeField] public List<MapBuildingData> mapBuildingList;
+    [SerializeField] public List<MapEnemyData> mapEnemyList;
+    private string jsonFilePath;
     private string mapJson;
     public string MapJson { get { return mapJson; } set { mapJson = value; } }
-    private Vector2Int mapCenter; // ��ʾ��������(0,0)��map�е��±�λ��
-    public Vector2Int MapCenter { get { return mapCenter; } }
-    public Map()
+    static private Vector2Int mapCenter; // ��ʾ��������(0,0)��map�е��±�λ��
+    static public Vector2Int MapCenter { get { return mapCenter; } }
+    public Map(int levelIndex)
     {
         mapArray = new short[mapWidth, mapHeight];
-        mapList = new List<MapObjData>();
+        mapBuildingList = new List<MapBuildingData>();
+        mapEnemyList = new List<MapEnemyData>();
         mapCenter = new Vector2Int(mapWidth / 2 + 1, mapHeight / 2 + 1);
+        jsonFilePath = Application.dataPath + "/Resources/Level-" + levelIndex.ToString() + "/map.json";
         LoadMap();
     }
     public void OnBeforeSerialize()
     {
-        mapList.Clear();
+        mapBuildingList.Clear();
         for (int i = 0; i < mapWidth; i++)
         {
             for (int j = 0; j < mapHeight; j++)
             {
                 if (mapArray[i, j] != 0)
                 {
-                    mapList.Add(new MapObjData(mapArray[i, j],i,j));
+                    mapBuildingList.Add(new MapBuildingData(mapArray[i, j], i - mapCenter.x, j - mapCenter.y));
                 }
             }
         }
     }
     public void OnAfterDeserialize()
     {
-        foreach(MapObjData data in mapList)
+        foreach (MapBuildingData data in mapBuildingList)
         {
-            mapArray[data.arrayX, data.arrayY] = data.variety;
+            mapArray[data.posX + mapCenter.x, data.posY + mapCenter.y] = data.variety;
         }
     }
     public void SaveMap()
     {
         mapJson = JsonUtility.ToJson(this, true);
-        string jsonFilePath = Application.dataPath + "/Resources/" + "map.json";
         using (StreamWriter sw = new StreamWriter(jsonFilePath))
         {
             sw.WriteLine(mapJson);
@@ -72,35 +87,49 @@ public class Map : ISerializationCallbackReceiver
     }
     public void LoadMap()
     {
-        string jsonFilePath = Application.dataPath + "/Resources/"+"map.json";
-        using (StreamReader sr = File.OpenText(jsonFilePath))
+        if (File.Exists(jsonFilePath))
         {
-            mapJson = sr.ReadToEnd();
-            sr.Close();
+            using (StreamReader sr = File.OpenText(jsonFilePath))
+            {
+                mapJson = sr.ReadToEnd();
+                sr.Close();
+            }
+        }
+        else
+        {
+            mapJson = "";
         }
         JsonUtility.FromJsonOverwrite(mapJson, this);
         Debug.Log("LoadMap done!");
     }
-    public bool IsOutOfMap(int X, int Y)
+    static public bool isReachable(int X, int Y)
     {
-        return X + mapCenter.x < 0
-            || X + mapCenter.x >= mapWidth
-            || Y + mapCenter.y < 0
-            || Y + mapCenter.y >= mapHeight;
+        if (IsOutOfMap(X, Y) || IsOccupied(X, Y))
+        {
+            return false;
+        }
+        return true;
     }
-    public bool IsOccupied(int X, int Y)
+    static public bool IsOutOfMap(int posX, int posY)
+    {
+        return posX + mapCenter.x < 0
+            || posX + mapCenter.x >= mapWidth
+            || posY + mapCenter.y < 0
+            || posY + mapCenter.y >= mapHeight;
+    }
+    static public bool IsOccupied(int X, int Y)
     {
         if (IsOutOfMap(X, Y))
         {
             return true;
         }
-        return mapArray[X + (int)mapCenter.x, Y + (int)mapCenter.y] != 0;
+        return mapArray[X + mapCenter.x, Y + mapCenter.y] != 0;
     }
     public void Build(int X, int Y, short variety)
     {
         if (!IsOutOfMap(X, Y))
         {
-            mapArray[X + (int)mapCenter.x, Y + (int)mapCenter.y] = variety;
+            mapArray[X + mapCenter.x, Y + mapCenter.y] = variety;
         }
     }
 }

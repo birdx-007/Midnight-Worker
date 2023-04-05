@@ -29,4 +29,100 @@ namespace Utilities
             rb.MovePosition(position);
         }
     }
+    public abstract class EnemyBehaviorControl
+    {
+        public abstract void UpdateBehavior(ref Vector2Int nextIntPoint,Vector2Int curIntPoint);
+    }
+    public class EnemySleepControl : EnemyBehaviorControl
+    {
+        public EnemySleepControl()
+        {
+
+        }
+        public override void UpdateBehavior(ref Vector2Int nextIntPoint, Vector2Int curIntPoint)
+        {
+            nextIntPoint = curIntPoint;
+        }
+    }
+    public class EnemyFixedPatrolControl : EnemyBehaviorControl
+    {
+        public List<Vector2Int> waypoints;
+        public int currentTargetWaypointIndex;
+        public EnemyFixedPatrolControl(List<Vector2Int> waypoints)
+        {
+            this.waypoints = waypoints;
+            currentTargetWaypointIndex = 0;
+        }
+        public override void UpdateBehavior(ref Vector2Int nextIntPoint, Vector2Int curIntPoint)
+        {
+            if(curIntPoint == waypoints[currentTargetWaypointIndex])
+            {
+                currentTargetWaypointIndex = (currentTargetWaypointIndex + 1) % waypoints.Count;
+            }
+            var path = PathSearcher.FindWayTo(curIntPoint, waypoints[currentTargetWaypointIndex]);
+            if (path != null && path.Count > 1)
+            {
+                nextIntPoint.Set(path[1].x, path[1].y);
+            }
+        }
+    }
+    public class EnemyRandomPatrolControl : EnemyBehaviorControl
+    {
+        public List<Vector2Int> directions;
+        public Vector2Int latestChoice;
+        public bool isBlocked;
+        public EnemyRandomPatrolControl()
+        {
+            directions = new List<Vector2Int>(4) { Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right };
+            latestChoice = Vector2Int.zero;
+            isBlocked = false;
+        }
+        public override void UpdateBehavior(ref Vector2Int nextIntPoint, Vector2Int curIntPoint)
+        {
+            isBlocked = false;
+            Vector2Int target = curIntPoint + latestChoice;
+            // latestChoice is preferred
+            if (latestChoice != Vector2Int.zero && Map.isReachable(target.x, target.y))
+            {
+                nextIntPoint.Set(target.x, target.y);
+            }
+            else // latestChoice is invalid
+            {
+                List<Vector2Int> optionalDirections = new List<Vector2Int>(directions);
+                int chosenDirectionIndex = Random.Range(0, 4);
+                target = curIntPoint + optionalDirections[chosenDirectionIndex];
+                while (!Map.isReachable(target.x, target.y))
+                {
+                    optionalDirections.RemoveAt(chosenDirectionIndex);
+                    if (optionalDirections.Count == 0)
+                    {
+                        isBlocked = true;
+                        break;
+                    }
+                    chosenDirectionIndex = Random.Range(0, optionalDirections.Count);
+                    target = curIntPoint + optionalDirections[chosenDirectionIndex];
+                }
+                if (!isBlocked)
+                {
+                    nextIntPoint.Set(target.x, target.y);
+                    latestChoice = optionalDirections[chosenDirectionIndex];
+                }
+            }
+        }
+    }
+    public class EnemyChasePlayerControl : EnemyBehaviorControl
+    {
+        public EnemyChasePlayerControl()
+        {
+
+        }
+        public override void UpdateBehavior(ref Vector2Int nextIntPoint, Vector2Int curIntPoint)
+        {
+            var path = PathSearcher.FindWayTo(curIntPoint, Blackbroad.playerIntPosition);
+            if (path != null && path.Count > 1)
+            {
+                nextIntPoint.Set(path[1].x, path[1].y);
+            }
+        }
+    }
 }
