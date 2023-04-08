@@ -31,13 +31,14 @@ namespace Utilities
     }
     public abstract class EnemyBehaviorControl
     {
+        public float speed = 0f;
         public abstract void UpdateBehavior(ref Vector2Int nextIntPoint,Vector2Int curIntPoint);
     }
     public class EnemySleepControl : EnemyBehaviorControl
     {
         public EnemySleepControl()
         {
-
+            speed = 0f;
         }
         public override void UpdateBehavior(ref Vector2Int nextIntPoint, Vector2Int curIntPoint)
         {
@@ -50,6 +51,7 @@ namespace Utilities
         public int currentTargetWaypointIndex;
         public EnemyFixedPatrolControl(List<Vector2Int> waypoints)
         {
+            speed = 2f;
             this.waypoints = waypoints;
             currentTargetWaypointIndex = 0;
         }
@@ -73,6 +75,7 @@ namespace Utilities
         public bool isBlocked;
         public EnemyRandomPatrolControl()
         {
+            speed = 2f;
             directions = new List<Vector2Int>(4) { Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right };
             latestChoice = Vector2Int.zero;
             isBlocked = false;
@@ -82,7 +85,7 @@ namespace Utilities
             isBlocked = false;
             Vector2Int target = curIntPoint + latestChoice;
             // latestChoice is preferred
-            if (latestChoice != Vector2Int.zero && Map.isReachable(target.x, target.y))
+            if (latestChoice != Vector2Int.zero && Blackbroad.map.isReachable(target.x, target.y))
             {
                 nextIntPoint.Set(target.x, target.y);
             }
@@ -91,7 +94,7 @@ namespace Utilities
                 List<Vector2Int> optionalDirections = new List<Vector2Int>(directions);
                 int chosenDirectionIndex = Random.Range(0, 4);
                 target = curIntPoint + optionalDirections[chosenDirectionIndex];
-                while (!Map.isReachable(target.x, target.y))
+                while (!Blackbroad.map.isReachable(target.x, target.y))
                 {
                     optionalDirections.RemoveAt(chosenDirectionIndex);
                     if (optionalDirections.Count == 0)
@@ -114,7 +117,7 @@ namespace Utilities
     {
         public EnemyChasePlayerControl()
         {
-
+            speed = 3f;
         }
         public override void UpdateBehavior(ref Vector2Int nextIntPoint, Vector2Int curIntPoint)
         {

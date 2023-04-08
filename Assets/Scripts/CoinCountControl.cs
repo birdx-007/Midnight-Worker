@@ -8,6 +8,7 @@ public class CoinCountControl : MonoBehaviour
 {
     private Text _text;
     private int _count;
+    public int currentCount { get { return _count; } }
     void Start()
     {
         Initiate();

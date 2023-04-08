@@ -318,11 +318,6 @@
             "posY": -1
         },
         {
-            "variety": -1,
-            "posX": 0,
-            "posY": 1
-        },
-        {
             "variety": 1,
             "posX": 0,
             "posY": 3
@@ -338,11 +333,6 @@
             "posY": -8
         },
         {
-            "variety": -1,
-            "posX": 1,
-            "posY": -5
-        },
-        {
             "variety": 3,
             "posX": 1,
             "posY": -1
@@ -356,11 +346,6 @@
             "variety": 3,
             "posX": 1,
             "posY": 3
-        },
-        {
-            "variety": -1,
-            "posX": 1,
-            "posY": 4
         },
         {
             "variety": 9,
@@ -597,5 +582,23 @@
             "posX": 8,
             "posY": 8
         }
-    ]
+    ],
+    "mapBankList": [
+        {
+            "totalCoins": 3,
+            "posX": 1,
+            "posY": -5
+        },
+        {
+            "totalCoins": 3,
+            "posX": 1,
+            "posY": 4
+        },
+        {
+            "totalCoins": 3,
+            "posX": 0,
+            "posY": 1
+        }
+    ],
+    "mapEnemyList": []
 }

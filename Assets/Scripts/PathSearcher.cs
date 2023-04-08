@@ -22,10 +22,10 @@ static public class PathSearcher
     static public List<PathNode> closeList = new List<PathNode>();
     static public void Initiate()
     {
-        nodesMap = new PathNode[Map.mapWidth, Map.mapHeight];
-        for (int i = 0; i < Map.mapWidth; i++)
+        nodesMap = new PathNode[Blackbroad.map.mapWidth, Blackbroad.map.mapHeight];
+        for (int i = 0; i < Blackbroad.map.mapWidth; i++)
         {
-            for (int j = 0; j < Map.mapHeight; j++)
+            for (int j = 0; j < Blackbroad.map.mapHeight; j++)
             {
                 nodesMap[i, j] = new PathNode(i, j, Map.mapArray[i, j] != 0);
             }
@@ -48,10 +48,10 @@ static public class PathSearcher
     }
     static private List<PathNode> FindWay(Vector2Int start, Vector2Int end)
     {
-        if (start.x < 0 | start.x >= Map.mapWidth |
-            start.y < 0 | start.y >= Map.mapHeight |
-            end.x < 0 | end.x >= Map.mapWidth |
-            end.y < 0 | end.y >= Map.mapHeight) //�ж���㣬�յ��Ƿ�Ϸ�
+        if (start.x < 0 | start.x >= Blackbroad.map.mapWidth |
+            start.y < 0 | start.y >= Blackbroad.map.mapHeight |
+            end.x < 0 | end.x >= Blackbroad.map.mapWidth |
+            end.y < 0 | end.y >= Blackbroad.map.mapHeight) //�ж���㣬�յ��Ƿ�Ϸ�
         {
             return null;
         }
@@ -99,8 +99,8 @@ static public class PathSearcher
     }
     static private void FindOpenlist(int x, int y, int g, PathNode parent, PathNode end)
     {
-        if (x < 0 | x >= Map.mapWidth |
-            y < 0 | y >= Map.mapHeight)
+        if (x < 0 | x >= Blackbroad.map.mapWidth |
+            y < 0 | y >= Blackbroad.map.mapHeight)
         {
             return;
         }

@@ -522,6 +522,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelIndex: 1
   sceneLoader: {fileID: 456023868}
+  levelTargetCoinCount: 9
   isFailed: 0
   isPausing: 0
   isQTE: 0

@@ -29,11 +29,7 @@ public class PoliceControl : MonoBehaviour
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
-        _lookDirection = Vector2.down;
-        curIntPoint = nextIntPoint = new Vector2Int((int)_rigidbody2D.position.x, (int)_rigidbody2D.position.y);
-        moveable = new Moveable2D(speed);
-        SetStateChasePlayer();
-        SetStateRandomPatrol();
+        Initiate();
     }
 
     void Update()
@@ -76,19 +72,39 @@ public class PoliceControl : MonoBehaviour
             playerControl.GetCaught();
         }
     }
+    public void Initiate()
+    {
+        _lookDirection = Vector2.down;
+        curIntPoint = nextIntPoint = new Vector2Int((int)_rigidbody2D.position.x, (int)_rigidbody2D.position.y);
+        moveable = new Moveable2D(speed);
+        SetStateRandomPatrol();
+    }
+    public void SetStateSleep()
+    {
+        state = EnemyState.Sleep;
+        behaviorControl = new EnemySleepControl();
+        speed = behaviorControl.speed;
+        moveable.speed = speed;
+    }
     public void SetStateFixedPatrol(List<Vector2Int> waypoints)
     {
         state = EnemyState.FixedPatrol;
         behaviorControl = new EnemyFixedPatrolControl(waypoints);
+        speed = behaviorControl.speed;
+        moveable.speed = speed;
     }
     public void SetStateRandomPatrol()
     {
         state = EnemyState.RandomPatrol;
         behaviorControl = new EnemyRandomPatrolControl();
+        speed = behaviorControl.speed;
+        moveable.speed = speed;
     }
     public void SetStateChasePlayer()
     {
         state = EnemyState.ChasePlayer;
         behaviorControl = new EnemyChasePlayerControl();
+        speed = behaviorControl.speed;
+        moveable.speed = speed;
     }
 }

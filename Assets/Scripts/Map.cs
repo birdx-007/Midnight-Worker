@@ -1,4 +1,5 @@
-﻿using System;
+﻿using JetBrains.Annotations;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -19,14 +20,27 @@ public class MapBuildingData
     public int posX;
     public int posY;
 }
+[Serializable]
+public class MapBankData
+{
+    public MapBankData(int coins,int X,int Y)
+    {
+        totalCoins = coins;
+        posX = X;
+        posY = Y;
+    }
+    public int totalCoins;
+    public int posX;
+    public int posY;
+}
 
 [Serializable]
 public class MapEnemyData
 {
     public MapEnemyData(int X,int Y)
     {
-        this.posX = X;
-        this.posY = Y;
+        posX = X;
+        posY = Y;
     }
     public int posX;
     public int posY;
@@ -34,10 +48,12 @@ public class MapEnemyData
 
 public class Map : ISerializationCallbackReceiver
 {
-    [SerializeField] static public int mapWidth = 25;
-    [SerializeField] static public int mapHeight = 25;
+    [NonSerialized] static public int targetCoinCount;
+    [SerializeField] public int mapWidth = 25;
+    [SerializeField] public int mapHeight = 25;
     static public short[,] mapArray;
     [SerializeField] public List<MapBuildingData> mapBuildingList;
+    [SerializeField] public List<MapBankData> mapBankList;
     [SerializeField] public List<MapEnemyData> mapEnemyList;
     private string jsonFilePath;
     private string mapJson;
@@ -48,30 +64,37 @@ public class Map : ISerializationCallbackReceiver
     {
         mapArray = new short[mapWidth, mapHeight];
         mapBuildingList = new List<MapBuildingData>();
+        mapBankList = new List<MapBankData>();
         mapEnemyList = new List<MapEnemyData>();
         mapCenter = new Vector2Int(mapWidth / 2 + 1, mapHeight / 2 + 1);
         jsonFilePath = Application.dataPath + "/Resources/Level-" + levelIndex.ToString() + "/map.json";
         LoadMap();
     }
-    public void OnBeforeSerialize()
+    public void OnBeforeSerialize() // before save
     {
         mapBuildingList.Clear();
         for (int i = 0; i < mapWidth; i++)
         {
             for (int j = 0; j < mapHeight; j++)
             {
-                if (mapArray[i, j] != 0)
+                if (mapArray[i, j] > 0) // building's variety should greater than 0.
                 {
                     mapBuildingList.Add(new MapBuildingData(mapArray[i, j], i - mapCenter.x, j - mapCenter.y));
                 }
             }
         }
     }
-    public void OnAfterDeserialize()
+    public void OnAfterDeserialize() // after load
     {
         foreach (MapBuildingData data in mapBuildingList)
         {
             mapArray[data.posX + mapCenter.x, data.posY + mapCenter.y] = data.variety;
+        }
+        targetCoinCount = 0;
+        foreach(MapBankData data in mapBankList)
+        {
+            mapArray[data.posX + mapCenter.x, data.posY + mapCenter.y] = -1;
+            targetCoinCount += data.totalCoins;
         }
     }
     public void SaveMap()
@@ -102,22 +125,18 @@ public class Map : ISerializationCallbackReceiver
         JsonUtility.FromJsonOverwrite(mapJson, this);
         Debug.Log("LoadMap done!");
     }
-    static public bool isReachable(int X, int Y)
+    public bool isReachable(int X, int Y)
     {
-        if (IsOutOfMap(X, Y) || IsOccupied(X, Y))
-        {
-            return false;
-        }
-        return true;
+        return !IsOccupied(X, Y);
     }
-    static public bool IsOutOfMap(int posX, int posY)
+    public bool IsOutOfMap(int posX, int posY)
     {
         return posX + mapCenter.x < 0
             || posX + mapCenter.x >= mapWidth
             || posY + mapCenter.y < 0
             || posY + mapCenter.y >= mapHeight;
     }
-    static public bool IsOccupied(int X, int Y)
+    public bool IsOccupied(int X, int Y)
     {
         if (IsOutOfMap(X, Y))
         {
@@ -125,11 +144,19 @@ public class Map : ISerializationCallbackReceiver
         }
         return mapArray[X + mapCenter.x, Y + mapCenter.y] != 0;
     }
-    public void Build(int X, int Y, short variety)
+    public void BuildBuilding(int X, int Y, short variety)
     {
-        if (!IsOutOfMap(X, Y))
+        if (!IsOccupied(X, Y))
         {
             mapArray[X + mapCenter.x, Y + mapCenter.y] = variety;
         }
+    }
+    public void BuildBank(int X, int Y,int totalCoins)
+    {
+        if (!IsOccupied(X, Y))
+        {
+            mapArray[X + mapCenter.x, Y + mapCenter.y] = -1;
+        }
+        mapBankList.Add(new MapBankData(totalCoins, X, Y));
     }
 }

@@ -12,8 +12,8 @@ public class BankControl : MonoBehaviour
     public bool isLocked = false;
     static public float maxLockedTime = 3f;
     private float _leftLockedTime;
-    public short totalCoins = 3;
-    private short currentCoins;
+    public int totalCoins = 3;
+    private int currentCoins;
     private Rigidbody2D _rigidbody2D;
     private Animator _animator;
     void Start()

@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
 public class BuilderControl : MonoBehaviour
 {
     public bool isEditing = false;
-    public Map map;
+    public bool isEditingBank = false;
+    private int currentEditingBankTotalCount = 0;
     private Vector2Int mapCenter;
     private int mouseX;
     private int mouseY;
@@ -16,11 +18,10 @@ public class BuilderControl : MonoBehaviour
     public GameObject building3Prefab;
     public GameObject wall1Prefab;
     public GameObject bankPrefab;
-    private Dictionary<Vector2Int, Transform> buildingDictionary;
-    public void Initiate(Map map)
+    private Dictionary<Vector2Int, Transform> objectDictionary;
+    public void Initiate()
     {
-        buildingDictionary = new Dictionary<Vector2Int, Transform>();
-        this.map = map;
+        objectDictionary = new Dictionary<Vector2Int, Transform>();
         BuildAllfromArray();
     }
     void Start()
@@ -34,7 +35,7 @@ public class BuilderControl : MonoBehaviour
             if(Input.GetKeyDown(KeyCode.Return))
             {
                 isEditing = false;
-                map.SaveMap();
+                Blackbroad.map.SaveMap();
                 return;
             }
             mouseX = Mathf.RoundToInt(Camera.main.ScreenToWorldPoint(Input.mousePosition).x);
@@ -42,90 +43,181 @@ public class BuilderControl : MonoBehaviour
             Vector2Int mouseVector = new Vector2Int(mouseX, mouseY);
             if (Input.anyKeyDown && !IsOccupied())
             {
-                if (Input.GetKeyDown(KeyCode.Alpha1))
+                if (!isEditingBank)
                 {
-                    Build(mouseVector,1);
+                    if (Input.GetKeyDown(KeyCode.Alpha1))
+                    {
+                        BuildBuilding(mouseVector, 1);
+                    }
+                    else if (Input.GetKeyDown(KeyCode.Alpha2))
+                    {
+                        BuildBuilding(mouseVector, 2);
+                    }
+                    else if (Input.GetKeyDown(KeyCode.Alpha3))
+                    {
+                        BuildBuilding(mouseVector, 3);
+                    }
+                    else if (Input.GetKeyDown(KeyCode.Alpha9))
+                    {
+                        // Wall1
+                        BuildBuilding(mouseVector, 9);
+                    }
+                    else if (Input.GetKeyDown(KeyCode.B))
+                    {
+                        // bank
+                        isEditingBank = true;
+                        currentEditingBankTotalCount = 0;
+                        Debug.Log("begin editing a bank!");
+                    }
                 }
-                else if (Input.GetKeyDown(KeyCode.Alpha2))
+                else
                 {
-                    Build(mouseVector,2);
-                }
-                else if(Input.GetKeyDown(KeyCode.Alpha3))
-                {
-                    Build(mouseVector,3);
-                }
-                else if (Input.GetKeyDown(KeyCode.Alpha9))
-                {
-                    // Wall1
-                    Build(mouseVector,9);
-                }
-                else if(Input.GetKeyDown(KeyCode.B))
-                {
-                    // bank
-                    Build(mouseVector, -1);
+                    int keyNumber = 0;
+                    if (Input.GetKeyDown(KeyCode.Alpha0) ||
+                        Input.GetKeyDown(KeyCode.Alpha1) ||
+                        Input.GetKeyDown(KeyCode.Alpha2) ||
+                        Input.GetKeyDown(KeyCode.Alpha3) ||
+                        Input.GetKeyDown(KeyCode.Alpha4) ||
+                        Input.GetKeyDown(KeyCode.Alpha5) ||
+                        Input.GetKeyDown(KeyCode.Alpha6) ||
+                        Input.GetKeyDown(KeyCode.Alpha7) ||
+                        Input.GetKeyDown(KeyCode.Alpha8) ||
+                        Input.GetKeyDown(KeyCode.Alpha9))
+                    {
+                        if (Input.GetKeyDown(KeyCode.Alpha1))
+                        {
+                            keyNumber = 1;
+                        }
+                        else if (Input.GetKeyDown(KeyCode.Alpha2))
+                        {
+                            keyNumber = 2;
+                        }
+                        else if (Input.GetKeyDown(KeyCode.Alpha3))
+                        {
+                            keyNumber = 3;
+                        }
+                        else if (Input.GetKeyDown(KeyCode.Alpha4))
+                        {
+                            keyNumber = 4;
+                        }
+                        else if (Input.GetKeyDown(KeyCode.Alpha5))
+                        {
+                            keyNumber = 5;
+                        }
+                        else if (Input.GetKeyDown(KeyCode.Alpha6))
+                        {
+                            keyNumber = 6;
+                        }
+                        else if (Input.GetKeyDown(KeyCode.Alpha7))
+                        {
+                            keyNumber = 7;
+                        }
+                        else if (Input.GetKeyDown(KeyCode.Alpha8))
+                        {
+                            keyNumber = 8;
+                        }
+                        else if (Input.GetKeyDown(KeyCode.Alpha9))
+                        {
+                            keyNumber = 9;
+                        }
+                        currentEditingBankTotalCount *= 10;
+                        currentEditingBankTotalCount += keyNumber;
+                    }
+                    else if (Input.GetKeyDown(KeyCode.Space))
+                    {
+                        isEditingBank = false;
+                        BuildBank(mouseVector, currentEditingBankTotalCount);
+                        currentEditingBankTotalCount = 0;
+                    }
                 }
             }
             else
             {
-                if(Input.GetKeyDown(KeyCode.Delete))
+                if (Input.GetKeyDown(KeyCode.Delete))
                 {
-                    Build(mouseVector,0);
+                    Delete(mouseVector);
                 }
             }
         }
     }
     void BuildAllfromArray()
     {
-        foreach(MapBuildingData data in map.mapBuildingList)
+        foreach(MapBuildingData data in Blackbroad.map.mapBuildingList)
         {
             Vector2Int pos = new Vector2Int(data.posX, data.posY);
-            Build(pos, data.variety);
+            BuildBuildingInGameScene(pos, data.variety);
         }
-    }
-    bool IsMouseOutOfMap()
-    {
-        return Map.IsOutOfMap(mouseX, mouseY);
+        foreach(MapBankData data in Blackbroad.map.mapBankList)
+        {
+            Vector2Int pos = new Vector2Int(data.posX, data.posY);
+            BuildBankInGameScene(pos, data.totalCoins);
+        }
+        Debug.Log("Build all map objects done!");
     }
     bool IsOccupied()
     {
-        return Map.IsOccupied(mouseX, mouseY);
+        return Blackbroad.map.IsOccupied(mouseX, mouseY);
     }
-    void Build(Vector2Int pos, short variety)
+    void Delete(Vector2Int pos)
     {
-        map.Build(pos.x, pos.y, variety);
+        Blackbroad.map.BuildBuilding(pos.x, pos.y, 0);
+        var bankControl = objectDictionary[pos].gameObject.GetComponent<BankControl>();
+        if (bankControl != null)
+        {
+            var toBeDeleted = Blackbroad.map.mapBankList.Where(data => (data.posX == pos.x && data.posY == pos.y)).ToList();
+            foreach(MapBankData data in toBeDeleted)
+            {
+                Blackbroad.map.mapBankList.Remove(data);
+            }
+        }
+        Destroy(objectDictionary[pos].gameObject);
+        objectDictionary.Remove(pos);
+    }
+    void BuildBuilding(Vector2Int pos, short variety)
+    {
+        Blackbroad.map.BuildBuilding(pos.x, pos.y, variety);
+        BuildBuildingInGameScene(pos,variety);
+    }
+    void BuildBuildingInGameScene(Vector2Int pos,short variety)
+    {
         switch (variety)
         {
-            case 0: // delete
-                Destroy(buildingDictionary[pos].gameObject);
-                buildingDictionary.Remove(pos);
-                break;
             case 1:
                 GameObject building1 = Instantiate(building1Prefab, (Vector2)pos, Quaternion.identity);
                 building1.transform.SetParent(gameObject.transform);
-                buildingDictionary.Add(pos, building1.transform);
+                objectDictionary.Add(pos, building1.transform);
                 break;
             case 2:
                 GameObject building2 = Instantiate(building2Prefab, (Vector2)pos, Quaternion.identity);
                 building2.transform.SetParent(gameObject.transform);
-                buildingDictionary.Add(pos, building2.transform);
+                objectDictionary.Add(pos, building2.transform);
                 break;
             case 3:
                 GameObject building3 = Instantiate(building3Prefab, (Vector2)pos, Quaternion.identity);
                 building3.transform.SetParent(gameObject.transform);
-                buildingDictionary.Add(pos, building3.transform);
+                objectDictionary.Add(pos, building3.transform);
                 break;
             case 9:
                 GameObject wall1 = Instantiate(wall1Prefab, (Vector2)pos, Quaternion.identity);
                 wall1.transform.SetParent(gameObject.transform);
-                buildingDictionary.Add(pos, wall1.transform);
-                break;
-            case -1:
-                GameObject bank = Instantiate(bankPrefab, (Vector2)pos, Quaternion.identity);
-                bank.transform.SetParent(gameObject.transform);
-                buildingDictionary.Add(pos, bank.transform);
+                objectDictionary.Add(pos, wall1.transform);
                 break;
             default:
+                Debug.LogError(variety + " at (" + pos.x + "," + pos.y + ") does not represents building!");
                 break;
         }
+    }
+    void BuildBank(Vector2Int pos,int totalCoins)
+    {
+        Blackbroad.map.BuildBank(pos.x,pos.y, totalCoins);
+        BuildBankInGameScene(pos, totalCoins);
+    }
+    void BuildBankInGameScene(Vector2Int pos,int totalCoins)
+    {
+        GameObject bank = Instantiate(bankPrefab, (Vector2)pos, Quaternion.identity);
+        bank.transform.SetParent(gameObject.transform);
+        objectDictionary.Add(pos, bank.transform);
+        BankControl bankControl = bank.GetComponent<BankControl>();
+        bankControl.totalCoins = totalCoins;
     }
 }

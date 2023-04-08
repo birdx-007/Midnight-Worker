@@ -6,9 +6,11 @@ using UnityEngine.SceneManagement;
 
 public class ManagerControl : MonoBehaviour
 {
-    public int levelIndex;
     public SceneLoaderControl sceneLoader;
+    public int levelIndex;
+    public int levelTargetCoinCount;
     public bool isFailed = false;
+    public bool isWon = false;
     public bool isPausing = false;
     public bool isQTE = false;
     public bool isAnyBankBeingLocked = false;
@@ -50,18 +52,22 @@ public class ManagerControl : MonoBehaviour
             // manage enemies
             if (police.isOnIntPoint)
             {
-                _blackbroad.policeIntPositions[0] = police.curIntPoint;
+                Blackbroad.policeIntPositions[0] = police.curIntPoint;
                 police.behaviorControl.UpdateBehavior(ref police.nextIntPoint, police.curIntPoint);
             }
-            // manage catch
-            if(player.isCaught)
+            // manage game ending
+            if (player.isCaught)
             {
                 LoseGame();
+            }
+            if(coinCount.currentCount == levelTargetCoinCount)
+            {
+                WinGame();
             }
             // manage QTE
             if(player.bankVisiting != null)
             {
-                IEnumerator WaitAndHideTip(float waitTime)
+                IEnumerator WaitThenHideTip(float waitTime)
                 {
                     yield return new WaitForSeconds(waitTime);
                     qte.HideTip();
@@ -75,7 +81,7 @@ public class ManagerControl : MonoBehaviour
                         bank.Lock();
                         isAnyBankBeingLocked = true;
                         qte.ShowTip("RUN");
-                        StartCoroutine(WaitAndHideTip(BankControl.maxLockedTime));
+                        StartCoroutine(WaitThenHideTip(BankControl.maxLockedTime));
                         player.GetOutofBank();
                         qte.state = QTEState.Inactive;
                     }
@@ -100,7 +106,7 @@ public class ManagerControl : MonoBehaviour
                             isAnyBankBeingLocked = true;
                             coinCount.AddOne();
                             qte.ShowTip("RUN");
-                            StartCoroutine(WaitAndHideTip(BankControl.maxLockedTime));
+                            StartCoroutine(WaitThenHideTip(BankControl.maxLockedTime));
                             player.UnfaceBank();
                             player.GetOutofBank();
                             qte.state = QTEState.Inactive;
@@ -111,7 +117,7 @@ public class ManagerControl : MonoBehaviour
                             bank.Lock();
                             isAnyBankBeingLocked = true;
                             qte.ShowTip("RUN");
-                            StartCoroutine(WaitAndHideTip(BankControl.maxLockedTime));
+                            StartCoroutine(WaitThenHideTip(BankControl.maxLockedTime));
                             player.UnfaceBank();
                             player.GetOutofBank();
                             qte.state = QTEState.Inactive;
@@ -141,33 +147,6 @@ public class ManagerControl : MonoBehaviour
                     qte.HideTip();
                 }
             }
-            /*
-            if (player.bankVisiting != null && !isQTE)
-            {
-                isQTE = true;
-                var times = new List<float>() { 2f, 4f };
-                var keys = new List<KeyCode>() { KeyCode.Z, KeyCode.X };
-                qte.Initialize(5f, times, keys, 0.2f);
-            }
-            if (player.bankVisiting == null && isQTE)
-            {
-                isQTE = false;
-                qte.HitFail();
-            }
-            if (isQTE && !isPausing)
-            {
-                if (qte.state == QTEState.InProgress && Input.anyKeyDown && !builder.isEditing
-                    && !Input.GetKeyDown(KeyCode.Escape) && !Input.GetKeyDown(KeyCode.Space))
-                {
-                    qte.HitCheckPoint();
-                }
-                if (qte.state == QTEState.Succeeded && player.bankVisiting != null)
-                {
-                    player.bankVisiting.Damage();
-                    coinCount.AddOne();
-                    player.GetOutofBank();
-                }
-            }//*/
         }
     }
     public void InitiateGame(int levelIndex)
@@ -175,9 +154,10 @@ public class ManagerControl : MonoBehaviour
         isPausing = false;
         Time.timeScale = 1f;
         _blackbroad = new Blackbroad(levelIndex);
-        builder.Initiate(Blackbroad.map);
+        builder.Initiate();//build map objects
+        levelTargetCoinCount = Map.targetCoinCount;
         Blackbroad.playerIntPosition.Set(Mathf.RoundToInt(player.transform.position.x), Mathf.RoundToInt(player.transform.position.y));
-        _blackbroad.policeIntPositions.Add(police.curIntPoint);
+        Blackbroad.policeIntPositions.Add(police.curIntPoint);
     }
     public void PauseGame()
     {
@@ -208,5 +188,9 @@ public class ManagerControl : MonoBehaviour
         yield return new WaitForSecondsRealtime(3f);
         failedMenu.ShowFailedMenu();
         isFailed = true;
+    }
+    public void WinGame()
+    {
+        isWon = true;
     }
 }
