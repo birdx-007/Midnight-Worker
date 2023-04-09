@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using UnityEditor;
 using UnityEngine;
 
@@ -10,6 +11,9 @@ public class BuilderControl : MonoBehaviour
     public bool isEditing = false;
     public bool isEditingBank = false;
     private int currentEditingBankTotalCount = 0;
+    public bool isEditingEnemy = false;
+    private EnemyState currentEditingEnemyState = EnemyState.Sleep;
+    private List<Vector2Int> currentEditingEnemyWaypoints;
     private Vector2Int mapCenter;
     private int mouseX;
     private int mouseY;
@@ -18,6 +22,7 @@ public class BuilderControl : MonoBehaviour
     public GameObject building3Prefab;
     public GameObject wall1Prefab;
     public GameObject bankPrefab;
+    public GameObject enemyPrefab;
     private Dictionary<Vector2Int, Transform> objectDictionary;
     public void Initiate()
     {
@@ -43,7 +48,7 @@ public class BuilderControl : MonoBehaviour
             Vector2Int mouseVector = new Vector2Int(mouseX, mouseY);
             if (Input.anyKeyDown && !IsOccupied())
             {
-                if (!isEditingBank)
+                if (!isEditingBank && !isEditingEnemy)
                 {
                     if (Input.GetKeyDown(KeyCode.Alpha1))
                     {
@@ -69,8 +74,16 @@ public class BuilderControl : MonoBehaviour
                         currentEditingBankTotalCount = 0;
                         Debug.Log("begin editing a bank!");
                     }
+                    else if(Input.GetKeyDown(KeyCode.E))
+                    {
+                        // enemy
+                        isEditingEnemy = true;
+                        currentEditingEnemyState = EnemyState.Sleep;
+                        currentEditingEnemyWaypoints = new List<Vector2Int>();
+                        Debug.Log("begin editing an enemy!");
+                    }
                 }
-                else
+                else if(isEditingBank)
                 {
                     int keyNumber = 0;
                     if (Input.GetKeyDown(KeyCode.Alpha0) ||
@@ -127,7 +140,47 @@ public class BuilderControl : MonoBehaviour
                     {
                         isEditingBank = false;
                         BuildBank(mouseVector, currentEditingBankTotalCount);
+                        Debug.Log("Add bank with" + currentEditingBankTotalCount + "coins, at:" + mouseVector);
                         currentEditingBankTotalCount = 0;
+                    }
+                }
+                else if(isEditingEnemy)
+                {
+                    if (Input.GetKeyDown(KeyCode.Alpha0) ||
+                        Input.GetKeyDown(KeyCode.Alpha1) ||
+                        Input.GetKeyDown(KeyCode.Alpha2) ||
+                        Input.GetKeyDown(KeyCode.Alpha3))
+                    {
+                        EnemyState enemyState = EnemyState.Sleep;
+                        if (Input.GetKeyDown(KeyCode.Alpha1))
+                        {
+                            enemyState = EnemyState.FixedPatrol;
+                        }
+                        else if (Input.GetKeyDown(KeyCode.Alpha2))
+                        {
+                            enemyState = EnemyState.RandomPatrol;
+                        }
+                        else if (Input.GetKeyDown(KeyCode.Alpha3))
+                        {
+                            enemyState = EnemyState.ChasePlayer;
+                        }
+                        currentEditingEnemyState = enemyState;
+                    }
+                    else if (Input.GetKeyDown(KeyCode.P))
+                    {
+                        if(currentEditingEnemyState==EnemyState.FixedPatrol)
+                        {
+                            currentEditingEnemyWaypoints.Add(mouseVector);
+                            Debug.Log("Add new enemy waypoint:" + mouseVector);
+                        }
+                    }
+                    else if(Input.GetKeyDown(KeyCode.Space))
+                    {
+                        isEditingEnemy = false;
+                        CreateEnemy(mouseVector, currentEditingEnemyState, currentEditingEnemyWaypoints);
+                        Debug.Log("Add enemy with state " + currentEditingEnemyState + "at " + mouseVector);
+                        currentEditingEnemyState = EnemyState.Sleep;
+                        currentEditingEnemyWaypoints.Clear();
                     }
                 }
             }
@@ -219,5 +272,18 @@ public class BuilderControl : MonoBehaviour
         objectDictionary.Add(pos, bank.transform);
         BankControl bankControl = bank.GetComponent<BankControl>();
         bankControl.totalCoins = totalCoins;
+    }
+    void CreateEnemy(Vector2Int pos, EnemyState state,List<Vector2Int> points)
+    {
+        Blackbroad.map.CreateEnemy(pos.x, pos.y, state, points);
+        CreateEnemyInGameScene(pos,state,points);
+    }
+    void CreateEnemyInGameScene(Vector2Int pos, EnemyState state, List<Vector2Int> points)
+    {
+        GameObject enemy = Instantiate(enemyPrefab, (Vector2)pos, Quaternion.identity);
+        enemy.transform.SetParent(gameObject.transform);
+        objectDictionary.Add(pos, enemy.transform);
+        PoliceControl policeControl = enemy.GetComponent<PoliceControl>();
+        policeControl.SetState(state, points);
     }
 }

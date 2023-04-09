@@ -10,7 +10,7 @@ using UnityEngine;
 [Serializable]
 public class MapBuildingData
 {
-    public MapBuildingData(short variety,int X,int Y)
+    public MapBuildingData(int X,int Y, short variety)
     {
         this.variety = variety;
         this.posX = X;
@@ -23,7 +23,7 @@ public class MapBuildingData
 [Serializable]
 public class MapBankData
 {
-    public MapBankData(int coins,int X,int Y)
+    public MapBankData(int X,int Y,int coins)
     {
         totalCoins = coins;
         posX = X;
@@ -37,11 +37,15 @@ public class MapBankData
 [Serializable]
 public class MapEnemyData
 {
-    public MapEnemyData(int X,int Y)
+    public MapEnemyData(int X, int Y, EnemyState state, List<Vector2Int> points = null)
     {
+        enemyState = state;
+        waypoints = points;
         posX = X;
         posY = Y;
     }
+    public EnemyState enemyState;
+    public List<Vector2Int> waypoints;
     public int posX;
     public int posY;
 }
@@ -79,7 +83,7 @@ public class Map : ISerializationCallbackReceiver
             {
                 if (mapArray[i, j] > 0) // building's variety should greater than 0.
                 {
-                    mapBuildingList.Add(new MapBuildingData(mapArray[i, j], i - mapCenter.x, j - mapCenter.y));
+                    mapBuildingList.Add(new MapBuildingData(i - mapCenter.x, j - mapCenter.y, mapArray[i, j]));
                 }
             }
         }
@@ -95,6 +99,10 @@ public class Map : ISerializationCallbackReceiver
         {
             mapArray[data.posX + mapCenter.x, data.posY + mapCenter.y] = -1;
             targetCoinCount += data.totalCoins;
+        }
+        foreach(MapEnemyData data in mapEnemyList)
+        {
+            mapArray[data.posX + mapCenter.x, data.posY + mapCenter.y] = -2;
         }
     }
     public void SaveMap()
@@ -157,6 +165,14 @@ public class Map : ISerializationCallbackReceiver
         {
             mapArray[X + mapCenter.x, Y + mapCenter.y] = -1;
         }
-        mapBankList.Add(new MapBankData(totalCoins, X, Y));
+        mapBankList.Add(new MapBankData(X, Y, totalCoins));
+    }
+    public void CreateEnemy(int X, int Y,EnemyState state, List<Vector2Int> points = null)
+    {
+        if (!IsOccupied(X, Y))
+        {
+            mapArray[X + mapCenter.x, Y + mapCenter.y] = -2;
+        }
+        mapEnemyList.Add(new MapEnemyData(X, Y, state, points));
     }
 }

@@ -79,6 +79,26 @@ public class PoliceControl : MonoBehaviour
         moveable = new Moveable2D(speed);
         SetStateRandomPatrol();
     }
+    public void SetState(EnemyState state, List<Vector2Int> waypoints = null)
+    {
+        switch (state)
+        {
+            case EnemyState.Sleep:
+                SetStateSleep();
+                break;
+            case EnemyState.FixedPatrol:
+                SetStateFixedPatrol(waypoints);
+                break;
+            case EnemyState.RandomPatrol:
+                SetStateRandomPatrol();
+                break;
+            case EnemyState.ChasePlayer:
+                SetStateChasePlayer();
+                break;
+            default:
+                break;
+        }
+    }
     public void SetStateSleep()
     {
         state = EnemyState.Sleep;

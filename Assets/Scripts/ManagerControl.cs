@@ -154,7 +154,7 @@ public class ManagerControl : MonoBehaviour
         isPausing = false;
         Time.timeScale = 1f;
         _blackbroad = new Blackbroad(levelIndex);
-        builder.Initiate();//build map objects
+        builder.Initiate(); // build map objects and create enemies
         levelTargetCoinCount = Map.targetCoinCount;
         Blackbroad.playerIntPosition.Set(Mathf.RoundToInt(player.transform.position.x), Mathf.RoundToInt(player.transform.position.y));
         Blackbroad.policeIntPositions.Add(police.curIntPoint);

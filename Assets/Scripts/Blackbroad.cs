@@ -16,6 +16,6 @@ public class Blackbroad
         map = new Map(levelIndex); // Now mapArray loaded
         PathSearcher.Initiate();
         playerIntPosition = new Vector2Int();
-        policeIntPositions = new List<Vector2Int>(1);
+        policeIntPositions = new List<Vector2Int>(map.mapEnemyList.Count);
     }
 }
