@@ -25,7 +25,7 @@ public class PoliceControl : MonoBehaviour
     public Moveable2D moveable;
     public EnemyState state;
     public EnemyBehaviorControl behaviorControl;
-    void Start()
+    void Awake()
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
@@ -47,7 +47,7 @@ public class PoliceControl : MonoBehaviour
         Vector2 position = _rigidbody2D.position;
         curIntPoint.Set((int)position.x, (int)position.y);
         // ʹ��Approximately�жϵĻ�x=0��y=0�����ߵ��ж���֪Ϊ�λ�������
-        if (Mathf.Abs(position.x - Mathf.Round(position.x)) <= 0.05 && Mathf.Abs(position.y - Mathf.Round(position.y)) <= 0.05)
+        if (Mathf.Abs(position.x - Mathf.Round(position.x)) <= 0.025 && Mathf.Abs(position.y - Mathf.Round(position.y)) <= 0.025)
         {
             isOnIntPoint = true;
         }

@@ -600,5 +600,41 @@
             "posY": 1
         }
     ],
-    "mapEnemyList": []
+    "mapEnemyList": [
+        {
+            "enemyState": 2,
+            "waypoints": [],
+            "posX": -3,
+            "posY": -4
+        },
+        {
+            "enemyState": 2,
+            "waypoints": [],
+            "posX": -4,
+            "posY": 5
+        },
+        {
+            "enemyState": 1,
+            "waypoints": [
+                {
+                    "x": 3,
+                    "y": 3
+                },
+                {
+                    "x": 5,
+                    "y": 3
+                },
+                {
+                    "x": 5,
+                    "y": -1
+                },
+                {
+                    "x": 3,
+                    "y": -1
+                }
+            ],
+            "posX": 5,
+            "posY": 1
+        }
+    ]
 }

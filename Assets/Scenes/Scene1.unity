@@ -530,7 +530,7 @@ MonoBehaviour:
   isAnyBankBeingLocked: 0
   builder: {fileID: 1594973690}
   player: {fileID: 1304065716}
-  police: {fileID: 1222450700}
+  enemies: []
   qte: {fileID: 146363228}
   coinCount: {fileID: 45610797}
   pauseMenu: {fileID: 1261541834}
@@ -4660,17 +4660,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1216801223}
   m_CullTransparentMesh: 1
---- !u!114 &1222450700 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7918604027779950033, guid: 461fed790fe6bb7428ca09a04f7743b2, type: 3}
-  m_PrefabInstance: {fileID: 7918604028975528925}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c199da8850950f47a4cf80b228ddbb8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1261541829
 GameObject:
   m_ObjectHideFlags: 0
@@ -5575,6 +5564,10 @@ PrefabInstance:
     - target: {fileID: 7918604027779950043, guid: 461fed790fe6bb7428ca09a04f7743b2, type: 3}
       propertyPath: m_Name
       value: Police
+      objectReference: {fileID: 0}
+    - target: {fileID: 7918604027779950043, guid: 461fed790fe6bb7428ca09a04f7743b2, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 461fed790fe6bb7428ca09a04f7743b2, type: 3}

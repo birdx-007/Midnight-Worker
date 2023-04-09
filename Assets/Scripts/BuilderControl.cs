@@ -27,7 +27,7 @@ public class BuilderControl : MonoBehaviour
     public void Initiate()
     {
         objectDictionary = new Dictionary<Vector2Int, Transform>();
-        BuildAllfromArray();
+        BuildAllfromMapData();
     }
     void Start()
     {
@@ -165,6 +165,7 @@ public class BuilderControl : MonoBehaviour
                             enemyState = EnemyState.ChasePlayer;
                         }
                         currentEditingEnemyState = enemyState;
+                        Debug.Log("enemyState changes to " + enemyState);
                     }
                     else if (Input.GetKeyDown(KeyCode.P))
                     {
@@ -178,9 +179,9 @@ public class BuilderControl : MonoBehaviour
                     {
                         isEditingEnemy = false;
                         CreateEnemy(mouseVector, currentEditingEnemyState, currentEditingEnemyWaypoints);
-                        Debug.Log("Add enemy with state " + currentEditingEnemyState + "at " + mouseVector);
+                        Debug.Log("Add enemy with state " + currentEditingEnemyState + "at " + mouseVector + " with waypoints: " + currentEditingEnemyWaypoints);
                         currentEditingEnemyState = EnemyState.Sleep;
-                        currentEditingEnemyWaypoints.Clear();
+                        currentEditingEnemyWaypoints = new List<Vector2Int>();
                     }
                 }
             }
@@ -193,7 +194,7 @@ public class BuilderControl : MonoBehaviour
             }
         }
     }
-    void BuildAllfromArray()
+    void BuildAllfromMapData()
     {
         foreach(MapBuildingData data in Blackbroad.map.mapBuildingList)
         {
@@ -206,6 +207,17 @@ public class BuilderControl : MonoBehaviour
             BuildBankInGameScene(pos, data.totalCoins);
         }
         Debug.Log("Build all map objects done!");
+    }
+    public List<PoliceControl> CreateAllEnemiesfromMapData()
+    {
+        List<PoliceControl> policeControls = new List<PoliceControl>();
+        foreach (MapEnemyData data in Blackbroad.map.mapEnemyList)
+        {
+            Vector2Int pos = new Vector2Int(data.posX, data.posY);
+            policeControls.Add(CreateEnemyInGameScene(pos, data.enemyState, data.waypoints));
+        }
+        Debug.Log("Creates all enemies done!");
+        return policeControls;
     }
     bool IsOccupied()
     {
@@ -221,6 +233,15 @@ public class BuilderControl : MonoBehaviour
             foreach(MapBankData data in toBeDeleted)
             {
                 Blackbroad.map.mapBankList.Remove(data);
+            }
+        }
+        var policeControl = objectDictionary[pos].gameObject.GetComponent<PoliceControl>(); ;
+        if( policeControl != null )
+        {
+            var toBeDelete = Blackbroad.map.mapEnemyList.Where(data => (data.posX == pos.x && data.posY == pos.y)).ToList();
+            foreach(MapEnemyData data in toBeDelete)
+            {
+                Blackbroad.map.mapEnemyList.Remove(data);
             }
         }
         Destroy(objectDictionary[pos].gameObject);
@@ -273,17 +294,18 @@ public class BuilderControl : MonoBehaviour
         BankControl bankControl = bank.GetComponent<BankControl>();
         bankControl.totalCoins = totalCoins;
     }
-    void CreateEnemy(Vector2Int pos, EnemyState state,List<Vector2Int> points)
+    PoliceControl CreateEnemy(Vector2Int pos, EnemyState state,List<Vector2Int> points)
     {
         Blackbroad.map.CreateEnemy(pos.x, pos.y, state, points);
-        CreateEnemyInGameScene(pos,state,points);
+        return CreateEnemyInGameScene(pos,state,points);
     }
-    void CreateEnemyInGameScene(Vector2Int pos, EnemyState state, List<Vector2Int> points)
+    PoliceControl CreateEnemyInGameScene(Vector2Int pos, EnemyState state, List<Vector2Int> points)
     {
         GameObject enemy = Instantiate(enemyPrefab, (Vector2)pos, Quaternion.identity);
         enemy.transform.SetParent(gameObject.transform);
         objectDictionary.Add(pos, enemy.transform);
         PoliceControl policeControl = enemy.GetComponent<PoliceControl>();
         policeControl.SetState(state, points);
+        return enemy.GetComponent<PoliceControl>();
     }
 }

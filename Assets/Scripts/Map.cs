@@ -135,7 +135,8 @@ public class Map : ISerializationCallbackReceiver
     }
     public bool isReachable(int X, int Y)
     {
-        return !IsOccupied(X, Y);
+        return mapArray[X + mapCenter.x, Y + mapCenter.y] == 0
+            || mapArray[X + mapCenter.x, Y + mapCenter.y] == -2;
     }
     public bool IsOutOfMap(int posX, int posY)
     {

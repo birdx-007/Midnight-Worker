@@ -27,7 +27,8 @@ static public class PathSearcher
         {
             for (int j = 0; j < Blackbroad.map.mapHeight; j++)
             {
-                nodesMap[i, j] = new PathNode(i, j, Map.mapArray[i, j] != 0);
+                bool isStop = !Blackbroad.map.isReachable(i - Map.MapCenter.x, j - Map.MapCenter.y);
+                nodesMap[i, j] = new PathNode(i, j, isStop);
             }
         }
     }

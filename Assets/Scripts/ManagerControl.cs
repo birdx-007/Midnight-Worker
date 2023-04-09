@@ -17,7 +17,8 @@ public class ManagerControl : MonoBehaviour
     private Blackbroad _blackbroad;
     public BuilderControl builder;
     public PlayerControl player;
-    public PoliceControl police;
+    //public PoliceControl police;
+    public List<PoliceControl> enemies;
     public QTEControl qte;
     public CoinCountControl coinCount;
     
@@ -50,10 +51,14 @@ public class ManagerControl : MonoBehaviour
                 Blackbroad.playerIntPosition.Set(Mathf.RoundToInt(player.transform.position.x), Mathf.RoundToInt(player.transform.position.y));
             }
             // manage enemies
-            if (police.isOnIntPoint)
+            for (int i=0;i<Blackbroad.policeIntPositions.Count;i++)
             {
-                Blackbroad.policeIntPositions[0] = police.curIntPoint;
-                police.behaviorControl.UpdateBehavior(ref police.nextIntPoint, police.curIntPoint);
+                var police = enemies[i];
+                if (police.isOnIntPoint)
+                {
+                    Blackbroad.policeIntPositions[i] = police.curIntPoint;
+                    police.behaviorControl.UpdateBehavior(ref police.nextIntPoint, police.curIntPoint);
+                }
             }
             // manage game ending
             if (player.isCaught)
@@ -154,10 +159,14 @@ public class ManagerControl : MonoBehaviour
         isPausing = false;
         Time.timeScale = 1f;
         _blackbroad = new Blackbroad(levelIndex);
-        builder.Initiate(); // build map objects and create enemies
+        builder.Initiate(); // build map objects
+        enemies = builder.CreateAllEnemiesfromMapData(); // create enemies
         levelTargetCoinCount = Map.targetCoinCount;
         Blackbroad.playerIntPosition.Set(Mathf.RoundToInt(player.transform.position.x), Mathf.RoundToInt(player.transform.position.y));
-        Blackbroad.policeIntPositions.Add(police.curIntPoint);
+        foreach(var enemy in enemies)
+        {
+            Blackbroad.policeIntPositions.Add(enemy.curIntPoint);
+        }
     }
     public void PauseGame()
     {

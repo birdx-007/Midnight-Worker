@@ -49,6 +49,7 @@ namespace Utilities
     {
         public List<Vector2Int> waypoints;
         public int currentTargetWaypointIndex;
+        private bool revertDirection = false;
         public EnemyFixedPatrolControl(List<Vector2Int> waypoints)
         {
             speed = 2f;
@@ -57,9 +58,17 @@ namespace Utilities
         }
         public override void UpdateBehavior(ref Vector2Int nextIntPoint, Vector2Int curIntPoint)
         {
-            if(curIntPoint == waypoints[currentTargetWaypointIndex])
+            if (curIntPoint == waypoints[currentTargetWaypointIndex])
             {
-                currentTargetWaypointIndex = (currentTargetWaypointIndex + 1) % waypoints.Count;
+                if (currentTargetWaypointIndex == waypoints.Count - 1)
+                {
+                    revertDirection = true;
+                }
+                else if (currentTargetWaypointIndex == 0)
+                {
+                    revertDirection = false;
+                }
+                currentTargetWaypointIndex = (currentTargetWaypointIndex + 1 * (revertDirection ? -1 : 1)) % waypoints.Count;
             }
             var path = PathSearcher.FindWayTo(curIntPoint, waypoints[currentTargetWaypointIndex]);
             if (path != null && path.Count > 1)
