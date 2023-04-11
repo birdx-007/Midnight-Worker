@@ -26,6 +26,10 @@ public class ManagerControl : MonoBehaviour
     public ClearMenuControl clearMenu;
     void Start()
     {
+        if (GlobalTerminal.Instance != null)
+        {
+            levelIndex = GlobalTerminal.Instance.Global_LevelIndex;
+        }
         InitiateGame(levelIndex);
     }
 
@@ -186,6 +190,11 @@ public class ManagerControl : MonoBehaviour
     }
     public void BackToMenu()
     {
+        if (GlobalTerminal.Instance != null)
+        {
+            Destroy(GlobalTerminal.Instance.gameObject);
+            GlobalTerminal.Instance = null;
+        }
         sceneLoader.LoadSceneWithName("MainMenu");
     }
     public void RestartGame()
@@ -194,7 +203,10 @@ public class ManagerControl : MonoBehaviour
     }
     public void GoToNextLevel()
     {
-        levelIndex++;
+        if (GlobalTerminal.Instance != null)
+        {
+            GlobalTerminal.Instance.Global_LevelIndex = levelIndex + 1;
+        }
         RestartGame();
     }
     public void LoseGame()
