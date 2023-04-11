@@ -90,6 +90,8 @@ public class Map : ISerializationCallbackReceiver
     }
     public void OnAfterDeserialize() // after load
     {
+        mapArray = new short[mapWidth, mapHeight];
+        mapCenter = new Vector2Int(mapWidth / 2 + 1, mapHeight / 2 + 1);
         foreach (MapBuildingData data in mapBuildingList)
         {
             mapArray[data.posX + mapCenter.x, data.posY + mapCenter.y] = data.variety;

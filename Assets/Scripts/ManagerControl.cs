@@ -7,23 +7,23 @@ using UnityEngine.SceneManagement;
 public class ManagerControl : MonoBehaviour
 {
     public SceneLoaderControl sceneLoader;
-    public int levelIndex;
-    public int levelTargetCoinCount;
+    public int levelIndex = 1;
+    private int levelTargetCoinCount;
     public bool isFailed = false;
-    public bool isWon = false;
+    public bool isClear = false;
     public bool isPausing = false;
     public bool isQTE = false;
     public bool isAnyBankBeingLocked = false;
     private Blackbroad _blackbroad;
     public BuilderControl builder;
     public PlayerControl player;
-    //public PoliceControl police;
     public List<PoliceControl> enemies;
     public QTEControl qte;
     public CoinCountControl coinCount;
-    
+
     public PauseMenuControl pauseMenu;
     public FailedMenuControl failedMenu;
+    public ClearMenuControl clearMenu;
     void Start()
     {
         InitiateGame(levelIndex);
@@ -35,13 +35,17 @@ public class ManagerControl : MonoBehaviour
         {
             PauseGame();
         }
-        if(Input.GetKeyDown(KeyCode.Space) && isPausing)
+        if (Input.GetKeyDown(KeyCode.Space) && isPausing)
         {
             ContinueGame();
         }
         if (Input.GetKeyDown(KeyCode.Space) && isFailed)
         {
             RestartGame();
+        }
+        if(Input.GetKeyDown(KeyCode.Space) && isClear)
+        {
+            GoToNextLevel();
         }
         if (!isPausing && !builder.isEditing)
         {
@@ -51,7 +55,7 @@ public class ManagerControl : MonoBehaviour
                 Blackbroad.playerIntPosition.Set(Mathf.RoundToInt(player.transform.position.x), Mathf.RoundToInt(player.transform.position.y));
             }
             // manage enemies
-            for (int i=0;i<Blackbroad.policeIntPositions.Count;i++)
+            for (int i = 0; i < Blackbroad.policeIntPositions.Count; i++)
             {
                 var police = enemies[i];
                 if (police.isOnIntPoint)
@@ -65,12 +69,12 @@ public class ManagerControl : MonoBehaviour
             {
                 LoseGame();
             }
-            if(coinCount.currentCount == levelTargetCoinCount)
+            else if (coinCount.currentCount >= levelTargetCoinCount)
             {
                 WinGame();
             }
             // manage QTE
-            if(player.bankVisiting != null)
+            if (player.bankVisiting != null)
             {
                 IEnumerator WaitThenHideTip(float waitTime)
                 {
@@ -81,7 +85,7 @@ public class ManagerControl : MonoBehaviour
                 var bank = player.bankVisiting;
                 if (qte.state != QTEState.InProgress)
                 {
-                    if(qte.state == QTEState.Failed)
+                    if (qte.state == QTEState.Failed)
                     {
                         bank.Lock();
                         isAnyBankBeingLocked = true;
@@ -130,7 +134,7 @@ public class ManagerControl : MonoBehaviour
                     }
                 }
             }
-            else if(player.bankFacing != null) // face but not visit
+            else if (player.bankFacing != null) // face but not visit
             {
                 qte.ShowTip("SPACE");
                 if (Input.GetKeyDown(KeyCode.Space))
@@ -147,7 +151,7 @@ public class ManagerControl : MonoBehaviour
                 {
                     qte.HitFail();
                 }
-                if(!isAnyBankBeingLocked)
+                if (!isAnyBankBeingLocked)
                 {
                     qte.HideTip();
                 }
@@ -163,7 +167,7 @@ public class ManagerControl : MonoBehaviour
         enemies = builder.CreateAllEnemiesfromMapData(); // create enemies
         levelTargetCoinCount = Map.targetCoinCount;
         Blackbroad.playerIntPosition.Set(Mathf.RoundToInt(player.transform.position.x), Mathf.RoundToInt(player.transform.position.y));
-        foreach(var enemy in enemies)
+        foreach (var enemy in enemies)
         {
             Blackbroad.policeIntPositions.Add(enemy.curIntPoint);
         }
@@ -188,8 +192,14 @@ public class ManagerControl : MonoBehaviour
     {
         sceneLoader.LoadSceneWithIndex(SceneManager.GetActiveScene().buildIndex);
     }
+    public void GoToNextLevel()
+    {
+        levelIndex++;
+        RestartGame();
+    }
     public void LoseGame()
     {
+
         StartCoroutine(PlayerGetCaught());
     }
     IEnumerator PlayerGetCaught()
@@ -200,6 +210,17 @@ public class ManagerControl : MonoBehaviour
     }
     public void WinGame()
     {
-        isWon = true;
+        StartCoroutine(BanksAllClear());
+    }
+    IEnumerator BanksAllClear()
+    {
+        isClear = true;
+        foreach(var enemy in enemies)
+        {
+            enemy.canCatchThief = false;
+        }
+        player.Win();
+        yield return new WaitForSecondsRealtime(3f);
+        clearMenu.ShowClearMenu();
     }
 }

@@ -8,6 +8,7 @@ public class PlayerControl : MonoBehaviour
 {
     public bool noStopMode = false;
     public bool isCaught = false;
+    public bool hasWon = false;
     public float speed = 4;
     public bool isInputingMotion;
     private Rigidbody2D _rigidbody2D;
@@ -33,7 +34,7 @@ public class PlayerControl : MonoBehaviour
     void Update()
     {
         // input
-        if (!isCaught)
+        if (!isCaught && !hasWon)
         {
             _inputX = Input.GetAxisRaw("Horizontal");
             _inputY = Input.GetAxisRaw("Vertical");
@@ -159,6 +160,13 @@ public class PlayerControl : MonoBehaviour
             isCaught = true;
             _animator.SetTrigger("caught");
             GetOutofBank();
+        }
+    }
+    public void Win()
+    {
+        if(!hasWon)
+        {
+            hasWon = true;
         }
     }
 }

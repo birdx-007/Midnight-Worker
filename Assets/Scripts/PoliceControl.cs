@@ -15,6 +15,7 @@ public enum EnemyState
 
 public class PoliceControl : MonoBehaviour
 {
+    public bool canCatchThief = true;
     public float speed = 3;
     private Rigidbody2D _rigidbody2D;
     private Animator _animator;
@@ -65,11 +66,14 @@ public class PoliceControl : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        PlayerControl playerControl = collider.GetComponent<PlayerControl>();
-        if (playerControl != null)
+        if (canCatchThief)
         {
-            Debug.Log("Policeman catchs thief: " + collider);
-            playerControl.GetCaught();
+            PlayerControl playerControl = collider.GetComponent<PlayerControl>();
+            if (playerControl != null)
+            {
+                Debug.Log("Policeman catchs thief: " + collider);
+                playerControl.GetCaught();
+            }
         }
     }
     public void Initiate()
