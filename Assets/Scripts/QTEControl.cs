@@ -72,7 +72,7 @@ public class QTEControl : MonoBehaviour
         _qteTip = _qteProgressSign.Find("Tip").gameObject;
         _qteTipInfo = _qteProgressSign.Find("Tip").Find("TipInfo").GetComponent<Text>();
         allowedQTEKeys = new List<KeyCode>()
-        {KeyCode.Z,KeyCode.X,KeyCode.C,KeyCode.V};
+        {KeyCode.Z,KeyCode.X,KeyCode.C,KeyCode.V,KeyCode.Q,KeyCode.E};
         HideTip();
     }
     void Update()
@@ -151,6 +151,10 @@ public class QTEControl : MonoBehaviour
     {
         isShowingTip = false;
         _qteTip.GetComponent<Animator>().SetBool("isShowing", false);
+    }
+    public void GenerateQTE()
+    {
+
     }
     public bool isAllowedKeyDown()
     {
