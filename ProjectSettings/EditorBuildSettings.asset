@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/LevelScene.unity
     guid: ae148ae867fc4ec428ec36cd855949f5
+  - enabled: 1
+    path: Assets/Scenes/CongratulationsMenu.unity
+    guid: 33f7fd0b22aaa1f468af5d02af2bdcfc
   m_configObjects: {}

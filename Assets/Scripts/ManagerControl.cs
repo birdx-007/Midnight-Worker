@@ -8,6 +8,7 @@ public class ManagerControl : MonoBehaviour
 {
     public SceneLoaderControl sceneLoader;
     public int levelIndex = 1;
+    public int maxLevelIndex = 3;
     private int levelTargetCoinCount;
     public bool isFailed = false;
     public bool isClear = false;
@@ -203,6 +204,11 @@ public class ManagerControl : MonoBehaviour
     {
         if (GlobalTerminal.Instance != null)
         {
+            if(GlobalTerminal.Instance.Global_LevelIndex == maxLevelIndex)
+            {
+                sceneLoader.LoadSceneWithName("CongratulationsMenu");
+                return;
+            }
             GlobalTerminal.Instance.Global_LevelIndex = levelIndex + 1;
         }
         RestartGame();
