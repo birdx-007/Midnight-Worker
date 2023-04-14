@@ -101,9 +101,7 @@ public class ManagerControl : MonoBehaviour
                     if (!bank.isLocked && !bank.isBeingDamaged) // Start QTE
                     {
                         isQTE = true;
-                        var times = new List<float>() { 2f, 4f };
-                        var keys = new List<KeyCode>() { KeyCode.Z, KeyCode.X };
-                        qte.StartQTE(5f, times, keys, 0.2f);
+                        qte.GenerateQTE();
                     }
                 }
                 else // QTE in progress

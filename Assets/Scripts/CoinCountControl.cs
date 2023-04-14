@@ -16,7 +16,8 @@ public class CoinCountControl : MonoBehaviour
 
     void Update()
     {
-        _text.text = (_count / 10).ToString() + (_count % 10).ToString();
+        _text.text = (_count / 10).ToString() + (_count % 10).ToString() + "\n"
+            + (Map.targetCoinCount / 10).ToString() + (Map.targetCoinCount % 10).ToString();
     }
     public void Initiate()
     {

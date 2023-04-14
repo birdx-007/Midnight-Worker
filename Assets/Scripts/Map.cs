@@ -157,7 +157,7 @@ public class Map : ISerializationCallbackReceiver
     }
     public void BuildBuilding(int X, int Y, short variety)
     {
-        if (!IsOccupied(X, Y))
+        if (!IsOccupied(X, Y) || variety == 0)
         {
             mapArray[X + mapCenter.x, Y + mapCenter.y] = variety;
         }

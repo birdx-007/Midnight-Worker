@@ -72,7 +72,10 @@ public class QTEControl : MonoBehaviour
         _qteTip = _qteProgressSign.Find("Tip").gameObject;
         _qteTipInfo = _qteProgressSign.Find("Tip").Find("TipInfo").GetComponent<Text>();
         allowedQTEKeys = new List<KeyCode>()
-        {KeyCode.Z,KeyCode.X,KeyCode.C,KeyCode.V,KeyCode.Q,KeyCode.E};
+        {KeyCode.A,KeyCode.B,KeyCode.C,KeyCode.D,KeyCode.E,KeyCode.F,KeyCode.G,KeyCode.H
+        ,KeyCode.I,KeyCode.J,KeyCode.K,KeyCode.L,KeyCode.M,KeyCode.N,KeyCode.O,KeyCode.P
+        ,KeyCode.Q,KeyCode.R,KeyCode.S,KeyCode.T,KeyCode.U,KeyCode.V,KeyCode.W,KeyCode.X
+        ,KeyCode.Y,KeyCode.Z};
         HideTip();
     }
     void Update()
@@ -154,7 +157,20 @@ public class QTEControl : MonoBehaviour
     }
     public void GenerateQTE()
     {
-
+        float mTime = Random.Range(3f, 5f);
+        float maxTimeError = 0.2f;
+        List<float> times=new List<float>();
+        List<KeyCode> keys=new List<KeyCode>();
+        float deltaTime = Random.Range(mTime * 0.25f, mTime * 0.4f);
+        float time = deltaTime;
+        while (time < mTime * 0.9f)
+        {
+            times.Add(time);
+            keys.Add(allowedQTEKeys[Random.Range(0,allowedQTEKeys.Count)]);
+            deltaTime = Random.Range(mTime * 0.2f, mTime * 0.5f);
+            time += deltaTime;
+        }
+        StartQTE(mTime, times, keys, maxTimeError);
     }
     public bool isAllowedKeyDown()
     {
