@@ -221,6 +221,10 @@ public class BuilderControl : MonoBehaviour
     }
     bool IsOccupied()
     {
+        if(isEditingEnemy && currentEditingEnemyState == EnemyState.FixedPatrol)
+        {
+            return false;
+        }
         return Blackbroad.map.IsOccupied(mouseX, mouseY);
     }
     void Delete(Vector2Int pos)
