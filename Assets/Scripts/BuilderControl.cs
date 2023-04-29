@@ -29,10 +29,6 @@ public class BuilderControl : MonoBehaviour
         objectDictionary = new Dictionary<Vector2Int, Transform>();
         BuildAllfromMapData();
     }
-    void Start()
-    {
-        
-    }
     void Update()
     {
         if (isEditing)
@@ -41,6 +37,10 @@ public class BuilderControl : MonoBehaviour
             {
                 isEditing = false;
                 Blackbroad.map.SaveMap();
+                DeleteAll();
+                Initiate();
+                var manager = GameObject.Find("GameManager").GetComponent<ManagerControl>();
+                manager.InitiateGame(manager.levelIndex);
                 return;
             }
             mouseX = Mathf.RoundToInt(Camera.main.ScreenToWorldPoint(Input.mousePosition).x);
@@ -194,6 +194,13 @@ public class BuilderControl : MonoBehaviour
             }
         }
     }
+    void DeleteAll()
+    {
+        while(objectDictionary.Count > 0)
+        {
+            Delete(objectDictionary.First().Key);
+        }
+    }
     void BuildAllfromMapData()
     {
         foreach(MapBuildingData data in Blackbroad.map.mapBuildingList)
@@ -208,9 +215,9 @@ public class BuilderControl : MonoBehaviour
         }
         Debug.Log("Build all map objects done!");
     }
-    public List<PoliceControl> CreateAllEnemiesfromMapData()
+    public List<EnemyControl> CreateAllEnemiesfromMapData()
     {
-        List<PoliceControl> policeControls = new List<PoliceControl>();
+        List<EnemyControl> policeControls = new List<EnemyControl>();
         foreach (MapEnemyData data in Blackbroad.map.mapEnemyList)
         {
             Vector2Int pos = new Vector2Int(data.posX, data.posY);
@@ -239,7 +246,7 @@ public class BuilderControl : MonoBehaviour
                 Blackbroad.map.mapBankList.Remove(data);
             }
         }
-        var policeControl = objectDictionary[pos].gameObject.GetComponent<PoliceControl>(); ;
+        var policeControl = objectDictionary[pos].gameObject.GetComponent<EnemyControl>(); ;
         if( policeControl != null )
         {
             var toBeDelete = Blackbroad.map.mapEnemyList.Where(data => (data.posX == pos.x && data.posY == pos.y)).ToList();
@@ -298,18 +305,18 @@ public class BuilderControl : MonoBehaviour
         BankControl bankControl = bank.GetComponent<BankControl>();
         bankControl.totalCoins = totalCoins;
     }
-    PoliceControl CreateEnemy(Vector2Int pos, EnemyState state,List<Vector2Int> points)
+    EnemyControl CreateEnemy(Vector2Int pos, EnemyState state,List<Vector2Int> points)
     {
         Blackbroad.map.CreateEnemy(pos.x, pos.y, state, points);
         return CreateEnemyInGameScene(pos,state,points);
     }
-    PoliceControl CreateEnemyInGameScene(Vector2Int pos, EnemyState state, List<Vector2Int> points)
+    EnemyControl CreateEnemyInGameScene(Vector2Int pos, EnemyState state, List<Vector2Int> points)
     {
         GameObject enemy = Instantiate(enemyPrefab, (Vector2)pos, Quaternion.identity);
         enemy.transform.SetParent(gameObject.transform);
         objectDictionary.Add(pos, enemy.transform);
-        PoliceControl policeControl = enemy.GetComponent<PoliceControl>();
+        EnemyControl policeControl = enemy.GetComponent<EnemyControl>();
         policeControl.SetState(state, points);
-        return enemy.GetComponent<PoliceControl>();
+        return enemy.GetComponent<EnemyControl>();
     }
 }

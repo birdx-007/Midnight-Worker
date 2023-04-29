@@ -50,9 +50,9 @@ namespace Utilities
         public List<Vector2Int> waypoints;
         public int currentTargetWaypointIndex;
         private bool revertDirection = false;
-        public EnemyFixedPatrolControl(List<Vector2Int> waypoints)
+        public EnemyFixedPatrolControl(List<Vector2Int> waypoints, float speed = 2f)
         {
-            speed = 2f;
+            this.speed = speed;
             this.waypoints = waypoints;
             currentTargetWaypointIndex = 0;
         }
@@ -82,9 +82,9 @@ namespace Utilities
         public List<Vector2Int> directions;
         public Vector2Int latestChoice;
         public bool isBlocked;
-        public EnemyRandomPatrolControl()
+        public EnemyRandomPatrolControl(float speed = 2f)
         {
-            speed = 2f;
+            this.speed = speed;
             directions = new List<Vector2Int>(4) { Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right };
             latestChoice = Vector2Int.zero;
             isBlocked = false;
@@ -124,9 +124,9 @@ namespace Utilities
     }
     public class EnemyChasePlayerControl : EnemyBehaviorControl
     {
-        public EnemyChasePlayerControl()
+        public EnemyChasePlayerControl(float speed = 3f)
         {
-            speed = 3f;
+            this.speed = speed;
         }
         public override void UpdateBehavior(ref Vector2Int nextIntPoint, Vector2Int curIntPoint)
         {

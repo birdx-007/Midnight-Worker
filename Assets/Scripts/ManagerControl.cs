@@ -18,7 +18,7 @@ public class ManagerControl : MonoBehaviour
     private Blackbroad _blackbroad;
     public BuilderControl builder;
     public PlayerControl player;
-    public List<PoliceControl> enemies;
+    public List<EnemyControl> enemies;
     public QTEControl qte;
     public CoinCountControl coinCount;
 
@@ -63,6 +63,7 @@ public class ManagerControl : MonoBehaviour
             for (int i = 0; i < Blackbroad.policeIntPositions.Count; i++)
             {
                 var police = enemies[i];
+                //Debug.DrawLine((Vector3Int)Blackbroad.policeIntPositions[i], (Vector3Int)police.curIntPoint);
                 if (police.isOnIntPoint)
                 {
                     Blackbroad.policeIntPositions[i] = police.curIntPoint;
@@ -78,86 +79,91 @@ public class ManagerControl : MonoBehaviour
             {
                 WinGame();
             }
-            // manage QTE
-            if (player.bankVisiting != null)
+            GameLogicUpdate();
+        }
+    }
+    public void GameLogicUpdate()
+    {
+        // manage QTE
+        if (player.bankVisiting != null)
+        {
+            IEnumerator WaitThenHideTip(float waitTime)
             {
-                IEnumerator WaitThenHideTip(float waitTime)
+                yield return new WaitForSeconds(waitTime);
+                qte.HideTip();
+                isAnyBankBeingLocked = false;
+            };
+            var bank = player.bankVisiting;
+            if (qte.state != QTEState.InProgress)
+            {
+                if (qte.state == QTEState.Failed)
                 {
-                    yield return new WaitForSeconds(waitTime);
-                    qte.HideTip();
-                    isAnyBankBeingLocked = false;
-                };
-                var bank = player.bankVisiting;
-                if (qte.state != QTEState.InProgress)
+                    bank.Lock();
+                    isAnyBankBeingLocked = true;
+                    qte.ShowTip("FAILED!");
+                    StartCoroutine(WaitThenHideTip(BankControl.maxLockedTime));
+                    player.GetOutofBank();
+                    qte.state = QTEState.Inactive;
+                }
+                if (!bank.isLocked && !bank.isBeingDamaged) // Start QTE
                 {
-                    if (qte.state == QTEState.Failed)
+                    isQTE = true;
+                    qte.GenerateQTE();
+                }
+            }
+            else // QTE in progress
+            {
+                if (Input.anyKeyDown && !builder.isEditing && !player.isInputingMotion
+                && !Input.GetKeyDown(KeyCode.Escape) && !Input.GetKeyDown(KeyCode.Space))
+                {
+                    qte.HitCheckPoint();// QTE may succeed or fail
+                    if (qte.state == QTEState.Succeeded)
                     {
-                        bank.Lock();
+                        isQTE = false;
+                        bank.Damage();
                         isAnyBankBeingLocked = true;
-                        qte.ShowTip("RUN");
+                        coinCount.AddOne();
+                        qte.ShowTip("GREAT!");
                         StartCoroutine(WaitThenHideTip(BankControl.maxLockedTime));
+                        player.UnfaceBank();
                         player.GetOutofBank();
                         qte.state = QTEState.Inactive;
                     }
-                    if (!bank.isLocked && !bank.isBeingDamaged) // Start QTE
+                    else if (qte.state == QTEState.Failed)
                     {
-                        isQTE = true;
-                        qte.GenerateQTE();
-                    }
-                }
-                else // QTE in progress
-                {
-                    if (Input.anyKeyDown && !builder.isEditing && !player.isInputingMotion
-                    && !Input.GetKeyDown(KeyCode.Escape) && !Input.GetKeyDown(KeyCode.Space))
-                    {
-                        qte.HitCheckPoint();// QTE may succeed or fail
-                        if (qte.state == QTEState.Succeeded)
-                        {
-                            isQTE = false;
-                            bank.Damage();
-                            isAnyBankBeingLocked = true;
-                            coinCount.AddOne();
-                            qte.ShowTip("RUN");
-                            StartCoroutine(WaitThenHideTip(BankControl.maxLockedTime));
-                            player.UnfaceBank();
-                            player.GetOutofBank();
-                            qte.state = QTEState.Inactive;
-                        }
-                        else if (qte.state == QTEState.Failed)
-                        {
-                            isQTE = false;
-                            bank.Lock();
-                            isAnyBankBeingLocked = true;
-                            qte.ShowTip("RUN");
-                            StartCoroutine(WaitThenHideTip(BankControl.maxLockedTime));
-                            player.UnfaceBank();
-                            player.GetOutofBank();
-                            qte.state = QTEState.Inactive;
-                        }
+                        isQTE = false;
+                        bank.Lock();
+                        isAnyBankBeingLocked = true;
+                        qte.ShowTip("FAILED!");
+                        StartCoroutine(WaitThenHideTip(BankControl.maxLockedTime));
+                        player.UnfaceBank();
+                        player.GetOutofBank();
+                        qte.state = QTEState.Inactive;
                     }
                 }
             }
-            else if (player.bankFacing != null) // face but not visit
+        }
+        else if (player.bankFacing != null) // face but not visit
+        {
+            var bank = player.bankFacing;
+            qte.ShowTip("SPACE");
+            if (Input.GetKeyDown(KeyCode.Space))
             {
-                qte.ShowTip("SPACE");
-                if (Input.GetKeyDown(KeyCode.Space))
-                {
-                    qte.HideTip();
-                    player.bankFacing.Visited();
-                    player.GetIntoBank(player.bankFacing);
-                }
+                qte.HideTip();
+                bank.Visited();
+                player.GetIntoBank(bank);
             }
-            else // player leaves bank
+        }
+        else // player leaves bank
+        {
+            isQTE = false;
+            if (qte.state == QTEState.InProgress)
             {
-                isQTE = false;
-                if (qte.state == QTEState.InProgress)
-                {
-                    qte.HitFail();
-                }
-                if (!isAnyBankBeingLocked)
-                {
-                    qte.HideTip();
-                }
+                qte.HitFail();
+            }
+            if (!isAnyBankBeingLocked)
+            {
+                qte.HideTip();
             }
         }
     }
@@ -168,7 +174,7 @@ public class ManagerControl : MonoBehaviour
         _blackbroad = new Blackbroad(levelIndex);
         builder.Initiate(); // build map objects
         enemies = builder.CreateAllEnemiesfromMapData(); // create enemies
-        levelTargetCoinCount = Map.targetCoinCount;
+        levelTargetCoinCount = Blackbroad.map.GetTargetCoinCount();
         Blackbroad.playerIntPosition.Set(Mathf.RoundToInt(player.transform.position.x), Mathf.RoundToInt(player.transform.position.y));
         foreach (var enemy in enemies)
         {

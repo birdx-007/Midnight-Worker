@@ -123,6 +123,11 @@
             "posY": -5
         },
         {
+            "variety": 2,
+            "posX": -6,
+            "posY": -4
+        },
+        {
             "variety": 9,
             "posX": -6,
             "posY": -2
@@ -131,6 +136,11 @@
             "variety": 9,
             "posX": -6,
             "posY": 2
+        },
+        {
+            "variety": 2,
+            "posX": -6,
+            "posY": 4
         },
         {
             "variety": 3,
@@ -160,22 +170,12 @@
         {
             "variety": 9,
             "posX": -5,
-            "posY": -3
-        },
-        {
-            "variety": 9,
-            "posX": -5,
             "posY": -2
         },
         {
             "variety": 9,
             "posX": -5,
             "posY": 2
-        },
-        {
-            "variety": 9,
-            "posX": -5,
-            "posY": 3
         },
         {
             "variety": 1,
@@ -193,6 +193,16 @@
             "posY": -8
         },
         {
+            "variety": 2,
+            "posX": -4,
+            "posY": -6
+        },
+        {
+            "variety": 2,
+            "posX": -4,
+            "posY": 6
+        },
+        {
             "variety": 9,
             "posX": -4,
             "posY": 8
@@ -201,11 +211,6 @@
             "variety": 9,
             "posX": -3,
             "posY": -8
-        },
-        {
-            "variety": 9,
-            "posX": -3,
-            "posY": -5
         },
         {
             "variety": 9,
@@ -226,11 +231,6 @@
             "variety": 9,
             "posX": -3,
             "posY": 3
-        },
-        {
-            "variety": 9,
-            "posX": -3,
-            "posY": 5
         },
         {
             "variety": 9,
@@ -395,11 +395,6 @@
         {
             "variety": 9,
             "posX": 3,
-            "posY": -5
-        },
-        {
-            "variety": 9,
-            "posX": 3,
             "posY": -3
         },
         {
@@ -420,17 +415,22 @@
         {
             "variety": 9,
             "posX": 3,
-            "posY": 5
-        },
-        {
-            "variety": 9,
-            "posX": 3,
             "posY": 8
         },
         {
             "variety": 9,
             "posX": 4,
             "posY": -8
+        },
+        {
+            "variety": 2,
+            "posX": 4,
+            "posY": -6
+        },
+        {
+            "variety": 2,
+            "posX": 4,
+            "posY": 6
         },
         {
             "variety": 9,
@@ -450,22 +450,12 @@
         {
             "variety": 9,
             "posX": 5,
-            "posY": -3
-        },
-        {
-            "variety": 9,
-            "posX": 5,
             "posY": -2
         },
         {
             "variety": 9,
             "posX": 5,
             "posY": 2
-        },
-        {
-            "variety": 9,
-            "posX": 5,
-            "posY": 3
         },
         {
             "variety": 3,
@@ -493,6 +483,11 @@
             "posY": -5
         },
         {
+            "variety": 2,
+            "posX": 6,
+            "posY": -4
+        },
+        {
             "variety": 9,
             "posX": 6,
             "posY": -2
@@ -501,6 +496,11 @@
             "variety": 9,
             "posX": 6,
             "posY": 2
+        },
+        {
+            "variety": 2,
+            "posX": 6,
+            "posY": 4
         },
         {
             "variety": 1,
@@ -656,18 +656,6 @@
                 {
                     "x": -4,
                     "y": -4
-                },
-                {
-                    "x": 4,
-                    "y": -4
-                },
-                {
-                    "x": 4,
-                    "y": 4
-                },
-                {
-                    "x": -4,
-                    "y": 4
                 }
             ],
             "posX": -4,
@@ -677,17 +665,20 @@
             "enemyState": 1,
             "waypoints": [
                 {
-                    "x": 4,
-                    "y": 4
-                },
-                {
-                    "x": -4,
-                    "y": 4
-                },
-                {
                     "x": -4,
                     "y": -4
                 },
+                {
+                    "x": 4,
+                    "y": -4
+                }
+            ],
+            "posX": -4,
+            "posY": -4
+        },
+        {
+            "enemyState": 1,
+            "waypoints": [
                 {
                     "x": 4,
                     "y": -4
@@ -698,61 +689,22 @@
                 }
             ],
             "posX": 4,
-            "posY": 4
+            "posY": -4
         },
         {
             "enemyState": 1,
             "waypoints": [
                 {
                     "x": 4,
-                    "y": -4
-                },
-                {
-                    "x": 4,
                     "y": 4
                 },
                 {
                     "x": -4,
                     "y": 4
-                },
-                {
-                    "x": -4,
-                    "y": -4
-                },
-                {
-                    "x": 4,
-                    "y": -4
                 }
             ],
             "posX": 4,
-            "posY": -4
-        },
-        {
-            "enemyState": 1,
-            "waypoints": [
-                {
-                    "x": -4,
-                    "y": -4
-                },
-                {
-                    "x": 4,
-                    "y": -4
-                },
-                {
-                    "x": 4,
-                    "y": 4
-                },
-                {
-                    "x": -4,
-                    "y": 4
-                },
-                {
-                    "x": -4,
-                    "y": -4
-                }
-            ],
-            "posX": -4,
-            "posY": -4
+            "posY": 4
         }
     ]
 }

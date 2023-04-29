@@ -47,6 +47,7 @@ public class PlayerControl : MonoBehaviour
         Vector2 inputVector = new Vector2(_inputX, _inputY);
         inputVector.Normalize();
         _currentInput = inputVector;
+        _animator.SetFloat("speed", _currentInput.magnitude);
         if (Mathf.Approximately(_inputX, 0.0f) && Mathf.Approximately(_inputY, 0.0f))
         {
             isInputingMotion = false;
@@ -135,7 +136,6 @@ public class PlayerControl : MonoBehaviour
         // animation
         _animator.SetFloat("lookX", _lookDirection.x);
         _animator.SetFloat("lookY", _lookDirection.y);
-        _animator.SetFloat("speed", _currentInput.magnitude);
     }
     public void FaceBank(BankControl bank)
     {

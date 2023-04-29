@@ -7,10 +7,6 @@ public class SceneLoaderControl : MonoBehaviour
 {
     public Animator loadTransition;
     private float transitionTime = 1f;
-    void Update()
-    {
-        
-    }
     public void LoadSceneWithIndex(int index)
     {
         StartCoroutine(LoadWithIndex(index));

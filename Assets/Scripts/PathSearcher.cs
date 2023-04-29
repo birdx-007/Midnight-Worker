@@ -17,9 +17,9 @@ public class PathNode
 }
 static public class PathSearcher
 {
-    static public PathNode[,] nodesMap;
-    static public List<PathNode> openList = new List<PathNode>();
-    static public List<PathNode> closeList = new List<PathNode>();
+    static private PathNode[,] nodesMap;
+    static private List<PathNode> openList = new List<PathNode>();
+    static private List<PathNode> closeList = new List<PathNode>();
     static public void Initiate()
     {
         nodesMap = new PathNode[Blackbroad.map.mapWidth, Blackbroad.map.mapHeight];
@@ -56,7 +56,7 @@ static public class PathSearcher
         {
             return null;
         }
-        if (nodesMap[start.x, start.y].isStop |
+        if (//nodesMap[start.x, start.y].isStop |
             nodesMap[end.x, end.y].isStop)//�ж������յ��Ƿ�ɵ���
         {
             return null;
@@ -68,7 +68,7 @@ static public class PathSearcher
         nodesMap[start.x, start.y].G = 0;
         nodesMap[start.x, start.y].H = 0;
         closeList.Add(nodesMap[start.x, start.y]);
-        while (true)//�������ܷ���
+        while (true)
         {
             FindOpenlist(start.x, start.y + 1, 1, nodesMap[start.x, start.y], nodesMap[end.x, end.y]);
             FindOpenlist(start.x, start.y - 1, 1, nodesMap[start.x, start.y], nodesMap[end.x, end.y]);

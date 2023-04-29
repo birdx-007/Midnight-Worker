@@ -52,7 +52,6 @@ public class MapEnemyData
 
 public class Map : ISerializationCallbackReceiver
 {
-    [NonSerialized] static public int targetCoinCount;
     [SerializeField] public int mapWidth = 25;
     [SerializeField] public int mapHeight = 25;
     static public short[,] mapArray;
@@ -67,9 +66,6 @@ public class Map : ISerializationCallbackReceiver
     public Map(int levelIndex)
     {
         mapArray = new short[mapWidth, mapHeight];
-        mapBuildingList = new List<MapBuildingData>();
-        mapBankList = new List<MapBankData>();
-        mapEnemyList = new List<MapEnemyData>();
         mapCenter = new Vector2Int(mapWidth / 2 + 1, mapHeight / 2 + 1);
         jsonFilePath = Application.dataPath + "/Resources/Level-" + levelIndex.ToString() + "/map.json";
         LoadMap();
@@ -96,11 +92,9 @@ public class Map : ISerializationCallbackReceiver
         {
             mapArray[data.posX + mapCenter.x, data.posY + mapCenter.y] = data.variety;
         }
-        targetCoinCount = 0;
         foreach(MapBankData data in mapBankList)
         {
             mapArray[data.posX + mapCenter.x, data.posY + mapCenter.y] = -1;
-            targetCoinCount += data.totalCoins;
         }
         foreach(MapEnemyData data in mapEnemyList)
         {
@@ -120,6 +114,9 @@ public class Map : ISerializationCallbackReceiver
     }
     public void LoadMap()
     {
+        mapBuildingList = new List<MapBuildingData>();
+        mapBankList = new List<MapBankData>();
+        mapEnemyList = new List<MapEnemyData>();
         if (File.Exists(jsonFilePath))
         {
             using (StreamReader sr = File.OpenText(jsonFilePath))
@@ -135,10 +132,20 @@ public class Map : ISerializationCallbackReceiver
         JsonUtility.FromJsonOverwrite(mapJson, this);
         Debug.Log("LoadMap done!");
     }
+    public int GetTargetCoinCount()
+    {
+        int targetCoinCount = 0;
+        foreach (MapBankData data in mapBankList)
+        {
+            mapArray[data.posX + mapCenter.x, data.posY + mapCenter.y] = -1;
+            targetCoinCount += data.totalCoins;
+        }
+        return targetCoinCount;
+    }
     public bool isReachable(int X, int Y)
     {
         return mapArray[X + mapCenter.x, Y + mapCenter.y] == 0
-            || mapArray[X + mapCenter.x, Y + mapCenter.y] == -2;
+            || mapArray[X + mapCenter.x, Y + mapCenter.y] == -2; // enemy
     }
     public bool IsOutOfMap(int posX, int posY)
     {
