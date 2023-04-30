@@ -37,13 +37,15 @@ public class MapBankData
 [Serializable]
 public class MapEnemyData
 {
-    public MapEnemyData(int X, int Y, EnemyState state, List<Vector2Int> points = null)
+    public MapEnemyData(int X, int Y, EnemyType type, EnemyState state, List<Vector2Int> points = null)
     {
+        enemyType = type;
         enemyState = state;
         waypoints = points;
         posX = X;
         posY = Y;
     }
+    public EnemyType enemyType;
     public EnemyState enemyState;
     public List<Vector2Int> waypoints;
     public int posX;
@@ -177,12 +179,12 @@ public class Map : ISerializationCallbackReceiver
         }
         mapBankList.Add(new MapBankData(X, Y, totalCoins));
     }
-    public void CreateEnemy(int X, int Y,EnemyState state, List<Vector2Int> points = null)
+    public void CreateEnemy(int X, int Y, EnemyType type, EnemyState state, List<Vector2Int> points = null)
     {
         if (!IsOccupied(X, Y))
         {
             mapArray[X + mapCenter.x, Y + mapCenter.y] = -2;
         }
-        mapEnemyList.Add(new MapEnemyData(X, Y, state, points));
+        mapEnemyList.Add(new MapEnemyData(X, Y, type, state, points));
     }
 }

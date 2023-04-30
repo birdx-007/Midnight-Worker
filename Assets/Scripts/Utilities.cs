@@ -7,7 +7,7 @@ namespace Utilities
     public class Moveable2D
     {
         public float speed;
-        public Moveable2D(float speed)
+        public Moveable2D(float speed = 0f)
         {
             this.speed = speed;
         }
@@ -31,6 +31,8 @@ namespace Utilities
     }
     public abstract class EnemyBehaviorControl
     {
+        static public float[] speedList = { 0f, 0f, 0f, 0f };
+        protected int variety;
         public float speed = 0f;
         public abstract void UpdateBehavior(ref Vector2Int nextIntPoint,Vector2Int curIntPoint);
     }
@@ -38,7 +40,8 @@ namespace Utilities
     {
         public EnemySleepControl()
         {
-            speed = 0f;
+            variety = 0;
+            speed = speedList[variety];
         }
         public override void UpdateBehavior(ref Vector2Int nextIntPoint, Vector2Int curIntPoint)
         {
@@ -50,9 +53,10 @@ namespace Utilities
         public List<Vector2Int> waypoints;
         public int currentTargetWaypointIndex;
         private bool revertDirection = false;
-        public EnemyFixedPatrolControl(List<Vector2Int> waypoints, float speed = 2f)
+        public EnemyFixedPatrolControl(List<Vector2Int> waypoints)
         {
-            this.speed = speed;
+            variety = 1;
+            speed = speedList[variety];
             this.waypoints = waypoints;
             currentTargetWaypointIndex = 0;
         }
@@ -82,9 +86,10 @@ namespace Utilities
         public List<Vector2Int> directions;
         public Vector2Int latestChoice;
         public bool isBlocked;
-        public EnemyRandomPatrolControl(float speed = 2f)
+        public EnemyRandomPatrolControl()
         {
-            this.speed = speed;
+            variety = 2;
+            speed = speedList[variety];
             directions = new List<Vector2Int>(4) { Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right };
             latestChoice = Vector2Int.zero;
             isBlocked = false;
@@ -124,9 +129,10 @@ namespace Utilities
     }
     public class EnemyChasePlayerControl : EnemyBehaviorControl
     {
-        public EnemyChasePlayerControl(float speed = 3f)
+        public EnemyChasePlayerControl()
         {
-            this.speed = speed;
+            variety = 3;
+            speed = speedList[variety];
         }
         public override void UpdateBehavior(ref Vector2Int nextIntPoint, Vector2Int curIntPoint)
         {

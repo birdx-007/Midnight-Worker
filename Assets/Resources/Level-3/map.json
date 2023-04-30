@@ -777,6 +777,7 @@
     ],
     "mapEnemyList": [
         {
+            "enemyType": 1,
             "enemyState": 3,
             "waypoints": [],
             "posX": 7,

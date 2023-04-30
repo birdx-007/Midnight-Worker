@@ -13,12 +13,19 @@ public enum EnemyState
     ChasePlayer
 }
 
-public class EnemyControl : MonoBehaviour
+[Serializable]
+public enum EnemyType
+{
+    Watchman = 0,
+    Policeman
+}
+
+public abstract class EnemyControl : MonoBehaviour
 {
     public bool canCatchThief = true;
     public float speed = 3;
     private Rigidbody2D _rigidbody2D;
-    private Animator _animator;
+    protected Animator _animator;
     public Vector2 _lookDirection;
     public bool isOnIntPoint = true;
     public Vector2Int curIntPoint;
@@ -26,12 +33,6 @@ public class EnemyControl : MonoBehaviour
     public Moveable2D moveable;
     public EnemyState state;
     public EnemyBehaviorControl behaviorControl;
-    void Awake()
-    {
-        _rigidbody2D = GetComponent<Rigidbody2D>();
-        _animator = GetComponent<Animator>();
-        Initiate();
-    }
     private void FixedUpdate()
     {
         Vector2 position = _rigidbody2D.position;
@@ -67,9 +68,11 @@ public class EnemyControl : MonoBehaviour
     }
     public void Initiate()
     {
+        _rigidbody2D = GetComponent<Rigidbody2D>();
+        _animator = GetComponent<Animator>();
         _lookDirection = Vector2.down;
         curIntPoint = nextIntPoint = new Vector2Int((int)_rigidbody2D.position.x, (int)_rigidbody2D.position.y);
-        moveable = new Moveable2D(speed);
+        moveable = new Moveable2D();
         SetStateSleep();
     }
     public void SetState(EnemyState state, List<Vector2Int> waypoints = null)
@@ -89,32 +92,36 @@ public class EnemyControl : MonoBehaviour
                 SetStateChasePlayer();
                 break;
             default:
+                Debug.LogError("EnemyState error: " + state);
                 break;
         }
+    }
+    public void UpdateMoveable()
+    {
+        moveable.speed = speed = behaviorControl.speed;
     }
     public void SetStateSleep()
     {
         state = EnemyState.Sleep;
         behaviorControl = new EnemySleepControl();
-        speed = behaviorControl.speed;
-        moveable.speed = speed;
+        UpdateMoveable();
     }
-    public void SetStateFixedPatrol(List<Vector2Int> waypoints, float speed = 2f)
+    public void SetStateFixedPatrol(List<Vector2Int> waypoints)
     {
         state = EnemyState.FixedPatrol;
-        behaviorControl = new EnemyFixedPatrolControl(waypoints, speed);
-        moveable.speed = this.speed = behaviorControl.speed;
+        behaviorControl = new EnemyFixedPatrolControl(waypoints);
+        UpdateMoveable();
     }
-    public void SetStateRandomPatrol(float speed = 2f)
+    public void SetStateRandomPatrol()
     {
         state = EnemyState.RandomPatrol;
-        behaviorControl = new EnemyRandomPatrolControl(speed);
-        moveable.speed = this.speed = behaviorControl.speed;
+        behaviorControl = new EnemyRandomPatrolControl();
+        UpdateMoveable();
     }
-    public void SetStateChasePlayer(float speed = 3f)
+    public void SetStateChasePlayer()
     {
         state = EnemyState.ChasePlayer;
-        behaviorControl = new EnemyChasePlayerControl(speed);
-        moveable.speed = this.speed = behaviorControl.speed;
+        behaviorControl = new EnemyChasePlayerControl();
+        UpdateMoveable();
     }
 }

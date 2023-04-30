@@ -12,6 +12,7 @@ public class BuilderControl : MonoBehaviour
     public bool isEditingBank = false;
     private int currentEditingBankTotalCount = 0;
     public bool isEditingEnemy = false;
+    private EnemyType currentEditingEnemyType = EnemyType.Watchman;
     private EnemyState currentEditingEnemyState = EnemyState.Sleep;
     private List<Vector2Int> currentEditingEnemyWaypoints;
     private Vector2Int mapCenter;
@@ -78,6 +79,7 @@ public class BuilderControl : MonoBehaviour
                     {
                         // enemy
                         isEditingEnemy = true;
+                        currentEditingEnemyType = EnemyType.Watchman;
                         currentEditingEnemyState = EnemyState.Sleep;
                         currentEditingEnemyWaypoints = new List<Vector2Int>();
                         Debug.Log("begin editing an enemy!");
@@ -146,7 +148,22 @@ public class BuilderControl : MonoBehaviour
                 }
                 else if(isEditingEnemy)
                 {
-                    if (Input.GetKeyDown(KeyCode.Alpha0) ||
+                    if (Input.GetKeyDown(KeyCode.A) ||
+                        Input.GetKeyDown(KeyCode.S))
+                    {
+                        EnemyType enemyType = EnemyType.Watchman;
+                        if (Input.GetKeyDown(KeyCode.A))
+                        {
+                            enemyType = EnemyType.Watchman;
+                        }
+                        else if(Input.GetKeyDown(KeyCode.S))
+                        {
+                            enemyType = EnemyType.Policeman;
+                        }
+                        currentEditingEnemyType = enemyType;
+                        Debug.Log("enemyType changes to " + enemyType);
+                    }
+                    else if (Input.GetKeyDown(KeyCode.Alpha0) ||
                         Input.GetKeyDown(KeyCode.Alpha1) ||
                         Input.GetKeyDown(KeyCode.Alpha2) ||
                         Input.GetKeyDown(KeyCode.Alpha3))
@@ -169,17 +186,18 @@ public class BuilderControl : MonoBehaviour
                     }
                     else if (Input.GetKeyDown(KeyCode.P))
                     {
-                        if(currentEditingEnemyState==EnemyState.FixedPatrol)
+                        if (currentEditingEnemyState == EnemyState.FixedPatrol)
                         {
                             currentEditingEnemyWaypoints.Add(mouseVector);
                             Debug.Log("Add new enemy waypoint:" + mouseVector);
                         }
                     }
-                    else if(Input.GetKeyDown(KeyCode.Space))
+                    else if (Input.GetKeyDown(KeyCode.Space))
                     {
                         isEditingEnemy = false;
-                        CreateEnemy(mouseVector, currentEditingEnemyState, currentEditingEnemyWaypoints);
+                        CreateEnemy(mouseVector,currentEditingEnemyType, currentEditingEnemyState, currentEditingEnemyWaypoints);
                         Debug.Log("Add enemy with state " + currentEditingEnemyState + "at " + mouseVector + " with waypoints: " + currentEditingEnemyWaypoints);
+                        currentEditingEnemyType = EnemyType.Watchman;
                         currentEditingEnemyState = EnemyState.Sleep;
                         currentEditingEnemyWaypoints = new List<Vector2Int>();
                     }
@@ -221,7 +239,7 @@ public class BuilderControl : MonoBehaviour
         foreach (MapEnemyData data in Blackbroad.map.mapEnemyList)
         {
             Vector2Int pos = new Vector2Int(data.posX, data.posY);
-            policeControls.Add(CreateEnemyInGameScene(pos, data.enemyState, data.waypoints));
+            policeControls.Add(CreateEnemyInGameScene(pos, data.enemyType, data.enemyState, data.waypoints));
         }
         Debug.Log("Creates all enemies done!");
         return policeControls;
@@ -305,18 +323,30 @@ public class BuilderControl : MonoBehaviour
         BankControl bankControl = bank.GetComponent<BankControl>();
         bankControl.totalCoins = totalCoins;
     }
-    EnemyControl CreateEnemy(Vector2Int pos, EnemyState state,List<Vector2Int> points)
+    EnemyControl CreateEnemy(Vector2Int pos, EnemyType type, EnemyState state,List<Vector2Int> points)
     {
-        Blackbroad.map.CreateEnemy(pos.x, pos.y, state, points);
-        return CreateEnemyInGameScene(pos,state,points);
+        Blackbroad.map.CreateEnemy(pos.x, pos.y, type, state, points);
+        return CreateEnemyInGameScene(pos, type, state, points);
     }
-    EnemyControl CreateEnemyInGameScene(Vector2Int pos, EnemyState state, List<Vector2Int> points)
+    EnemyControl CreateEnemyInGameScene(Vector2Int pos, EnemyType type, EnemyState state, List<Vector2Int> points)
     {
         GameObject enemy = Instantiate(enemyPrefab, (Vector2)pos, Quaternion.identity);
         enemy.transform.SetParent(gameObject.transform);
         objectDictionary.Add(pos, enemy.transform);
-        EnemyControl policeControl = enemy.GetComponent<EnemyControl>();
-        policeControl.SetState(state, points);
+        switch (type)
+        {
+            case EnemyType.Watchman:
+                enemy.gameObject.AddComponent<WatchmanControl>();
+                break;
+            case EnemyType.Policeman:
+                enemy.gameObject.AddComponent<PoliceControl>();
+                break;
+            default:
+                Debug.LogError("EnemyType error: " + type);
+                return null;
+        }
+        EnemyControl enemyControl = enemy.GetComponent<EnemyControl>();
+        enemyControl.SetState(state, points);
         return enemy.GetComponent<EnemyControl>();
     }
 }

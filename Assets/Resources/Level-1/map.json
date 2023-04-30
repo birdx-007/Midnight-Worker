@@ -647,6 +647,7 @@
     ],
     "mapEnemyList": [
         {
+            "enemyType": 0,
             "enemyState": 1,
             "waypoints": [
                 {
@@ -662,6 +663,7 @@
             "posY": 4
         },
         {
+            "enemyType": 0,
             "enemyState": 1,
             "waypoints": [
                 {
@@ -677,6 +679,7 @@
             "posY": -4
         },
         {
+            "enemyType": 0,
             "enemyState": 1,
             "waypoints": [
                 {
@@ -692,6 +695,7 @@
             "posY": -4
         },
         {
+            "enemyType": 0,
             "enemyState": 1,
             "waypoints": [
                 {
