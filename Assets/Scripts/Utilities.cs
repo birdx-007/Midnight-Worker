@@ -29,38 +29,30 @@ namespace Utilities
             rb.MovePosition(position);
         }
     }
-    public abstract class EnemyBehaviorControl
+    public abstract class EnemyAI 
     {
-        static public float[] speedList = { 0f, 0f, 0f, 0f };
-        protected int variety;
-        public float speed = 0f;
-        public abstract void UpdateBehavior(ref Vector2Int nextIntPoint,Vector2Int curIntPoint);
-    }
-    public class EnemySleepControl : EnemyBehaviorControl
-    {
-        public EnemySleepControl()
+        public List<Vector2Int> waypoints;
+        public int currentTargetWaypointIndex;
+        public bool isBlocked;
+        public EnemyAI()
         {
-            variety = 0;
-            speed = speedList[variety];
+            this.waypoints = null;
+            this.currentTargetWaypointIndex = 0;
+            this.isBlocked = false;
         }
-        public override void UpdateBehavior(ref Vector2Int nextIntPoint, Vector2Int curIntPoint)
+        public abstract void GetNextIntPoint(ref Vector2Int nextIntPoint, Vector2Int curIntPoint);
+    }
+    public class EnemyAI_Sleep : EnemyAI
+    {
+        public override void GetNextIntPoint(ref Vector2Int nextIntPoint, Vector2Int curIntPoint)
         {
             nextIntPoint = curIntPoint;
         }
     }
-    public class EnemyFixedPatrolControl : EnemyBehaviorControl
+    public class EnemyAI_FixedPatrol : EnemyAI
     {
-        public List<Vector2Int> waypoints;
-        public int currentTargetWaypointIndex;
         private bool revertDirection = false;
-        public EnemyFixedPatrolControl(List<Vector2Int> waypoints)
-        {
-            variety = 1;
-            speed = speedList[variety];
-            this.waypoints = waypoints;
-            currentTargetWaypointIndex = 0;
-        }
-        public override void UpdateBehavior(ref Vector2Int nextIntPoint, Vector2Int curIntPoint)
+        public override void GetNextIntPoint(ref Vector2Int nextIntPoint, Vector2Int curIntPoint)
         {
             if (curIntPoint == waypoints[currentTargetWaypointIndex])
             {
@@ -81,20 +73,11 @@ namespace Utilities
             }
         }
     }
-    public class EnemyRandomPatrolControl : EnemyBehaviorControl
+    public class EnemyAI_RandomPatrol : EnemyAI
     {
-        public List<Vector2Int> directions;
-        public Vector2Int latestChoice;
-        public bool isBlocked;
-        public EnemyRandomPatrolControl()
-        {
-            variety = 2;
-            speed = speedList[variety];
-            directions = new List<Vector2Int>(4) { Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right };
-            latestChoice = Vector2Int.zero;
-            isBlocked = false;
-        }
-        public override void UpdateBehavior(ref Vector2Int nextIntPoint, Vector2Int curIntPoint)
+        public List<Vector2Int> directions = new List<Vector2Int>(4) { Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right };
+        public Vector2Int latestChoice = Vector2Int.zero;
+        public override void GetNextIntPoint(ref Vector2Int nextIntPoint, Vector2Int curIntPoint)
         {
             isBlocked = false;
             Vector2Int target = curIntPoint + latestChoice;
@@ -127,14 +110,9 @@ namespace Utilities
             }
         }
     }
-    public class EnemyChasePlayerControl : EnemyBehaviorControl
+    public class EnemyAI_ChasePlayer : EnemyAI
     {
-        public EnemyChasePlayerControl()
-        {
-            variety = 3;
-            speed = speedList[variety];
-        }
-        public override void UpdateBehavior(ref Vector2Int nextIntPoint, Vector2Int curIntPoint)
+        public override void GetNextIntPoint(ref Vector2Int nextIntPoint, Vector2Int curIntPoint)
         {
             var path = PathSearcher.FindWayTo(curIntPoint, Blackbroad.playerIntPosition);
             if (path != null && path.Count > 1)

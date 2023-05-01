@@ -8,8 +8,13 @@ public class PoliceControl : EnemyControl
     void Awake()
     {
         Initiate();
-        EnemyBehaviorControl.speedList = new float[] { 0f, 2f, 2f, 3f };
+        enemyAI = new EnemyAI_ChasePlayer();
+        speed = 3f;
         UpdateMoveable();
         _animator.SetBool("isPoliceman", true);
+    }
+    public override void UpdateOnIntPoint()
+    {
+        enemyAI.GetNextIntPoint(ref nextIntPoint, curIntPoint);
     }
 }

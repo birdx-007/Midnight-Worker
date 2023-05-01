@@ -60,14 +60,14 @@ public class ManagerControl : MonoBehaviour
                 Blackbroad.playerIntPosition.Set(Mathf.RoundToInt(player.transform.position.x), Mathf.RoundToInt(player.transform.position.y));
             }
             // manage enemies
-            for (int i = 0; i < Blackbroad.policeIntPositions.Count; i++)
+            for (int i = 0; i < Blackbroad.enemyIntPositions.Count; i++)
             {
-                var police = enemies[i];
-                //Debug.DrawLine((Vector3Int)Blackbroad.policeIntPositions[i], (Vector3Int)police.curIntPoint);
-                if (police.isOnIntPoint)
+                var enemy = enemies[i];
+                //Debug.DrawLine((Vector3Int)Blackbroad.enemyIntPositions[i], (Vector3Int)police.curIntPoint);
+                if (enemy.isOnIntPoint)
                 {
-                    Blackbroad.policeIntPositions[i] = police.curIntPoint;
-                    police.behaviorControl.UpdateBehavior(ref police.nextIntPoint, police.curIntPoint);
+                    Blackbroad.enemyIntPositions[i] = enemy.curIntPoint;
+                    enemy.UpdateOnIntPoint();
                 }
             }
             // manage game ending
@@ -178,7 +178,7 @@ public class ManagerControl : MonoBehaviour
         Blackbroad.playerIntPosition.Set(Mathf.RoundToInt(player.transform.position.x), Mathf.RoundToInt(player.transform.position.y));
         foreach (var enemy in enemies)
         {
-            Blackbroad.policeIntPositions.Add(enemy.curIntPoint);
+            Blackbroad.enemyIntPositions.Add(enemy.curIntPoint);
         }
     }
     public void PauseGame()
@@ -221,7 +221,6 @@ public class ManagerControl : MonoBehaviour
     }
     public void LoseGame()
     {
-
         StartCoroutine(PlayerGetCaught());
     }
     IEnumerator PlayerGetCaught()

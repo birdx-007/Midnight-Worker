@@ -8,8 +8,13 @@ public class WatchmanControl : EnemyControl
     void Awake()
     {
         Initiate();
-        EnemyBehaviorControl.speedList = new float[] { 0f, 1f, 1f, 1.6f };
+        enemyAI = new EnemyAI_FixedPatrol();
+        speed = 1.5f;
         UpdateMoveable();
         _animator.SetBool("isWatchman", true);
+    }
+    public override void UpdateOnIntPoint()
+    {
+        enemyAI.GetNextIntPoint(ref nextIntPoint, curIntPoint);
     }
 }

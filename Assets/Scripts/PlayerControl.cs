@@ -167,6 +167,7 @@ public class PlayerControl : MonoBehaviour
         if(!hasWon)
         {
             hasWon = true;
+            _animator.SetTrigger("win");
         }
     }
 }

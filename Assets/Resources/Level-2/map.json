@@ -668,7 +668,6 @@
     "mapEnemyList": [
         {
             "enemyType": 0,
-            "enemyState": 1,
             "waypoints": [
                 {
                     "x": -7,
@@ -704,7 +703,6 @@
         },
         {
             "enemyType": 0,
-            "enemyState": 1,
             "waypoints": [
                 {
                     "x": -7,
@@ -740,7 +738,6 @@
         },
         {
             "enemyType": 0,
-            "enemyState": 1,
             "waypoints": [
                 {
                     "x": 7,
@@ -776,7 +773,6 @@
         },
         {
             "enemyType": 0,
-            "enemyState": 1,
             "waypoints": [
                 {
                     "x": 7,
@@ -812,7 +808,6 @@
         },
         {
             "enemyType": 0,
-            "enemyState": 1,
             "waypoints": [
                 {
                     "x": -3,
@@ -860,7 +855,6 @@
         },
         {
             "enemyType": 0,
-            "enemyState": 1,
             "waypoints": [
                 {
                     "x": 3,

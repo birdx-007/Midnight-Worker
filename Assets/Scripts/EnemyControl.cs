@@ -5,15 +5,6 @@ using UnityEngine;
 using Utilities;
 
 [Serializable]
-public enum EnemyState
-{
-    Sleep = 0,
-    FixedPatrol,
-    RandomPatrol,
-    ChasePlayer
-}
-
-[Serializable]
 public enum EnemyType
 {
     Watchman = 0,
@@ -31,8 +22,7 @@ public abstract class EnemyControl : MonoBehaviour
     public Vector2Int curIntPoint;
     public Vector2Int nextIntPoint;
     public Moveable2D moveable;
-    public EnemyState state;
-    public EnemyBehaviorControl behaviorControl;
+    public EnemyAI enemyAI;
     private void FixedUpdate()
     {
         Vector2 position = _rigidbody2D.position;
@@ -73,55 +63,14 @@ public abstract class EnemyControl : MonoBehaviour
         _lookDirection = Vector2.down;
         curIntPoint = nextIntPoint = new Vector2Int((int)_rigidbody2D.position.x, (int)_rigidbody2D.position.y);
         moveable = new Moveable2D();
-        SetStateSleep();
     }
-    public void SetState(EnemyState state, List<Vector2Int> waypoints = null)
+    public abstract void UpdateOnIntPoint();
+    public void SetWaypoints(List<Vector2Int> waypoints)
     {
-        switch (state)
-        {
-            case EnemyState.Sleep:
-                SetStateSleep();
-                break;
-            case EnemyState.FixedPatrol:
-                SetStateFixedPatrol(waypoints);
-                break;
-            case EnemyState.RandomPatrol:
-                SetStateRandomPatrol();
-                break;
-            case EnemyState.ChasePlayer:
-                SetStateChasePlayer();
-                break;
-            default:
-                Debug.LogError("EnemyState error: " + state);
-                break;
-        }
+        enemyAI.waypoints = waypoints;
     }
     public void UpdateMoveable()
     {
-        moveable.speed = speed = behaviorControl.speed;
-    }
-    public void SetStateSleep()
-    {
-        state = EnemyState.Sleep;
-        behaviorControl = new EnemySleepControl();
-        UpdateMoveable();
-    }
-    public void SetStateFixedPatrol(List<Vector2Int> waypoints)
-    {
-        state = EnemyState.FixedPatrol;
-        behaviorControl = new EnemyFixedPatrolControl(waypoints);
-        UpdateMoveable();
-    }
-    public void SetStateRandomPatrol()
-    {
-        state = EnemyState.RandomPatrol;
-        behaviorControl = new EnemyRandomPatrolControl();
-        UpdateMoveable();
-    }
-    public void SetStateChasePlayer()
-    {
-        state = EnemyState.ChasePlayer;
-        behaviorControl = new EnemyChasePlayerControl();
-        UpdateMoveable();
+        moveable.speed = speed;
     }
 }
