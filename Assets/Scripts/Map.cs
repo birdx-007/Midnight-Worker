@@ -52,6 +52,7 @@ public class MapEnemyData
 
 public class Map : ISerializationCallbackReceiver
 {
+    [SerializeField] public WeatherState weather;
     [SerializeField] public int mapWidth = 25;
     [SerializeField] public int mapHeight = 25;
     static public short[,] mapArray;

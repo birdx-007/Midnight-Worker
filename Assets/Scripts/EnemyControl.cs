@@ -67,10 +67,20 @@ public abstract class EnemyControl : MonoBehaviour
     public abstract void UpdateOnIntPoint();
     public void SetWaypoints(List<Vector2Int> waypoints)
     {
+        if (enemyAI == null)
+        {
+            Debug.LogError("EnemyControl Error: enemyAI == null");
+            return;
+        }
         enemyAI.waypoints = waypoints;
     }
     public void UpdateMoveable()
     {
+        if (moveable == null)
+        {
+            Debug.LogError("EnemyControl Error: moveable == null");
+            return;
+        }
         moveable.speed = speed;
     }
 }

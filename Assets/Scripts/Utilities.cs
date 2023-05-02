@@ -29,16 +29,16 @@ namespace Utilities
             rb.MovePosition(position);
         }
     }
-    public abstract class EnemyAI 
+    public abstract class EnemyAI
     {
         public List<Vector2Int> waypoints;
         public int currentTargetWaypointIndex;
         public bool isBlocked;
         public EnemyAI()
         {
-            this.waypoints = null;
-            this.currentTargetWaypointIndex = 0;
-            this.isBlocked = false;
+            waypoints = null;
+            currentTargetWaypointIndex = 0;
+            isBlocked = false;
         }
         public abstract void GetNextIntPoint(ref Vector2Int nextIntPoint, Vector2Int curIntPoint);
     }

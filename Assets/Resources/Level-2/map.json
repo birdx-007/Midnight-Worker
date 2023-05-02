@@ -1,4 +1,5 @@
 {
+    "weather": 2,
     "mapWidth": 25,
     "mapHeight": 25,
     "mapBuildingList": [

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using UnityEditor;
 using UnityEngine;
+using static UnityEditor.PlayerSettings;
 
 public class BuilderControl : MonoBehaviour
 {
@@ -23,10 +24,12 @@ public class BuilderControl : MonoBehaviour
     public GameObject wall1Prefab;
     public GameObject bankPrefab;
     public GameObject enemyPrefab;
+    public List<GameObject> weatherPrefabs;
     private Dictionary<Vector2Int, Transform> objectDictionary;
     public void Initiate()
     {
         objectDictionary = new Dictionary<Vector2Int, Transform>();
+        CreateWeather();
         BuildAllfromMapData();
     }
     void Update()
@@ -191,6 +194,12 @@ public class BuilderControl : MonoBehaviour
         {
             Delete(objectDictionary.First().Key);
         }
+    }
+    void CreateWeather()
+    {
+        GameObject weather = Instantiate(weatherPrefabs[(int)Blackbroad.map.weather], Vector2.zero, Quaternion.identity);
+        weather.transform.SetParent(gameObject.transform.parent);
+        objectDictionary.Add(-Map.MapCenter, weather.transform);
     }
     void BuildAllfromMapData()
     {

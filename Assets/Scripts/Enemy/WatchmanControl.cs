@@ -5,6 +5,7 @@ using Utilities;
 
 public class WatchmanControl : EnemyControl
 {
+    // enemyAI will be set later, in builder's CreateEnemy function.
     void Awake()
     {
         Initiate();
