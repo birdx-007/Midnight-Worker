@@ -8,7 +8,8 @@ using Utilities;
 public enum EnemyType
 {
     Watchman = 0,
-    Policeman
+    Policeman,
+    SkyPoliceman
 }
 
 public abstract class EnemyControl : MonoBehaviour

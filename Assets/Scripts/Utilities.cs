@@ -121,4 +121,15 @@ namespace Utilities
             }
         }
     }
+    public class EnemyAI_ChasePlayerInSky : EnemyAI
+    {
+        public override void GetNextIntPoint(ref Vector2Int nextIntPoint, Vector2Int curIntPoint)
+        {
+            var path = PathSearcher.FindWayTo(curIntPoint, Blackbroad.playerIntPosition, true);
+            if (path != null && path.Count > 1)
+            {
+                nextIntPoint.Set(path[1].x, path[1].y);
+            }
+        }
+    }
 }

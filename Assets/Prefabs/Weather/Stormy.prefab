@@ -4964,4 +4964,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b162e8a3ef679a04a885e969dd4f8ab6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxDarknessTime: 3
+  maxDarknessTime: 2

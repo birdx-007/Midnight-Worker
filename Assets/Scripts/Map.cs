@@ -66,6 +66,7 @@ public class Map : ISerializationCallbackReceiver
     static public Vector2Int MapCenter { get { return mapCenter; } }
     public Map(int levelIndex)
     {
+        weather = WeatherState.Sunny;
         mapArray = new short[mapWidth, mapHeight];
         mapCenter = new Vector2Int(mapWidth / 2 + 1, mapHeight / 2 + 1);
         jsonFilePath = Application.dataPath + "/Resources/Level-" + levelIndex.ToString() + "/map.json";

@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using Utilities;
 
-public class WatchmanControl : EnemyControl
+public class SkyPoliceControl : EnemyControl
 {
     // enemyAI will be set later, in builder's CreateEnemy function.
     void Awake()
     {
         Initiate();
-        enemyAI = new EnemyAI_FixedPatrol();
-        speed = 1.8f;
+        enemyAI = new EnemyAI_ChasePlayerInSky();
+        speed = 1.2f;
         UpdateMoveable();
-        _animator.SetBool("isWatchman", true);
+        _animator.SetBool("isSkyPoliceman", true);
     }
     public override void UpdateOnIntPoint()
     {

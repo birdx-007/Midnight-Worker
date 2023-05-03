@@ -10,6 +10,7 @@ using static UnityEditor.PlayerSettings;
 public class BuilderControl : MonoBehaviour
 {
     public bool isEditing = false;
+    public bool isEditingWeather = false;
     public bool isEditingBank = false;
     private int currentEditingBankTotalCount = 0;
     public bool isEditingEnemy = false;
@@ -29,7 +30,10 @@ public class BuilderControl : MonoBehaviour
     public void Initiate()
     {
         objectDictionary = new Dictionary<Vector2Int, Transform>();
-        CreateWeather();
+        if (!isEditing)
+        {
+            CreateWeather();
+        }
         BuildAllfromMapData();
     }
     void Update()
@@ -51,7 +55,7 @@ public class BuilderControl : MonoBehaviour
             Vector2Int mouseVector = new Vector2Int(mouseX, mouseY);
             if (Input.anyKeyDown && !IsOccupied())
             {
-                if (!isEditingBank && !isEditingEnemy)
+                if (!isEditingBank && !isEditingEnemy && !isEditingWeather)
                 {
                     if (Input.GetKeyDown(KeyCode.Alpha1))
                     {
@@ -77,13 +81,19 @@ public class BuilderControl : MonoBehaviour
                         currentEditingBankTotalCount = 0;
                         Debug.Log("begin editing a bank!");
                     }
-                    else if(Input.GetKeyDown(KeyCode.E))
+                    else if (Input.GetKeyDown(KeyCode.E))
                     {
                         // enemy
                         isEditingEnemy = true;
                         currentEditingEnemyType = EnemyType.Watchman;
                         currentEditingEnemyWaypoints = new List<Vector2Int>();
                         Debug.Log("begin editing an enemy!");
+                    }
+                    else if (Input.GetKeyDown(KeyCode.W))
+                    {
+                        // weather
+                        isEditingWeather = true;
+                        Debug.Log("begin editing weather!");
                     }
                 }
                 else if(isEditingBank)
@@ -149,17 +159,22 @@ public class BuilderControl : MonoBehaviour
                 }
                 else if(isEditingEnemy)
                 {
-                    if (Input.GetKeyDown(KeyCode.Alpha0) ||
-                        Input.GetKeyDown(KeyCode.Alpha1))
+                    if (Input.GetKeyDown(KeyCode.Alpha1) ||
+                        Input.GetKeyDown(KeyCode.Alpha2) ||
+                        Input.GetKeyDown(KeyCode.Alpha3))
                     {
                         EnemyType enemyType = EnemyType.Watchman;
                         if (Input.GetKeyDown(KeyCode.Alpha1))
                         {
                             enemyType = EnemyType.Watchman;
                         }
-                        else if(Input.GetKeyDown(KeyCode.Alpha2))
+                        else if (Input.GetKeyDown(KeyCode.Alpha2))
                         {
                             enemyType = EnemyType.Policeman;
+                        }
+                        else if(Input.GetKeyDown(KeyCode.Alpha3))
+                        {
+                            enemyType = EnemyType.SkyPoliceman;
                         }
                         currentEditingEnemyType = enemyType;
                         Debug.Log("enemyType changes to " + enemyType);
@@ -176,6 +191,34 @@ public class BuilderControl : MonoBehaviour
                         Debug.Log("Add enemy (" + currentEditingEnemyType + ") at " + mouseVector);
                         currentEditingEnemyType = EnemyType.Watchman;
                         currentEditingEnemyWaypoints = new List<Vector2Int>();
+                    }
+                }
+                else if(isEditingWeather)
+                {
+                    WeatherState weather = WeatherState.Sunny;
+                    if (Input.GetKeyDown(KeyCode.Alpha1) ||
+                        Input.GetKeyDown(KeyCode.Alpha2) ||
+                        Input.GetKeyDown(KeyCode.Alpha3))
+                    {
+                        if (Input.GetKeyDown(KeyCode.Alpha1))
+                        {
+                            weather = WeatherState.Sunny;
+                        }
+                        else if (Input.GetKeyDown(KeyCode.Alpha2))
+                        {
+                            weather = WeatherState.Windy;
+                        }
+                        else if (Input.GetKeyDown(KeyCode.Alpha3))
+                        {
+                            weather = WeatherState.Stormy;
+                        }
+                        SetWeather(weather);
+                        Debug.Log("Set weather: " + weather);
+                    }
+                    else if (Input.GetKeyDown(KeyCode.Space))
+                    {
+                        isEditingWeather = false;
+                        Debug.Log("Finish editing weather!");
                     }
                 }
             }
@@ -200,6 +243,10 @@ public class BuilderControl : MonoBehaviour
         GameObject weather = Instantiate(weatherPrefabs[(int)Blackbroad.map.weather], Vector2.zero, Quaternion.identity);
         weather.transform.SetParent(gameObject.transform.parent);
         objectDictionary.Add(-Map.MapCenter, weather.transform);
+    }
+    void SetWeather(WeatherState weather)
+    {
+        Blackbroad.map.weather = weather;
     }
     void BuildAllfromMapData()
     {
@@ -322,6 +369,9 @@ public class BuilderControl : MonoBehaviour
                 break;
             case EnemyType.Policeman:
                 enemy.gameObject.AddComponent<PoliceControl>();
+                break;
+            case EnemyType.SkyPoliceman:
+                enemy.gameObject.AddComponent<SkyPoliceControl>();
                 break;
             default:
                 Debug.LogError("EnemyType error: " + type);

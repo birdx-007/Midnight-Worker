@@ -3,6 +3,19 @@
     "mapWidth": 25,
     "mapHeight": 25,
     "mapBuildingList": [],
-    "mapBankList": [],
-    "mapEnemyList": []
+    "mapBankList": [
+        {
+            "totalCoins": 1,
+            "posX": -7,
+            "posY": 7
+        }
+    ],
+    "mapEnemyList": [
+        {
+            "enemyType": 2,
+            "waypoints": [],
+            "posX": 7,
+            "posY": -7
+        }
+    ]
 }

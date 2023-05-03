@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class PathNode
@@ -32,9 +34,17 @@ static public class PathSearcher
             }
         }
     }
-    static public List<Vector2Int> FindWayTo(Vector2Int start, Vector2Int end)
+    static public List<Vector2Int> FindWayTo(Vector2Int start, Vector2Int end,bool inSky=false)
     {
-        var path = PathSearcher.FindWay(start + Map.MapCenter, end + Map.MapCenter);
+        List<PathNode> path;
+        if (inSky)
+        {
+            path = PathSearcher.FindWayInSky(start + Map.MapCenter, end + Map.MapCenter);
+        }
+        else
+        {
+            path = PathSearcher.FindWay(start + Map.MapCenter, end + Map.MapCenter);
+        }
         if (path == null || path.Count == 0)
         {
             return null;
@@ -45,6 +55,29 @@ static public class PathSearcher
             Vector2Int nodePosition = new Vector2Int(node.X, node.Y) - Map.MapCenter;
             result.Add(nodePosition);
         }
+        return result;
+    }
+    static private List<PathNode> FindWayInSky(Vector2Int start, Vector2Int end)
+    {
+        if (start.x < 0 | start.x >= Blackbroad.map.mapWidth |
+            start.y < 0 | start.y >= Blackbroad.map.mapHeight |
+            end.x < 0 | end.x >= Blackbroad.map.mapWidth |
+            end.y < 0 | end.y >= Blackbroad.map.mapHeight) //�ж���㣬�յ��Ƿ�Ϸ�
+        {
+            return null;
+        }
+        var result = new List<PathNode>();
+        for (int deltax = end.x - start.x; deltax != 0; deltax -= Math.Sign(deltax))
+        {
+            PathNode node = new PathNode(end.x - deltax, start.y, false);
+            result.Add(node);
+        }
+        for (int deltay = end.y - start.y; deltay != 0; deltay -= Math.Sign(deltay))
+        {
+            PathNode node = new PathNode(end.x, end.y - deltay, false);
+            result.Add(node);
+        }
+        result.Add(new PathNode(end.x, end.y, false));
         return result;
     }
     static private List<PathNode> FindWay(Vector2Int start, Vector2Int end)

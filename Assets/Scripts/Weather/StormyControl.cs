@@ -5,7 +5,7 @@ using UnityEngine;
 public class StormyControl : WeatherControl
 {
     private bool isInDarkness;
-    public float maxDarknessTime = 3f;
+    public float maxDarknessTime = 2f;
     private float leftDarknessTime;
     void Awake()
     {
