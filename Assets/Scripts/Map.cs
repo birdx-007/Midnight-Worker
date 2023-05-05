@@ -59,6 +59,7 @@ public class Map : ISerializationCallbackReceiver
     [SerializeField] public List<MapBuildingData> mapBuildingList;
     [SerializeField] public List<MapBankData> mapBankList;
     [SerializeField] public List<MapEnemyData> mapEnemyList;
+    private string jsonFileDirPath;
     private string jsonFilePath;
     private string mapJson;
     public string MapJson { get { return mapJson; } set { mapJson = value; } }
@@ -69,7 +70,8 @@ public class Map : ISerializationCallbackReceiver
         weather = WeatherState.Sunny;
         mapArray = new short[mapWidth, mapHeight];
         mapCenter = new Vector2Int(mapWidth / 2 + 1, mapHeight / 2 + 1);
-        jsonFilePath = Application.dataPath + "/Resources/Level-" + levelIndex.ToString() + "/map.json";
+        jsonFileDirPath = Application.dataPath + "/Resources/Level-" + levelIndex.ToString();
+        jsonFilePath = jsonFileDirPath + "/map.json";
         LoadMap();
     }
     public void OnBeforeSerialize() // before save
@@ -106,6 +108,10 @@ public class Map : ISerializationCallbackReceiver
     public void SaveMap()
     {
         mapJson = JsonUtility.ToJson(this, true);
+        if (!Directory.Exists(jsonFileDirPath))
+        {
+            Directory.CreateDirectory(jsonFileDirPath);
+        }
         using (StreamWriter sw = new StreamWriter(jsonFilePath))
         {
             sw.WriteLine(mapJson);

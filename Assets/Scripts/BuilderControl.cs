@@ -16,7 +16,6 @@ public class BuilderControl : MonoBehaviour
     public bool isEditingEnemy = false;
     private EnemyType currentEditingEnemyType = EnemyType.Watchman;
     private List<Vector2Int> currentEditingEnemyWaypoints;
-    private Vector2Int mapCenter;
     private int mouseX;
     private int mouseY;
     public GameObject building1Prefab;
@@ -30,7 +29,7 @@ public class BuilderControl : MonoBehaviour
     public void Initiate()
     {
         objectDictionary = new Dictionary<Vector2Int, Transform>();
-        if (!isEditing)
+        if (!isEditing && !objectDictionary.ContainsKey(-Map.MapCenter))
         {
             CreateWeather();
         }
@@ -45,7 +44,6 @@ public class BuilderControl : MonoBehaviour
                 isEditing = false;
                 Blackbroad.map.SaveMap();
                 DeleteAll();
-                Initiate();
                 var manager = GameObject.Find("GameManager").GetComponent<ManagerControl>();
                 manager.InitiateGame(manager.levelIndex);
                 return;
@@ -240,9 +238,13 @@ public class BuilderControl : MonoBehaviour
     }
     void CreateWeather()
     {
-        GameObject weather = Instantiate(weatherPrefabs[(int)Blackbroad.map.weather], Vector2.zero, Quaternion.identity);
-        weather.transform.SetParent(gameObject.transform.parent);
-        objectDictionary.Add(-Map.MapCenter, weather.transform);
+        if (!objectDictionary.ContainsKey(-Map.MapCenter))
+        {
+            GameObject weather = Instantiate(weatherPrefabs[(int)Blackbroad.map.weather], Vector2.zero, Quaternion.identity);
+            weather.transform.SetParent(gameObject.transform.parent);
+            objectDictionary.Add(-Map.MapCenter, weather.transform);
+        }
+        
     }
     void SetWeather(WeatherState weather)
     {

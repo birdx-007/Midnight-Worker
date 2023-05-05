@@ -1,5 +1,5 @@
 {
-    "weather": 2,
+    "weather": 0,
     "mapWidth": 25,
     "mapHeight": 25,
     "mapBuildingList": [
@@ -191,6 +191,21 @@
         {
             "variety": 9,
             "posX": -4,
+            "posY": -1
+        },
+        {
+            "variety": 9,
+            "posX": -4,
+            "posY": 0
+        },
+        {
+            "variety": 9,
+            "posX": -4,
+            "posY": 1
+        },
+        {
+            "variety": 9,
+            "posX": -4,
             "posY": 2
         },
         {
@@ -247,11 +262,6 @@
             "variety": 3,
             "posX": -2,
             "posY": -1
-        },
-        {
-            "variety": 2,
-            "posX": -2,
-            "posY": 0
         },
         {
             "variety": 1,
@@ -376,11 +386,6 @@
         {
             "variety": 3,
             "posX": 2,
-            "posY": 0
-        },
-        {
-            "variety": 2,
-            "posX": 2,
             "posY": 1
         },
         {
@@ -437,6 +442,21 @@
             "variety": 9,
             "posX": 4,
             "posY": -2
+        },
+        {
+            "variety": 9,
+            "posX": 4,
+            "posY": -1
+        },
+        {
+            "variety": 9,
+            "posX": 4,
+            "posY": 0
+        },
+        {
+            "variety": 9,
+            "posX": 4,
+            "posY": 1
         },
         {
             "variety": 9,
@@ -627,26 +647,6 @@
     "mapBankList": [
         {
             "totalCoins": 1,
-            "posX": -3,
-            "posY": 3
-        },
-        {
-            "totalCoins": 1,
-            "posX": 3,
-            "posY": 3
-        },
-        {
-            "totalCoins": 1,
-            "posX": -3,
-            "posY": -3
-        },
-        {
-            "totalCoins": 1,
-            "posX": 3,
-            "posY": -3
-        },
-        {
-            "totalCoins": 1,
             "posX": -6,
             "posY": 6
         },
@@ -664,6 +664,16 @@
             "totalCoins": 1,
             "posX": 6,
             "posY": -6
+        },
+        {
+            "totalCoins": 1,
+            "posX": -2,
+            "posY": 0
+        },
+        {
+            "totalCoins": 1,
+            "posX": 2,
+            "posY": 0
         }
     ],
     "mapEnemyList": [
@@ -812,18 +822,6 @@
             "waypoints": [
                 {
                     "x": -3,
-                    "y": 0
-                },
-                {
-                    "x": -3,
-                    "y": 2
-                },
-                {
-                    "x": -2,
-                    "y": 2
-                },
-                {
-                    "x": -2,
                     "y": 3
                 },
                 {
@@ -835,20 +833,12 @@
                     "y": -3
                 },
                 {
-                    "x": -2,
+                    "x": -3,
                     "y": -3
                 },
                 {
-                    "x": -2,
-                    "y": -2
-                },
-                {
                     "x": -3,
-                    "y": -2
-                },
-                {
-                    "x": -3,
-                    "y": 0
+                    "y": 3
                 }
             ],
             "posX": -3,
@@ -859,18 +849,6 @@
             "waypoints": [
                 {
                     "x": 3,
-                    "y": 0
-                },
-                {
-                    "x": 3,
-                    "y": -2
-                },
-                {
-                    "x": 2,
-                    "y": -2
-                },
-                {
-                    "x": 2,
                     "y": -3
                 },
                 {
@@ -882,20 +860,12 @@
                     "y": 3
                 },
                 {
-                    "x": 2,
+                    "x": 3,
                     "y": 3
                 },
                 {
-                    "x": 2,
-                    "y": 2
-                },
-                {
                     "x": 3,
-                    "y": 2
-                },
-                {
-                    "x": 3,
-                    "y": 0
+                    "y": -3
                 }
             ],
             "posX": 3,

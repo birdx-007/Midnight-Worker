@@ -10,7 +10,7 @@ public class PoliceControl : EnemyControl
     {
         Initiate();
         enemyAI = new EnemyAI_ChasePlayer();
-        speed = 3f;
+        standardSpeed = speed = 3f;
         UpdateMoveable();
         _animator.SetBool("isPoliceman", true);
     }

@@ -10,9 +10,10 @@ public class SkyPoliceControl : EnemyControl
     {
         Initiate();
         enemyAI = new EnemyAI_ChasePlayerInSky();
-        speed = 1.2f;
+        standardSpeed = speed = 1.5f;
         UpdateMoveable();
         _animator.SetBool("isSkyPoliceman", true);
+        GetComponent<SpriteRenderer>().sortingOrder = 1;
     }
     public override void UpdateOnIntPoint()
     {

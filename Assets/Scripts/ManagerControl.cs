@@ -8,7 +8,7 @@ public class ManagerControl : MonoBehaviour
 {
     public SceneLoaderControl sceneLoader;
     public int levelIndex = 1;
-    public int maxLevelIndex = 3;
+    private int maxLevelIndex = 10;
     private int levelTargetCoinCount;
     public bool isFailed = false;
     public bool isClear = false;
@@ -167,6 +167,30 @@ public class ManagerControl : MonoBehaviour
             }
         }
     }
+    public void ApplyWeatherInfluences()
+    {
+        float decelerationFactor = 1f;
+        switch (Blackbroad.map.weather)
+        {
+            case WeatherState.Sunny:
+                decelerationFactor = WeatherFactor.SUNNY_SPEED_FACTOR;
+                break;
+            case WeatherState.Windy:
+                decelerationFactor = WeatherFactor.WINDY_SPEED_FACTOR;
+                break;
+            case WeatherState.Stormy:
+                decelerationFactor = WeatherFactor.STORMY_SPEED_FACTOR;
+                break;
+            default:
+                break;
+        }
+        player.speed = player.standardSpeed * decelerationFactor;
+        foreach (var enemy in enemies)
+        {
+            enemy.speed = enemy.standardSpeed * decelerationFactor;
+            enemy.UpdateMoveable();
+        }
+    }
     public void InitiateGame(int levelIndex)
     {
         isPausing = false;
@@ -180,6 +204,7 @@ public class ManagerControl : MonoBehaviour
         {
             Blackbroad.enemyIntPositions.Add(enemy.curIntPoint);
         }
+        ApplyWeatherInfluences();
     }
     public void PauseGame()
     {

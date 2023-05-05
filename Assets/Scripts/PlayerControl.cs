@@ -9,7 +9,8 @@ public class PlayerControl : MonoBehaviour
     public bool noStopMode = false;
     public bool isCaught = false;
     public bool hasWon = false;
-    public float speed = 4;
+    public float standardSpeed = 4;
+    public float speed;
     public bool isInputingMotion;
     private Rigidbody2D _rigidbody2D;
     private Animator _animator;
@@ -30,6 +31,7 @@ public class PlayerControl : MonoBehaviour
         _animator = GetComponent<Animator>();
         isInputingMotion = false;
         _lookDirection = Vector2.zero;
+        speed = standardSpeed;
     }
     void Update()
     {

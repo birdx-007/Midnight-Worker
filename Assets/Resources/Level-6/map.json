@@ -96,125 +96,140 @@
         {
             "variety": 9,
             "posX": -7,
-            "posY": -2
+            "posY": 8
         },
         {
             "variety": 9,
-            "posX": -7,
+            "posX": -6,
+            "posY": -8
+        },
+        {
+            "variety": 9,
+            "posX": -6,
+            "posY": -5
+        },
+        {
+            "variety": 9,
+            "posX": -6,
+            "posY": -4
+        },
+        {
+            "variety": 1,
+            "posX": -6,
+            "posY": -2
+        },
+        {
+            "variety": 2,
+            "posX": -6,
+            "posY": 0
+        },
+        {
+            "variety": 1,
+            "posX": -6,
+            "posY": 2
+        },
+        {
+            "variety": 9,
+            "posX": -6,
+            "posY": 4
+        },
+        {
+            "variety": 9,
+            "posX": -6,
+            "posY": 5
+        },
+        {
+            "variety": 9,
+            "posX": -6,
+            "posY": 8
+        },
+        {
+            "variety": 9,
+            "posX": -5,
+            "posY": -8
+        },
+        {
+            "variety": 9,
+            "posX": -5,
+            "posY": -6
+        },
+        {
+            "variety": 9,
+            "posX": -5,
+            "posY": 6
+        },
+        {
+            "variety": 9,
+            "posX": -5,
+            "posY": 8
+        },
+        {
+            "variety": 9,
+            "posX": -4,
+            "posY": -8
+        },
+        {
+            "variety": 9,
+            "posX": -4,
+            "posY": -6
+        },
+        {
+            "variety": 3,
+            "posX": -4,
+            "posY": -4
+        },
+        {
+            "variety": 2,
+            "posX": -4,
+            "posY": -3
+        },
+        {
+            "variety": 2,
+            "posX": -4,
+            "posY": 3
+        },
+        {
+            "variety": 3,
+            "posX": -4,
+            "posY": 4
+        },
+        {
+            "variety": 9,
+            "posX": -4,
+            "posY": 6
+        },
+        {
+            "variety": 9,
+            "posX": -4,
+            "posY": 8
+        },
+        {
+            "variety": 9,
+            "posX": -3,
+            "posY": -8
+        },
+        {
+            "variety": 1,
+            "posX": -3,
+            "posY": -4
+        },
+        {
+            "variety": 9,
+            "posX": -3,
             "posY": -1
         },
         {
             "variety": 9,
-            "posX": -7,
+            "posX": -3,
             "posY": 0
         },
         {
             "variety": 9,
-            "posX": -7,
+            "posX": -3,
             "posY": 1
         },
         {
-            "variety": 9,
-            "posX": -7,
-            "posY": 2
-        },
-        {
-            "variety": 9,
-            "posX": -7,
-            "posY": 8
-        },
-        {
-            "variety": 9,
-            "posX": -6,
-            "posY": -8
-        },
-        {
-            "variety": 9,
-            "posX": -6,
-            "posY": 8
-        },
-        {
-            "variety": 9,
-            "posX": -5,
-            "posY": -8
-        },
-        {
-            "variety": 9,
-            "posX": -5,
-            "posY": -4
-        },
-        {
             "variety": 1,
-            "posX": -5,
-            "posY": -2
-        },
-        {
-            "variety": 3,
-            "posX": -5,
-            "posY": 0
-        },
-        {
-            "variety": 2,
-            "posX": -5,
-            "posY": 2
-        },
-        {
-            "variety": 9,
-            "posX": -5,
-            "posY": 4
-        },
-        {
-            "variety": 9,
-            "posX": -5,
-            "posY": 8
-        },
-        {
-            "variety": 9,
-            "posX": -4,
-            "posY": -8
-        },
-        {
-            "variety": 9,
-            "posX": -4,
-            "posY": -4
-        },
-        {
-            "variety": 9,
-            "posX": -4,
-            "posY": 4
-        },
-        {
-            "variety": 9,
-            "posX": -4,
-            "posY": 8
-        },
-        {
-            "variety": 9,
-            "posX": -3,
-            "posY": -8
-        },
-        {
-            "variety": 9,
-            "posX": -3,
-            "posY": -4
-        },
-        {
-            "variety": 2,
-            "posX": -3,
-            "posY": -2
-        },
-        {
-            "variety": 1,
-            "posX": -3,
-            "posY": 0
-        },
-        {
-            "variety": 3,
-            "posX": -3,
-            "posY": 2
-        },
-        {
-            "variety": 9,
             "posX": -3,
             "posY": 4
         },
@@ -229,14 +244,14 @@
             "posY": -8
         },
         {
-            "variety": 9,
+            "variety": 2,
             "posX": -2,
-            "posY": -4
+            "posY": -6
         },
         {
-            "variety": 9,
+            "variety": 2,
             "posX": -2,
-            "posY": 4
+            "posY": 6
         },
         {
             "variety": 9,
@@ -251,102 +266,82 @@
         {
             "variety": 9,
             "posX": -1,
-            "posY": -4
+            "posY": -3
+        },
+        {
+            "variety": 9,
+            "posX": -1,
+            "posY": 3
+        },
+        {
+            "variety": 9,
+            "posX": -1,
+            "posY": 8
+        },
+        {
+            "variety": 9,
+            "posX": 0,
+            "posY": -8
+        },
+        {
+            "variety": 1,
+            "posX": 0,
+            "posY": -6
+        },
+        {
+            "variety": 9,
+            "posX": 0,
+            "posY": -3
+        },
+        {
+            "variety": 9,
+            "posX": 0,
+            "posY": 3
         },
         {
             "variety": 3,
-            "posX": -1,
-            "posY": -2
+            "posX": 0,
+            "posY": 6
+        },
+        {
+            "variety": 9,
+            "posX": 0,
+            "posY": 8
+        },
+        {
+            "variety": 9,
+            "posX": 1,
+            "posY": -8
+        },
+        {
+            "variety": 9,
+            "posX": 1,
+            "posY": -3
+        },
+        {
+            "variety": 9,
+            "posX": 1,
+            "posY": 3
+        },
+        {
+            "variety": 9,
+            "posX": 1,
+            "posY": 8
+        },
+        {
+            "variety": 9,
+            "posX": 2,
+            "posY": -8
         },
         {
             "variety": 2,
-            "posX": -1,
-            "posY": 0
-        },
-        {
-            "variety": 1,
-            "posX": -1,
-            "posY": 2
-        },
-        {
-            "variety": 9,
-            "posX": -1,
-            "posY": 4
-        },
-        {
-            "variety": 9,
-            "posX": -1,
-            "posY": 8
-        },
-        {
-            "variety": 9,
-            "posX": 0,
-            "posY": -8
-        },
-        {
-            "variety": 9,
-            "posX": 0,
-            "posY": -4
-        },
-        {
-            "variety": 9,
-            "posX": 0,
-            "posY": 4
-        },
-        {
-            "variety": 9,
-            "posX": 0,
-            "posY": 8
-        },
-        {
-            "variety": 9,
-            "posX": 1,
-            "posY": -8
-        },
-        {
-            "variety": 9,
-            "posX": 1,
-            "posY": -4
-        },
-        {
-            "variety": 1,
-            "posX": 1,
-            "posY": -2
-        },
-        {
-            "variety": 3,
-            "posX": 1,
-            "posY": 0
+            "posX": 2,
+            "posY": -6
         },
         {
             "variety": 2,
-            "posX": 1,
-            "posY": 2
-        },
-        {
-            "variety": 9,
-            "posX": 1,
-            "posY": 4
-        },
-        {
-            "variety": 9,
-            "posX": 1,
-            "posY": 8
-        },
-        {
-            "variety": 9,
             "posX": 2,
-            "posY": -8
-        },
-        {
-            "variety": 9,
-            "posX": 2,
-            "posY": -4
-        },
-        {
-            "variety": 9,
-            "posX": 2,
-            "posY": 4
+            "posY": 6
         },
         {
             "variety": 9,
@@ -357,29 +352,29 @@
             "variety": 9,
             "posX": 3,
             "posY": -8
-        },
-        {
-            "variety": 9,
-            "posX": 3,
-            "posY": -4
-        },
-        {
-            "variety": 2,
-            "posX": 3,
-            "posY": -2
-        },
-        {
-            "variety": 1,
-            "posX": 3,
-            "posY": 0
         },
         {
             "variety": 3,
             "posX": 3,
-            "posY": 2
+            "posY": -4
         },
         {
             "variety": 9,
+            "posX": 3,
+            "posY": -1
+        },
+        {
+            "variety": 9,
+            "posX": 3,
+            "posY": 0
+        },
+        {
+            "variety": 9,
+            "posX": 3,
+            "posY": 1
+        },
+        {
+            "variety": 3,
             "posX": 3,
             "posY": 4
         },
@@ -396,12 +391,32 @@
         {
             "variety": 9,
             "posX": 4,
+            "posY": -6
+        },
+        {
+            "variety": 1,
+            "posX": 4,
             "posY": -4
+        },
+        {
+            "variety": 2,
+            "posX": 4,
+            "posY": -3
+        },
+        {
+            "variety": 2,
+            "posX": 4,
+            "posY": 3
+        },
+        {
+            "variety": 1,
+            "posX": 4,
+            "posY": 4
         },
         {
             "variety": 9,
             "posX": 4,
-            "posY": 4
+            "posY": 6
         },
         {
             "variety": 9,
@@ -416,27 +431,12 @@
         {
             "variety": 9,
             "posX": 5,
-            "posY": -4
-        },
-        {
-            "variety": 3,
-            "posX": 5,
-            "posY": -2
-        },
-        {
-            "variety": 2,
-            "posX": 5,
-            "posY": 0
-        },
-        {
-            "variety": 1,
-            "posX": 5,
-            "posY": 2
+            "posY": -6
         },
         {
             "variety": 9,
             "posX": 5,
-            "posY": 4
+            "posY": 6
         },
         {
             "variety": 9,
@@ -451,37 +451,47 @@
         {
             "variety": 9,
             "posX": 6,
+            "posY": -5
+        },
+        {
+            "variety": 9,
+            "posX": 6,
+            "posY": -4
+        },
+        {
+            "variety": 3,
+            "posX": 6,
+            "posY": -2
+        },
+        {
+            "variety": 1,
+            "posX": 6,
+            "posY": 0
+        },
+        {
+            "variety": 3,
+            "posX": 6,
+            "posY": 2
+        },
+        {
+            "variety": 9,
+            "posX": 6,
+            "posY": 4
+        },
+        {
+            "variety": 9,
+            "posX": 6,
+            "posY": 5
+        },
+        {
+            "variety": 9,
+            "posX": 6,
             "posY": 8
         },
         {
             "variety": 9,
             "posX": 7,
             "posY": -8
-        },
-        {
-            "variety": 9,
-            "posX": 7,
-            "posY": -2
-        },
-        {
-            "variety": 9,
-            "posX": 7,
-            "posY": -1
-        },
-        {
-            "variety": 9,
-            "posX": 7,
-            "posY": 0
-        },
-        {
-            "variety": 9,
-            "posX": 7,
-            "posY": 1
-        },
-        {
-            "variety": 9,
-            "posX": 7,
-            "posY": 2
         },
         {
             "variety": 9,
@@ -577,21 +587,118 @@
     "mapBankList": [
         {
             "totalCoins": 1,
-            "posX": 0,
+            "posX": -6,
             "posY": 6
         },
         {
             "totalCoins": 1,
-            "posX": 0,
+            "posX": 6,
+            "posY": 6
+        },
+        {
+            "totalCoins": 1,
+            "posX": 6,
+            "posY": -6
+        },
+        {
+            "totalCoins": 1,
+            "posX": -6,
             "posY": -6
         }
     ],
     "mapEnemyList": [
         {
+            "enemyType": 0,
+            "waypoints": [
+                {
+                    "x": -5,
+                    "y": 5
+                },
+                {
+                    "x": 5,
+                    "y": 5
+                }
+            ],
+            "posX": -5,
+            "posY": 5
+        },
+        {
+            "enemyType": 0,
+            "waypoints": [
+                {
+                    "x": 5,
+                    "y": 5
+                },
+                {
+                    "x": 5,
+                    "y": -5
+                }
+            ],
+            "posX": 5,
+            "posY": 5
+        },
+        {
+            "enemyType": 0,
+            "waypoints": [
+                {
+                    "x": 5,
+                    "y": -5
+                },
+                {
+                    "x": -5,
+                    "y": -5
+                }
+            ],
+            "posX": 5,
+            "posY": -5
+        },
+        {
+            "enemyType": 0,
+            "waypoints": [
+                {
+                    "x": -5,
+                    "y": -5
+                },
+                {
+                    "x": -5,
+                    "y": 5
+                }
+            ],
+            "posX": -5,
+            "posY": -5
+        },
+        {
+            "enemyType": 0,
+            "waypoints": [
+                {
+                    "x": 7,
+                    "y": -7
+                },
+                {
+                    "x": 7,
+                    "y": 7
+                },
+                {
+                    "x": -7,
+                    "y": 7
+                },
+                {
+                    "x": -7,
+                    "y": -7
+                },
+                {
+                    "x": 7,
+                    "y": -7
+                }
+            ],
+            "posX": 0,
+            "posY": -7
+        },
+        {
             "enemyType": 1,
             "waypoints": [],
             "posX": 0,
-            "posY": -7
+            "posY": 7
         }
     ]
 }

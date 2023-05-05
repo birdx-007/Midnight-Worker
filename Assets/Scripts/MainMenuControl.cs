@@ -38,7 +38,7 @@ public class MainMenuControl : MonoBehaviour
     }
     public void PlayGame()
     {
-        sceneLoader.LoadSceneWithIndex(1);
+        sceneLoader.LoadSceneWithName("LevelScene");
     }
     public void ExitGame()
     {

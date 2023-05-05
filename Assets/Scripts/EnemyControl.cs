@@ -15,7 +15,8 @@ public enum EnemyType
 public abstract class EnemyControl : MonoBehaviour
 {
     public bool canCatchThief = true;
-    public float speed = 3;
+    public float standardSpeed = 3;
+    public float speed;
     private Rigidbody2D _rigidbody2D;
     protected Animator _animator;
     public Vector2 _lookDirection;
