@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System;
 
 public class ManagerControl : MonoBehaviour
 {
     public SceneLoaderControl sceneLoader;
     public int levelIndex = 1;
-    private int maxLevelIndex = 10;
     private int levelTargetCoinCount;
     public bool isFailed = false;
     public bool isClear = false;
@@ -71,11 +71,11 @@ public class ManagerControl : MonoBehaviour
                 }
             }
             // manage game ending
-            if (player.isCaught)
+            if (player.isCaught && !isFailed)
             {
                 LoseGame();
             }
-            else if (coinCount.currentCount >= levelTargetCoinCount)
+            else if (coinCount.currentCount >= levelTargetCoinCount && !isClear)
             {
                 WinGame();
             }
@@ -169,25 +169,25 @@ public class ManagerControl : MonoBehaviour
     }
     public void ApplyWeatherInfluences()
     {
-        float decelerationFactor = 1f;
+        float speedFactor = 1f;
         switch (Blackbroad.map.weather)
         {
             case WeatherState.Sunny:
-                decelerationFactor = WeatherFactor.SUNNY_SPEED_FACTOR;
+                speedFactor = WeatherFactor.SUNNY_SPEED_FACTOR;
                 break;
             case WeatherState.Windy:
-                decelerationFactor = WeatherFactor.WINDY_SPEED_FACTOR;
+                speedFactor = WeatherFactor.WINDY_SPEED_FACTOR;
                 break;
             case WeatherState.Stormy:
-                decelerationFactor = WeatherFactor.STORMY_SPEED_FACTOR;
+                speedFactor = WeatherFactor.STORMY_SPEED_FACTOR;
                 break;
             default:
                 break;
         }
-        player.speed = player.standardSpeed * decelerationFactor;
+        player.speed = player.standardSpeed * speedFactor;
         foreach (var enemy in enemies)
         {
-            enemy.speed = enemy.standardSpeed * decelerationFactor;
+            enemy.speed = enemy.standardSpeed * speedFactor;
             enemy.UpdateMoveable();
         }
     }
@@ -220,11 +220,6 @@ public class ManagerControl : MonoBehaviour
     }
     public void BackToMenu()
     {
-        if (GlobalTerminal.Instance != null)
-        {
-            Destroy(GlobalTerminal.Instance.gameObject);
-            GlobalTerminal.Instance = null;
-        }
         sceneLoader.LoadSceneWithName("MainMenu");
     }
     public void RestartGame()
@@ -235,7 +230,7 @@ public class ManagerControl : MonoBehaviour
     {
         if (GlobalTerminal.Instance != null)
         {
-            if(GlobalTerminal.Instance.Global_LevelIndex == maxLevelIndex)
+            if(GlobalTerminal.Instance.Global_LevelIndex == GlobalTerminal.Instance.Global_MaxLevelIndex)
             {
                 sceneLoader.LoadSceneWithName("CongratulationsMenu");
                 return;
@@ -250,9 +245,9 @@ public class ManagerControl : MonoBehaviour
     }
     IEnumerator PlayerGetCaught()
     {
+        isFailed = true;
         yield return new WaitForSecondsRealtime(3f);
         failedMenu.ShowFailedMenu();
-        isFailed = true;
     }
     public void WinGame()
     {
@@ -261,7 +256,9 @@ public class ManagerControl : MonoBehaviour
     IEnumerator BanksAllClear()
     {
         isClear = true;
-        foreach(var enemy in enemies)
+        GlobalTerminal.Instance.Global_UnlockedLevelIndex = Math.Clamp(GlobalTerminal.Instance.Global_LevelIndex + 1, 1, GlobalTerminal.Instance.Global_MaxLevelIndex);
+        SaveSystem.Instance.Save();
+        foreach (var enemy in enemies)
         {
             enemy.canCatchThief = false;
         }

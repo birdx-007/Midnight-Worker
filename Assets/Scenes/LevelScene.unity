@@ -5940,6 +5940,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Global_LevelIndex: 1
+  Global_UnlockedLevelIndex: 1
+  Global_MaxLevelIndex: 10
 --- !u!4 &1784291329
 Transform:
   m_ObjectHideFlags: 0

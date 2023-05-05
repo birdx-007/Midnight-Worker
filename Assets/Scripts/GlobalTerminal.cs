@@ -7,6 +7,8 @@ public class GlobalTerminal : MonoBehaviour
     public static GlobalTerminal Instance;
 
     public int Global_LevelIndex = 1;
+    public int Global_UnlockedLevelIndex = 1;
+    public int Global_MaxLevelIndex = 10;
 
     private void Awake()
     {

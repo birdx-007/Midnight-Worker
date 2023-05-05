@@ -19,11 +19,6 @@ public class CongratulationsMenuControl : MonoBehaviour
     }
     public void BackToMenu()
     {
-        if (GlobalTerminal.Instance != null)
-        {
-            Destroy(GlobalTerminal.Instance.gameObject);
-            GlobalTerminal.Instance = null;
-        }
         sceneLoader.LoadSceneWithName("MainMenu");
     }
 }

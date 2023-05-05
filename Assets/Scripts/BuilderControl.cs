@@ -5,7 +5,6 @@ using System.Linq;
 using System.Security.Cryptography;
 using UnityEditor;
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
 
 public class BuilderControl : MonoBehaviour
 {
@@ -151,7 +150,7 @@ public class BuilderControl : MonoBehaviour
                     {
                         isEditingBank = false;
                         BuildBank(mouseVector, currentEditingBankTotalCount);
-                        Debug.Log("Add bank with" + currentEditingBankTotalCount + "coins, at:" + mouseVector);
+                        Debug.Log("Add bank with " + currentEditingBankTotalCount + " coins, at:" + mouseVector);
                         currentEditingBankTotalCount = 0;
                     }
                 }

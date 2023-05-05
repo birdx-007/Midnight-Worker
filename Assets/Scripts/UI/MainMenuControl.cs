@@ -38,7 +38,7 @@ public class MainMenuControl : MonoBehaviour
     }
     public void PlayGame()
     {
-        sceneLoader.LoadSceneWithName("LevelScene");
+        sceneLoader.LoadSceneWithName("LevelSelectMenu");
     }
     public void ExitGame()
     {
