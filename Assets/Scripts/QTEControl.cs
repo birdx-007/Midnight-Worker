@@ -127,6 +127,10 @@ public class QTEControl : MonoBehaviour
         {
             state = QTEState.Succeeded;
         }
+        else
+        {
+            SFXPlayer.Instance.PlayQTEHitSFX();
+        }
     }
     public void HitFail()
     {

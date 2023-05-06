@@ -101,6 +101,7 @@ public class ManagerControl : MonoBehaviour
                     bank.Lock();
                     isAnyBankBeingLocked = true;
                     qte.ShowTip("FAILED!");
+                    SFXPlayer.Instance.PlayQTEFailSFX();
                     StartCoroutine(WaitThenHideTip(BankControl.maxLockedTime));
                     player.GetOutofBank();
                     qte.state = QTEState.Inactive;
@@ -124,6 +125,7 @@ public class ManagerControl : MonoBehaviour
                         isAnyBankBeingLocked = true;
                         coinCount.AddOne();
                         qte.ShowTip("GREAT!");
+                        SFXPlayer.Instance.PlayQTESucceedSFX();
                         StartCoroutine(WaitThenHideTip(BankControl.maxLockedTime));
                         player.UnfaceBank();
                         player.GetOutofBank();
@@ -135,6 +137,7 @@ public class ManagerControl : MonoBehaviour
                         bank.Lock();
                         isAnyBankBeingLocked = true;
                         qte.ShowTip("FAILED!");
+                        SFXPlayer.Instance.PlayQTEFailSFX();
                         StartCoroutine(WaitThenHideTip(BankControl.maxLockedTime));
                         player.UnfaceBank();
                         player.GetOutofBank();
@@ -246,6 +249,7 @@ public class ManagerControl : MonoBehaviour
     IEnumerator PlayerGetCaught()
     {
         isFailed = true;
+        SFXPlayer.Instance.PlayPlayerCaughtSFX();
         yield return new WaitForSecondsRealtime(3f);
         failedMenu.ShowFailedMenu();
     }
@@ -256,7 +260,7 @@ public class ManagerControl : MonoBehaviour
     IEnumerator BanksAllClear()
     {
         isClear = true;
-        GlobalTerminal.Instance.Global_UnlockedLevelIndex = Math.Clamp(GlobalTerminal.Instance.Global_LevelIndex + 1, 1, GlobalTerminal.Instance.Global_MaxLevelIndex);
+        GlobalTerminal.Instance.UpdateUnlockedLevelIndex_OnWin();
         SaveSystem.Instance.Save();
         foreach (var enemy in enemies)
         {

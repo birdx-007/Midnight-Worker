@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,5 +20,12 @@ public class GlobalTerminal : MonoBehaviour
         }
         Instance = this;
         DontDestroyOnLoad(gameObject);
+    }
+    public void UpdateUnlockedLevelIndex_OnWin()
+    {
+        if (Global_LevelIndex == Global_UnlockedLevelIndex)
+        {
+            Global_UnlockedLevelIndex = Math.Clamp(Global_UnlockedLevelIndex + 1, 1, Global_MaxLevelIndex);
+        }
     }
 }
