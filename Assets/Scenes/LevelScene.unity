@@ -3986,7 +3986,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_FirstSelected: {fileID: 0}
-  m_sendNavigationEvents: 1
+  m_sendNavigationEvents: 0
   m_DragThreshold: 10
 --- !u!4 &345128946
 Transform:
@@ -4804,10 +4804,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb5a1f14dd73aed408b7f31c23851987, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  clipQTEHit: {fileID: 8300000, guid: d53a0f2421502fe4281dc91cb59e2028, type: 3}
-  clipQTESucceed: {fileID: 8300000, guid: 553faf8826d59c34db9ad1859a694e2a, type: 3}
-  clipQTEFail: {fileID: 8300000, guid: 417c490fed4765a46977de9bcdd1fe5d, type: 3}
-  clipPlayerCaught: {fileID: 8300000, guid: d94f3cf5219c47d49af3eb2d417b9ad8, type: 3}
+  clips:
+  - {fileID: 8300000, guid: d53a0f2421502fe4281dc91cb59e2028, type: 3}
+  - {fileID: 8300000, guid: 553faf8826d59c34db9ad1859a694e2a, type: 3}
+  - {fileID: 8300000, guid: 417c490fed4765a46977de9bcdd1fe5d, type: 3}
+  - {fileID: 8300000, guid: d94f3cf5219c47d49af3eb2d417b9ad8, type: 3}
 --- !u!82 &747331021
 AudioSource:
   m_ObjectHideFlags: 0
@@ -5760,7 +5761,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7413ea58b9898c441b84ce2c5c723483, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isEditing: 0
+  isEditing: 1
   isEditingWeather: 0
   isEditingBank: 0
   isEditingEnemy: 0
@@ -6084,7 +6085,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d1cd84f0304a7a43bd31c4399223186, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Global_LevelIndex: 1
+  Global_LevelIndex: 5
   Global_UnlockedLevelIndex: 1
   Global_MaxLevelIndex: 10
 --- !u!4 &1784291329

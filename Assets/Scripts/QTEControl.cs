@@ -129,7 +129,7 @@ public class QTEControl : MonoBehaviour
         }
         else
         {
-            SFXPlayer.Instance.PlayQTEHitSFX();
+            SFXPlayer.Instance.PlaySFX(SFXType.QTE_HIT);
         }
     }
     public void HitFail()

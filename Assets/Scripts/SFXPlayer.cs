@@ -3,15 +3,20 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
+public enum SFXType: int
+{
+    QTE_HIT=0,
+    QTE_SUCCEED,
+    QTE_FAIL,
+    PLAYER_CAUGHT
+}
+
 public class SFXPlayer : MonoBehaviour
 {
     public static SFXPlayer Instance;
 
     private AudioSource _audioSource;
-    public AudioClip clipQTEHit;
-    public AudioClip clipQTESucceed;
-    public AudioClip clipQTEFail;
-    public AudioClip clipPlayerCaught;
+    public AudioClip[] clips;
     private void Awake()
     {
         if (Instance != null)
@@ -24,27 +29,11 @@ public class SFXPlayer : MonoBehaviour
         
         _audioSource = GetComponent<AudioSource>();
         _audioSource.playOnAwake = false;
-        _audioSource.clip = clipQTEHit;
+        _audioSource.clip = clips[(int)SFXType.QTE_HIT];
     }
-
-    public void PlayQTEHitSFX()
+    public void PlaySFX(SFXType type)
     {
-        _audioSource.clip = clipQTEHit;
-        _audioSource.Play();
-    }
-    public void PlayQTESucceedSFX()
-    {
-        _audioSource.clip = clipQTESucceed;
-        _audioSource.Play();
-    }
-    public void PlayQTEFailSFX()
-    {
-        _audioSource.clip = clipQTEFail;
-        _audioSource.Play();
-    }
-    public void PlayPlayerCaughtSFX()
-    {
-        _audioSource.clip = clipPlayerCaught;
+        _audioSource.clip = clips[(int)type];
         _audioSource.Play();
     }
 }

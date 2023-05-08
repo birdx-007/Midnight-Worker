@@ -9,11 +9,6 @@ public class PauseMenuControl : MonoBehaviour
     {
         _animator = GetComponent<Animator>();
     }
-
-    void Update()
-    {
-        
-    }
     public void ShowPauseMenu()
     {
         _animator.SetBool("isPausing", true);

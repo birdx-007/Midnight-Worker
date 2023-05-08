@@ -18,6 +18,7 @@ namespace Utilities
             float distance = Vector2.Distance(position, target);
             position.x = Mathf.MoveTowards(position.x, targetX, Mathf.Min(speed * Time.deltaTime, distance));
             position.y = Mathf.MoveTowards(position.y, targetY, Mathf.Min(speed * Time.deltaTime, distance));
+            rb.velocity = (position - rb.position) / Time.deltaTime;
             rb.MovePosition(position);
         }
         public void MoveTo(Rigidbody2D rb, Vector2 target)
@@ -26,6 +27,7 @@ namespace Utilities
             float distance = Vector2.Distance(position, target);
             position.x = Mathf.MoveTowards(position.x, target.x, Mathf.Min(speed * Time.deltaTime, distance));
             position.y = Mathf.MoveTowards(position.y, target.y, Mathf.Min(speed * Time.deltaTime, distance));
+            rb.velocity = (position - rb.position) / Time.deltaTime;
             rb.MovePosition(position);
         }
     }

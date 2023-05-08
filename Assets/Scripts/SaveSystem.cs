@@ -26,6 +26,7 @@ public class SaveSystem : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
+        save = new Save();
         path = Path.Combine(Application.persistentDataPath, "save.json");
         Load();
     }

@@ -101,7 +101,7 @@ public class ManagerControl : MonoBehaviour
                     bank.Lock();
                     isAnyBankBeingLocked = true;
                     qte.ShowTip("FAILED!");
-                    SFXPlayer.Instance.PlayQTEFailSFX();
+                    SFXPlayer.Instance.PlaySFX(SFXType.QTE_FAIL);
                     StartCoroutine(WaitThenHideTip(BankControl.maxLockedTime));
                     player.GetOutofBank();
                     qte.state = QTEState.Inactive;
@@ -125,7 +125,7 @@ public class ManagerControl : MonoBehaviour
                         isAnyBankBeingLocked = true;
                         coinCount.AddOne();
                         qte.ShowTip("GREAT!");
-                        SFXPlayer.Instance.PlayQTESucceedSFX();
+                        SFXPlayer.Instance.PlaySFX(SFXType.QTE_SUCCEED);
                         StartCoroutine(WaitThenHideTip(BankControl.maxLockedTime));
                         player.UnfaceBank();
                         player.GetOutofBank();
@@ -137,7 +137,7 @@ public class ManagerControl : MonoBehaviour
                         bank.Lock();
                         isAnyBankBeingLocked = true;
                         qte.ShowTip("FAILED!");
-                        SFXPlayer.Instance.PlayQTEFailSFX();
+                        SFXPlayer.Instance.PlaySFX(SFXType.QTE_FAIL);
                         StartCoroutine(WaitThenHideTip(BankControl.maxLockedTime));
                         player.UnfaceBank();
                         player.GetOutofBank();
@@ -249,7 +249,7 @@ public class ManagerControl : MonoBehaviour
     IEnumerator PlayerGetCaught()
     {
         isFailed = true;
-        SFXPlayer.Instance.PlayPlayerCaughtSFX();
+        SFXPlayer.Instance.PlaySFX(SFXType.PLAYER_CAUGHT);
         yield return new WaitForSecondsRealtime(3f);
         failedMenu.ShowFailedMenu();
     }
@@ -260,13 +260,14 @@ public class ManagerControl : MonoBehaviour
     IEnumerator BanksAllClear()
     {
         isClear = true;
-        GlobalTerminal.Instance.UpdateUnlockedLevelIndex_OnWin();
-        SaveSystem.Instance.Save();
+        
         foreach (var enemy in enemies)
         {
             enemy.canCatchThief = false;
         }
         player.Win();
+        GlobalTerminal.Instance.UpdateUnlockedLevelIndex_OnWin();
+        SaveSystem.Instance.Save();
         yield return new WaitForSecondsRealtime(3f);
         clearMenu.ShowClearMenu();
     }
