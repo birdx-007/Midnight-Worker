@@ -91,15 +91,24 @@ namespace Utilities
             else // latestChoice is invalid
             {
                 List<Vector2Int> optionalDirections = new List<Vector2Int>(directions);
-                int chosenDirectionIndex = Random.Range(0, 4);
+                optionalDirections.Remove(-latestChoice);// backward is the least preferred
+                int chosenDirectionIndex = Random.Range(0, 3);
                 target = curIntPoint + optionalDirections[chosenDirectionIndex];
                 while (!Blackbroad.map.isReachable(target.x, target.y))
                 {
                     optionalDirections.RemoveAt(chosenDirectionIndex);
                     if (optionalDirections.Count == 0)
                     {
-                        isBlocked = true;
-                        break;
+                        target = curIntPoint - latestChoice;
+                        if (!Blackbroad.map.isReachable(target.x, target.y))
+                        {
+                            isBlocked = true;
+                            break;
+                        }
+                        else
+                        {
+                            break;
+                        }
                     }
                     chosenDirectionIndex = Random.Range(0, optionalDirections.Count);
                     target = curIntPoint + optionalDirections[chosenDirectionIndex];
@@ -107,7 +116,7 @@ namespace Utilities
                 if (!isBlocked)
                 {
                     nextIntPoint.Set(target.x, target.y);
-                    latestChoice = optionalDirections[chosenDirectionIndex];
+                    latestChoice = target - curIntPoint;
                 }
             }
         }
@@ -131,6 +140,40 @@ namespace Utilities
             if (path != null && path.Count > 1)
             {
                 nextIntPoint.Set(path[1].x, path[1].y);
+            }
+        }
+    }
+    public class EnemyAI_RushtoPlayer : EnemyAI
+    {
+        public bool isRushing = false;
+        public float rushSpeed = 4f;
+        public Vector2Int rushDirection = Vector2Int.zero;
+        public override void GetNextIntPoint(ref Vector2Int nextIntPoint, Vector2Int curIntPoint)
+        {
+            if (isRushing)
+            {
+                Vector2Int target = curIntPoint + rushDirection;
+                if (Blackbroad.map.isReachable(target.x, target.y))
+                {
+                    nextIntPoint.Set(target.x, target.y);
+                }
+                else
+                {
+                    isRushing = false;
+                    rushDirection = Vector2Int.zero;
+                }
+            }
+            else
+            {
+                Vector2Int latestFaceDirection = nextIntPoint - curIntPoint;
+                Vector2Int? direction = PathSearcher.FindLineDirectionTo(curIntPoint, Blackbroad.playerIntPosition);
+                if (direction != null && direction.Value != -latestFaceDirection)
+                {
+                    isRushing = true;
+                    rushDirection = direction.Value;
+                    Vector2Int target = curIntPoint + rushDirection;
+                    nextIntPoint.Set(target.x, target.y);
+                }
             }
         }
     }

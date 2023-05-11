@@ -8,7 +8,8 @@ public enum SFXType: int
     QTE_HIT=0,
     QTE_SUCCEED,
     QTE_FAIL,
-    PLAYER_CAUGHT
+    PLAYER_CAUGHT,
+    TRY_CHANGE_LEVEL_SELECTED
 }
 
 public class SFXPlayer : MonoBehaviour

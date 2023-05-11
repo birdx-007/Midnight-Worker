@@ -149,4 +149,43 @@ static public class PathSearcher
         Node.F = Node.G + Node.H;
         openList.Add(Node);
     }
+    static public Vector2Int? FindLineDirectionTo(Vector2Int start, Vector2Int end)
+    {
+        if(CanReachByLine(start, end))
+        {
+            Vector2Int targetDirection = end - start;
+            targetDirection /= (int)targetDirection.magnitude;
+            return targetDirection;
+        }
+        return null;
+    }
+    static public bool CanReachByLine(Vector2Int start, Vector2Int end)
+    {
+        if (start.x == end.x)
+        {
+            for (int j = Map.MapCenter.y + Math.Min(start.y, end.y); j < Map.MapCenter.y + Math.Max(start.y, end.y); j++)
+            {
+                if (nodesMap[Map.MapCenter.x + start.x, j].isStop)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+        else if (start.y == end.y)
+        {
+            for (int i = Map.MapCenter.x + Math.Min(start.x, end.x); i < Map.MapCenter.x + Math.Max(start.x, end.x); i++)
+            {
+                if (nodesMap[i, Map.MapCenter.y + start.y].isStop)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 }

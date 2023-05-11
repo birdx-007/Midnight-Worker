@@ -16,12 +16,14 @@ public class BankControl : MonoBehaviour
     private int currentCoins;
     private Rigidbody2D _rigidbody2D;
     private Animator _animator;
+    private Collider2D _trigger;
     void Start()
     {
         _leftLockedTime = maxLockedTime;
         currentCoins = totalCoins;
         _rigidbody2D = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
+        _trigger = GetComponent<CapsuleCollider2D>();
     }
 
     void Update()
@@ -52,11 +54,6 @@ public class BankControl : MonoBehaviour
                 {
                     isFaced = true;
                     playerControl.FaceBank(this);
-                    /*
-                    isBeingVisited = true;
-                    playerControl.GetIntoBank(this);
-                    Debug.Log("Thief visit bank!");
-                    //*/
                 }
             }
             else
@@ -85,13 +82,17 @@ public class BankControl : MonoBehaviour
     public void Lock()
     {
         isLocked = true;
+        isFaced = false;
+        isBeingVisited = false;
         _leftLockedTime = maxLockedTime;
         _animator.SetBool("isLocked", true);
+        _trigger.enabled = false;
     }
     public void Unlock()
     {
         isLocked = false;
         _animator.SetBool("isLocked", false);
+        _trigger.enabled = true;
     }
     public void Visited()
     {
@@ -126,5 +127,6 @@ public class BankControl : MonoBehaviour
         Debug.Log("Bank break!");
         isBroken = true;
         _animator.SetBool("isBroken", true);
+        _trigger.enabled = false;
     }
 }
