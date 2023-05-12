@@ -79,7 +79,10 @@ public class ManagerControl : MonoBehaviour
             {
                 WinGame();
             }
-            GameLogicUpdate();
+            if (!isClear && !isFailed)
+            {
+                GameLogicUpdate();
+            }
         }
     }
     public void GameLogicUpdate()

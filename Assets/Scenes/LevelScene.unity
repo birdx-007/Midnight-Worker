@@ -5762,7 +5762,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7413ea58b9898c441b84ce2c5c723483, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isEditing: 1
+  isEditing: 0
   isEditingWeather: 0
   isEditingBank: 0
   isEditingEnemy: 0
@@ -6086,9 +6086,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d1cd84f0304a7a43bd31c4399223186, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Global_LevelIndex: 7
+  Global_LevelIndex: 1
   Global_UnlockedLevelIndex: 1
-  Global_MaxLevelIndex: 10
+  Global_MaxLevelIndex: 15
 --- !u!4 &1784291329
 Transform:
   m_ObjectHideFlags: 0

@@ -11,6 +11,7 @@ public class SkyPoliceControl : EnemyControl
         Initiate();
         enemyAI = new EnemyAI_ChasePlayerInSky();
         standardSpeed = speed = 1.5f;
+        maxSpeed = 2f;
         UpdateMoveable();
         _animator.SetBool("isSkyPoliceman", true);
         GetComponent<SpriteRenderer>().sortingOrder = 1;

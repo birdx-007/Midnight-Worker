@@ -146,8 +146,12 @@ namespace Utilities
     public class EnemyAI_RushtoPlayer : EnemyAI
     {
         public bool isRushing = false;
-        public float rushSpeed = 4f;
+        public float rushSpeed = 5f;
         public Vector2Int rushDirection = Vector2Int.zero;
+        EnemyAI_RushtoPlayer(float rushSpeed)
+        {
+            this.rushSpeed = rushSpeed;
+        }
         public override void GetNextIntPoint(ref Vector2Int nextIntPoint, Vector2Int curIntPoint)
         {
             if (isRushing)

@@ -10,7 +10,8 @@ public class WatchmanControl : EnemyControl
     {
         Initiate();
         enemyAI = new EnemyAI_FixedPatrol();
-        standardSpeed = speed = 1.8f;
+        standardSpeed = speed = 2f;
+        maxSpeed = 3f;
         UpdateMoveable();
         _animator.SetBool("isWatchman", true);
     }

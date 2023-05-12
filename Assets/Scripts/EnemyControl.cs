@@ -16,6 +16,7 @@ public abstract class EnemyControl : MonoBehaviour
 {
     public bool canCatchThief = true;
     public float standardSpeed = 3;
+    public float maxSpeed = 3.2f;
     public float speed;
     private Rigidbody2D _rigidbody2D;
     protected Animator _animator;
@@ -82,6 +83,10 @@ public abstract class EnemyControl : MonoBehaviour
         {
             Debug.LogError("EnemyControl Error: moveable == null");
             return;
+        }
+        if (speed > maxSpeed)
+        {
+            speed = maxSpeed;
         }
         moveable.speed = speed;
     }

@@ -9,7 +9,7 @@ public class GlobalTerminal : MonoBehaviour
 
     public int Global_LevelIndex = 1;
     public int Global_UnlockedLevelIndex = 1;
-    public int Global_MaxLevelIndex = 10;
+    public int Global_MaxLevelIndex = 15;
 
     private void Awake()
     {
