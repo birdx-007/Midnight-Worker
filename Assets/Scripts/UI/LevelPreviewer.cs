@@ -21,17 +21,24 @@ public class LevelPreviewer : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            SFXPlayer.Instance.PlaySFX(SFXType.TRY_CHANGE_LEVEL_SELECTED);
-            GlobalTerminal.Instance.Global_LevelIndex = Math.Clamp(GlobalTerminal.Instance.Global_LevelIndex - 1, 1, GlobalTerminal.Instance.Global_UnlockedLevelIndex);
-            UpdateDisplay();
+            TryMinusLevelSelected();
         }
         else if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            SFXPlayer.Instance.PlaySFX(SFXType.TRY_CHANGE_LEVEL_SELECTED);
-            GlobalTerminal.Instance.Global_LevelIndex = Math.Clamp(GlobalTerminal.Instance.Global_LevelIndex + 1, 1, GlobalTerminal.Instance.Global_UnlockedLevelIndex);
-            UpdateDisplay();
+            TryAddLevelSelected();
         }
-
+    }
+    public void TryAddLevelSelected()
+    {
+        SFXPlayer.Instance.PlaySFX(SFXType.TRY_CHANGE_LEVEL_SELECTED);
+        GlobalTerminal.Instance.Global_LevelIndex = Math.Clamp(GlobalTerminal.Instance.Global_LevelIndex + 1, 1, GlobalTerminal.Instance.Global_UnlockedLevelIndex);
+        UpdateDisplay();
+    }
+    public void TryMinusLevelSelected()
+    {
+        SFXPlayer.Instance.PlaySFX(SFXType.TRY_CHANGE_LEVEL_SELECTED);
+        GlobalTerminal.Instance.Global_LevelIndex = Math.Clamp(GlobalTerminal.Instance.Global_LevelIndex - 1, 1, GlobalTerminal.Instance.Global_UnlockedLevelIndex);
+        UpdateDisplay();
     }
     public void UpdateDisplay()
     {

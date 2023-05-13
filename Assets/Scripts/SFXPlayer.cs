@@ -3,15 +3,17 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-public enum SFXType: int
+public enum SFXType : int
 {
-    QTE_HIT=0,
+    QTE_HIT = 0,
     QTE_SUCCEED,
     QTE_FAIL,
     PLAYER_CAUGHT,
+    MENU_BUTTON_PRESSED,
     TRY_CHANGE_LEVEL_SELECTED
 }
 
+[RequireComponent(typeof(AudioSource))]
 public class SFXPlayer : MonoBehaviour
 {
     public static SFXPlayer Instance;

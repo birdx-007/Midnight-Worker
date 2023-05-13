@@ -31,6 +31,7 @@ public class ManagerControl : MonoBehaviour
         {
             levelIndex = GlobalTerminal.Instance.Global_LevelIndex;
         }
+        BGMPlayer.Instance.PlayBGM(BGMType.BGM_Main);
         InitiateGame(levelIndex);
     }
 
@@ -214,22 +215,28 @@ public class ManagerControl : MonoBehaviour
     }
     public void PauseGame()
     {
+        SFXPlayer.Instance.PlaySFX(SFXType.MENU_BUTTON_PRESSED);
         isPausing = true;
         pauseMenu.ShowPauseMenu();
         Time.timeScale = 0f;
     }
     public void ContinueGame()
     {
+        SFXPlayer.Instance.PlaySFX(SFXType.MENU_BUTTON_PRESSED);
         isPausing = false;
         pauseMenu.HidePauseMenu();
         //Time.timeScale = 1f; ��һ������ͣ�˵���hide������β��eventִ��
     }
     public void BackToMenu()
     {
+        SFXPlayer.Instance.PlaySFX(SFXType.MENU_BUTTON_PRESSED);
+        BGMPlayer.Instance.FadeOutBGM();
         sceneLoader.LoadSceneWithName("MainMenu");
     }
     public void RestartGame()
     {
+        SFXPlayer.Instance.PlaySFX(SFXType.MENU_BUTTON_PRESSED);
+        BGMPlayer.Instance.FadeOutBGM();
         sceneLoader.LoadSceneWithIndex(SceneManager.GetActiveScene().buildIndex);
     }
     public void GoToNextLevel()
@@ -238,6 +245,8 @@ public class ManagerControl : MonoBehaviour
         {
             if(GlobalTerminal.Instance.Global_LevelIndex == GlobalTerminal.Instance.Global_MaxLevelIndex)
             {
+                SFXPlayer.Instance.PlaySFX(SFXType.MENU_BUTTON_PRESSED);
+                BGMPlayer.Instance.FadeOutBGM();
                 sceneLoader.LoadSceneWithName("CongratulationsMenu");
                 return;
             }

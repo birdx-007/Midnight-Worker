@@ -5,9 +5,9 @@ using UnityEngine;
 public class CongratulationsMenuControl : MonoBehaviour
 {
     public SceneLoaderControl sceneLoader;
-    void Start()
+    private void Awake()
     {
-        
+        BGMPlayer.Instance.PlayBGM(BGMType.BGM_Menu);
     }
 
     void Update()
@@ -19,6 +19,7 @@ public class CongratulationsMenuControl : MonoBehaviour
     }
     public void BackToMenu()
     {
+        SFXPlayer.Instance.PlaySFX(SFXType.MENU_BUTTON_PRESSED);
         sceneLoader.LoadSceneWithName("MainMenu");
     }
 }

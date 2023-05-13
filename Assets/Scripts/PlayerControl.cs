@@ -25,13 +25,16 @@ public class PlayerControl : MonoBehaviour
     private float _nextIntY;
     public BankControl bankFacing = null;
     public BankControl bankVisiting = null;
+    void Awake()
+    {
+        speed = standardSpeed;
+    }
     void Start()
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
         isInputingMotion = false;
         _lookDirection = Vector2.zero;
-        speed = standardSpeed;
     }
     void Update()
     {

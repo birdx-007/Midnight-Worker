@@ -21,6 +21,7 @@ public class MainMenuControl : MonoBehaviour
         {
             if (Input.anyKeyDown)
             {
+                SFXPlayer.Instance.PlaySFX(SFXType.MENU_BUTTON_PRESSED);
                 _hasStarted = true;
                 startText.text = "TO THE CAUSE";
                 startText.color = Color.yellow;
@@ -35,13 +36,16 @@ public class MainMenuControl : MonoBehaviour
         startText.text = "PRESS ANY KEY TO START";
         startText.color = Color.white;
         startMenu.HideStartMenu();
+        BGMPlayer.Instance.PlayBGM(BGMType.BGM_Menu);
     }
     public void PlayGame()
     {
+        SFXPlayer.Instance.PlaySFX(SFXType.MENU_BUTTON_PRESSED);
         sceneLoader.LoadSceneWithName("LevelSelectMenu");
     }
     public void ExitGame()
     {
+        SFXPlayer.Instance.PlaySFX(SFXType.MENU_BUTTON_PRESSED);
         Application.Quit();
     }
 }
