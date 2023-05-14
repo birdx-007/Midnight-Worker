@@ -20,6 +20,7 @@ public class SceneLoaderControl : MonoBehaviour
         loadTransition.SetTrigger("start");
         yield return new WaitForSecondsRealtime(transitionTime);
         Debug.Log("Load Scene:" + SceneIndex);
+        //SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene().buildIndex);
         SceneManager.LoadScene(SceneIndex);
     }
     IEnumerator LoadWithName(string SceneName)
@@ -27,6 +28,7 @@ public class SceneLoaderControl : MonoBehaviour
         loadTransition.SetTrigger("start");
         yield return new WaitForSecondsRealtime(transitionTime);
         Debug.Log("Load Scene:" + SceneName);
+        //SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene().buildIndex);
         SceneManager.LoadScene(SceneName);
     }
 }
