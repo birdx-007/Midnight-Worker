@@ -63,15 +63,15 @@ public class Map : ISerializationCallbackReceiver
     private string jsonFilePath;
     private string mapJson;
     public string MapJson { get { return mapJson; } set { mapJson = value; } }
-    static private Vector2Int mapCenter; // ��ʾ��������(0,0)��map�е��±�λ��
+    static private Vector2Int mapCenter;
     static public Vector2Int MapCenter { get { return mapCenter; } }
     public Map(int levelIndex)
     {
         weather = WeatherState.Sunny;
         mapArray = new short[mapWidth, mapHeight];
         mapCenter = new Vector2Int(mapWidth / 2 + 1, mapHeight / 2 + 1);
-        jsonFileDirPath = Application.dataPath + "/Resources/Level-" + levelIndex.ToString();
-        jsonFilePath = jsonFileDirPath + "/map.json";
+        jsonFileDirPath = Application.dataPath + "/Maps";
+        jsonFilePath = jsonFileDirPath + "/map-" + levelIndex.ToString() + ".json";
         LoadMap();
     }
     public void OnBeforeSerialize() // before save
@@ -132,6 +132,10 @@ public class Map : ISerializationCallbackReceiver
                 mapJson = sr.ReadToEnd();
                 sr.Close();
             }
+        }
+        else if (GlobalTerminal.Instance.Global_LevelIndex < MapReader.Instance.maps.Count)
+        {
+            mapJson = MapReader.Instance.GetCurrentMapJson();
         }
         else
         {
